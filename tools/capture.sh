@@ -36,10 +36,10 @@ run windows capture_windows.py --wide --sweep
 run multi   capture_multi.py --draft "$DRAFT"
 run draft   capture_draft.py --draft "$DRAFT" --prompts "$CAP/serial/prompts.json"
 
-# --kv-cache fp8's attention kernels (attention_kv8.py checks them and records their launches; no model needed)
+# --kv-cache fp8's attention kernels (tools/attention_kv8.py, kept out of the engine tree, checks them and records their launches; no model needed)
 mkdir -p "$CAP/kv8/triton"
 echo "== kv8"
-TRITON_CACHE_DIR="$CAP/kv8/triton" "$PY" "$T/attention_kv8.py" --out "$CAP/kv8" --tools "$TOOLS" 2>&1 | tee "$CAP/kv8/run.log"
+TRITON_CACHE_DIR="$CAP/kv8/triton" "$PY" "$SCRIPT_DIR/tools/attention_kv8.py" --out "$CAP/kv8" --tools "$TOOLS" 2>&1 | tee "$CAP/kv8/run.log"
 "$PY" "$TOOLS/triton_aot_manifest.py" --cache "$CAP/kv8/triton" --launches "$CAP/kv8/launches.json" \
   --out "$CAP/kv8/manifest.json"
 
