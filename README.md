@@ -42,6 +42,12 @@ Same RTX 5090, same day, one request at a time on both, greedy unless noted. The
 
 Files: [`evidence/2026-10-12-vs-vllm/`](evidence/2026-10-12-vs-vllm/).
 
+This is one vLLM configuration, chosen to fit the full window, not tuned for speed. It drafts 1 MTP token; the
+[MiaAI-Lab recipe](https://github.com/MiaAI-Lab/Qwen3.8-27B-NVFP4-RTX-5090) uses the same settings with 3 and reports
+about 160 tok/s single-stream, which we have not reproduced. vLLM with more draft tokens, a larger
+`--max-num-batched-tokens` or a shorter window would likely narrow the gaps below. We have not compared against
+SGLang, llama.cpp, ExLlamaV3 or SparkInfer.
+
 **Decode, short prompts** (`bench_openai.py --tokens 64 --reps 5`, tok/s, median):
 
 | Cell | this recipe | vLLM NVFP4 |
@@ -94,11 +100,15 @@ The two engines score within a few answers of each other: different 4-bit quanti
 replies are all equal on both. On this recipe all 60 soak turns also resumed a kept prompt state (see
 [Prompt cache](#prompt-cache)); vLLM does not report cached tokens, so its resumes go unchecked. vLLM's thinking 0/10 means its replies carried no `reasoning_content` field.
 
-In short:
-- **Decode:** this recipe is 2-3x faster at short prompts and 3-6x faster at long ones.
-- **Prefill:** vLLM reads prompts faster up to about 100k tokens; at 215k the two are even.
+In short, against this vLLM configuration only:
+- **Decode:** this recipe measured 2-3x faster at short prompts and 3-6x at long ones. Against vLLM with MTP-3, as
+  reported elsewhere, the gap would be smaller; we have not measured how much.
+- **Prefill:** vLLM reads prompts faster up to about 100k tokens; at 215k the two are even. First token is faster on vLLM.
 - **Quality:** the same within a few answers either way. This recipe returns reasoning in `reasoning_content`; vLLM, as configured, does not.
-- **Prompt cache:** both reuse a chat's earlier turns. Here a 105k-token chat's next turn starts in 1.5 s instead of 40 s.
+- **Prompt cache:** here a 105k-token chat's next turn starts in 1.5 s instead of 40 s. vLLM does not report cached
+  tokens, so we did not measure its prefix caching.
+- **Concurrency:** both ran one request at a time. This recipe serves one stream at the full window; batching
+  servers reach higher total throughput under concurrent load.
 
 ## Prompt cache
 
@@ -117,8 +127,8 @@ Evidence in [`evidence/2026-10-12-prompt-cache/`](evidence/2026-10-12-prompt-cac
   | Turn | prompt tokens | resumed | first token |
   |---:|---:|---:|---:|
   | 1 | 104,688 | 0 | 40.38 s |
-  | 2 | 104,746 | 102,400 | **1.49 s** |
-  | 3 | 104,819 | 102,400 | **1.49 s** |
+  | 2 | 104,746 | 102,400 | 1.49 s |
+  | 3 | 104,819 | 102,400 | 1.49 s |
 
 - **Soak:** 3 chats of 20 turns at once beside a decoding stream. All 60 replies equal the same request alone, all
   60 turns resumed, and the check took 118 s instead of 244 s.
@@ -152,7 +162,7 @@ engine reports one stream at 8.54 GiB of the 9.4 GiB left after the weights (18.
 
 | | fp8 | bf16 |
 |---|---:|---:|
-| Window with vision, one stream | **262,144** | 126,976 (measured before the partials fix) |
+| Window with vision, one stream | 262,144 | 126,976 (measured before the partials fix) |
 | Prefill, 100k tokens | 38.7 s | 36.6 s |
 | Decode at 100k | 206.6 tok/s | 209.2 tok/s |
 | Prefill / decode at 250k | 146 s / 130.7 tok/s | does not fit |
@@ -194,7 +204,7 @@ To run it as a service:
 |---|---|---|
 | `KV_CACHE` | `fp8` | `bf16` is exact against 0.6.6 but holds about half the window: set `CONTEXT=122880` with it |
 | `PROMPT_CACHE_GIB` | `8` | host memory for kept prompt states, at most half of `MemAvailable`; `0` turns the cache off |
-| `CONTEXT` | `262144` | 65,536 gives 4 streams under fp8 |
+| `CONTEXT` | `262144` | 65,536 gives 4 streams under fp8 (startup allocation checked; throughput not measured) |
 | `PARALLEL` | `auto` | streams at once, as many as the window allows |
 | `PORT` / `HOST` | `30000` / `0.0.0.0` | |
 | `NAME` / `ALIAS` | `qwen38-27b` / `qwen38-nvfp4` | |
