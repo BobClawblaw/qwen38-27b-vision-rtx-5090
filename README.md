@@ -25,7 +25,7 @@ Upstream TensorFold v1.0.7 serves only Nemotron on CUDA and has no image path. T
 - **`--kv-cache fp8`**: attention caches stored as e4m3 rows, each with one fp32 scale (amax / 448) per position and key head.
   - That is half of bf16's bytes, so 262,144 tokens fit in one stream beside the tower.
   - The decode kernel quantizes the in-window rows exactly as their commit will. A key's bits therefore never depend on windows, drafts or batching: drafted replies equal undrafted ones, and a concurrent reply equals the same request alone.
-  - bf16 stays available (`KV_CACHE=bf16`) and, with the prompt cache off, is bit-exact against TensorFold 0.6.6.
+  - bf16 stays available (`KV_CACHE=bf16`) and is exact against TensorFold 0.6.6, with the prompt cache on or off.
 
 - **A prompt cache** (`families/qwen27/cuda/reuse.zig`): a chat's prompt state kept in pinned host memory, so the next turn reads only what is new. Details in [Prompt cache](#prompt-cache).
 - **Merged with upstream main** after 1.0.7 (the 1.0.8 work).
@@ -108,8 +108,8 @@ holds every DeltaNet layer's recurrence and conv window plus the attention rows 
 cache takes 8 GiB by default, never more than half of `MemAvailable`; set it with `PROMPT_CACHE_GIB`
 (`--prompt-cache-gib`). Image prompts are neither kept nor resumed.
 
-`PROMPT_CACHE_GIB=0` turns the cache off and goes back to even prefill chunks, which stay token-identical to
-TensorFold 0.6.6.
+`PROMPT_CACHE_GIB=0` turns the cache off and goes back to even prefill chunks. The cache does not change replies:
+under `KV_CACHE=bf16`, cache on or off, they match TensorFold 0.6.6 token for token (below).
 
 Evidence in [`evidence/2026-10-12-prompt-cache/`](evidence/2026-10-12-prompt-cache/):
 - **Multi-turn**, from `tools/turns.py`: a 104,688-token source dump, then two short follow-ups.
@@ -123,6 +123,11 @@ Evidence in [`evidence/2026-10-12-prompt-cache/`](evidence/2026-10-12-prompt-cac
 - **Soak:** 3 chats of 20 turns at once beside a decoding stream. All 60 replies equal the same request alone, all
   60 turns resumed, and the check took 118 s instead of 244 s.
 - **Everything else** in the full suite scores as it did without the cache.
+- **bf16 against TensorFold 0.6.6, cache on** (`tools/exact_cache.py`, in `bf16-cache-vs-0.6.6/`): greedy replies to
+  prompts of 1,497 to 50,191 tokens, each asked twice, the same 50k prompt again, and a 3-turn 22k chat. With the cache
+  on, the 256-token replies match 0.6.6's in 20/20, 16 of them after resuming 4,096 to 49,152 kept tokens. A first
+  run with shorter replies (8-74 tokens) matched 20/20 as well, and the cache-off build matched 20/20. Neither
+  server's CUDA path returns logprobs, so this compares tokens, not logits.
 - **With the cache off**, the 0.6.6 exactness check still matches: serial 4/4, windows 54/54, drafted 4/4, and no
   reply differs in shared rounds.
 
@@ -187,7 +192,7 @@ To run it as a service:
 
 | Variable | Default | |
 |---|---|---|
-| `KV_CACHE` | `fp8` | `bf16` with `PROMPT_CACHE_GIB=0` is bit-exact against 0.6.6 but holds about half the window: set `CONTEXT=122880` with it |
+| `KV_CACHE` | `fp8` | `bf16` is exact against 0.6.6 but holds about half the window: set `CONTEXT=122880` with it |
 | `PROMPT_CACHE_GIB` | `8` | host memory for kept prompt states, at most half of `MemAvailable`; `0` turns the cache off |
 | `CONTEXT` | `262144` | 65,536 gives 4 streams under fp8 |
 | `PARALLEL` | `auto` | streams at once, as many as the window allows |

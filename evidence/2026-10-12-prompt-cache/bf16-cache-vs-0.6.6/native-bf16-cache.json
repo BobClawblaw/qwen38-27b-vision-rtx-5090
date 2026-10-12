@@ -1,0 +1,302 @@
+{
+ "single 6000": {
+  "text": "The `cmd_info` function resolves the model's configuration directory, detects its family, and prints detailed metadata including the model type, family title, available engines, and kernel package path. It serves as a diagnostic utility to inspect a specific model's compatibility and serving capabilities without loading the full weights.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 1492,
+   "completion_tokens": 60,
+   "total_tokens": 1552,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "single 6000 (again)": {
+  "text": "The `cmd_info` function resolves the model's configuration directory, detects its family, and prints detailed metadata including the model type, family title, available engines, and kernel package path. It serves as a diagnostic utility to inspect a specific model's compatibility and serving capabilities without loading the full weights.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 1492,
+   "completion_tokens": 60,
+   "total_tokens": 1552,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "single 15000": {
+  "text": "The file defines the command-line interface for the TensorFold application, implementing subcommands to manage model lifecycle tasks such as serving, pulling, and inspecting models. It handles argument parsing, backend selection (MLX or CUDA), and the initialization of the server engine with specific precision and sampling configurations.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 3838,
+   "completion_tokens": 60,
+   "total_tokens": 3898,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "single 15000 (again)": {
+  "text": "The file defines the command-line interface for the TensorFold application, implementing subcommands to manage model lifecycle tasks such as serving, pulling, and inspecting models. It handles argument parsing, backend selection (MLX or CUDA), and the initialization of the server engine with specific precision and sampling configurations.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 3838,
+   "completion_tokens": 60,
+   "total_tokens": 3898,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "single 28000": {
+  "text": "The file defines the command-line interface for the TensorFold application, implementing subcommands to serve, pull, and inspect local or Hugging Face models. It handles the orchestration of model loading, backend selection (MLX or CUDA), memory budgeting, and the startup of an OpenAI-compatible HTTP server.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 7187,
+   "completion_tokens": 63,
+   "total_tokens": 7250,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "single 28000 (again)": {
+  "text": "The file defines the command-line interface for the TensorFold application, implementing subcommands to serve, pull, and inspect local or Hugging Face models. It handles the orchestration of model loading, backend selection (MLX or CUDA), memory budgeting, and the startup of an OpenAI-compatible HTTP server.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 7187,
+   "completion_tokens": 63,
+   "total_tokens": 7250,
+   "prompt_tokens_details": {
+    "cached_tokens": 4096
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "single 45000": {
+  "text": "The file `tensorfold/cli_plan.py` provides the implementation for the `plan` subcommand, which estimates the memory footprint of local model checkpoints against MLX budgets without actually loading the model. It includes utility functions to validate input numbers and verify that local safetensors files are complete before generating these estimates.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 11088,
+   "completion_tokens": 63,
+   "total_tokens": 11151,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "single 45000 (again)": {
+  "text": "The file `tensorfold/cli_plan.py` provides the implementation for the `plan` subcommand, which estimates the memory footprint of local model checkpoints against MLX budgets without actually loading the model. It includes utility functions to validate input numbers and verify that local safetensors files are complete before generating these estimates.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 11088,
+   "completion_tokens": 63,
+   "total_tokens": 11151,
+   "prompt_tokens_details": {
+    "cached_tokens": 8192
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "single 100000": {
+  "text": "The file `tensorfold/control/launchd.py` defines a `Manager` class that handles the installation, monitoring, and lifecycle management of per-user macOS launchd services for TensorFold. It ensures security by strictly validating that the system is running on macOS as a non-root user and by verifying that any existing service plists match the current profile before allowing modifications.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 24556,
+   "completion_tokens": 74,
+   "total_tokens": 24630,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "single 100000 (again)": {
+  "text": "The file `tensorfold/control/launchd.py` defines a `Manager` class that handles the installation, monitoring, and lifecycle management of per-user macOS launchd services for TensorFold. It ensures security by strictly validating that the system is running on macOS as a non-root user and by verifying that any existing service plists match the current profile before allowing modifications.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 24556,
+   "completion_tokens": 74,
+   "total_tokens": 24630,
+   "prompt_tokens_details": {
+    "cached_tokens": 20480
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "single 200000": {
+  "text": "The `ReadAhead` class in `tensorfold/cuda/direct_read.py` optimizes checkpoint loading by batching nearby tensor reads into single I/O operations and executing them on a thread pool. It manages a queue of these asynchronous reads, allowing the main process to retrieve tensors on demand while waiting for the background I/O and GPU uploads to complete.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 50186,
+   "completion_tokens": 71,
+   "total_tokens": 50257,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "single 200000 (again)": {
+  "text": "The `ReadAhead` class in `tensorfold/cuda/direct_read.py` optimizes checkpoint loading by batching nearby tensor reads into single I/O operations and executing them on a thread pool. It manages a queue of these asynchronous reads, allowing the main process to retrieve tensors on demand while waiting for the background I/O and GPU uploads to complete.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 50186,
+   "completion_tokens": 71,
+   "total_tokens": 50257,
+   "prompt_tokens_details": {
+    "cached_tokens": 49152
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "repeat 200000": {
+  "text": "The `ReadAhead` class in `tensorfold/cuda/direct_read.py` optimizes checkpoint loading by batching nearby tensor reads into single I/O operations and executing them on a thread pool. It manages a queue of these asynchronous reads, allowing the main process to retrieve tensors on demand while waiting for the background I/O and GPU uploads to complete.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 50186,
+   "completion_tokens": 71,
+   "total_tokens": 50257,
+   "prompt_tokens_details": {
+    "cached_tokens": 49152
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "repeat 200000 (again)": {
+  "text": "The `ReadAhead` class in `tensorfold/cuda/direct_read.py` optimizes checkpoint loading by batching nearby tensor reads into single I/O operations and executing them on a thread pool. It manages a queue of these asynchronous reads, allowing the main process to retrieve tensors on demand while waiting for the background I/O and GPU uploads to complete.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 50186,
+   "completion_tokens": 71,
+   "total_tokens": 50257,
+   "prompt_tokens_details": {
+    "cached_tokens": 49152
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "chat turn 1": {
+  "text": "The first file is `tensorfold/__init__.py`.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 21922,
+   "completion_tokens": 13,
+   "total_tokens": 21935,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "chat turn 1 (again)": {
+  "text": "The first file is `tensorfold/__init__.py`.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 21922,
+   "completion_tokens": 13,
+   "total_tokens": 21935,
+   "prompt_tokens_details": {
+    "cached_tokens": 20480
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "chat turn 2": {
+  "text": "The second file is `tensorfold/__main__.py`.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 21956,
+   "completion_tokens": 13,
+   "total_tokens": 21969,
+   "prompt_tokens_details": {
+    "cached_tokens": 20480
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "chat turn 2 (again)": {
+  "text": "The second file is `tensorfold/__main__.py`.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 21956,
+   "completion_tokens": 13,
+   "total_tokens": 21969,
+   "prompt_tokens_details": {
+    "cached_tokens": 20480
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "chat turn 3": {
+  "text": "The code is written in Python.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 21992,
+   "completion_tokens": 8,
+   "total_tokens": 22000,
+   "prompt_tokens_details": {
+    "cached_tokens": 20480
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ },
+ "chat turn 3 (again)": {
+  "text": "The code is written in Python.",
+  "logprobs": [],
+  "usage": {
+   "prompt_tokens": 21992,
+   "completion_tokens": 8,
+   "total_tokens": 22000,
+   "prompt_tokens_details": {
+    "cached_tokens": 20480
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  }
+ }
+}

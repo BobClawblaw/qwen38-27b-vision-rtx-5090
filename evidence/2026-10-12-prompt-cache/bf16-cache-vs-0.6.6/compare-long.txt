@@ -1,0 +1,46 @@
+## native-bf16-cache-long.json vs v066-long.json
+single 6000              prompt   1497 resumed      0 reply 256 tok  EQUAL
+single 6000 (again)      prompt   1497 resumed      0 reply 256 tok  EQUAL
+single 15000             prompt   3843 resumed      0 reply 256 tok  EQUAL
+single 15000 (again)     prompt   3843 resumed      0 reply 256 tok  EQUAL
+single 28000             prompt   7192 resumed   4096 reply 256 tok  EQUAL
+single 28000 (again)     prompt   7192 resumed   4096 reply 256 tok  EQUAL
+single 45000             prompt  11093 resumed   8192 reply 256 tok  EQUAL
+single 45000 (again)     prompt  11093 resumed   8192 reply 256 tok  EQUAL
+single 100000            prompt  24561 resumed  20480 reply 256 tok  EQUAL
+single 100000 (again)    prompt  24561 resumed  20480 reply 256 tok  EQUAL
+single 200000            prompt  50191 resumed  49152 reply 256 tok  EQUAL
+single 200000 (again)    prompt  50191 resumed  49152 reply 256 tok  EQUAL
+repeat 200000            prompt  50191 resumed  49152 reply 256 tok  EQUAL
+repeat 200000 (again)    prompt  50191 resumed  49152 reply 256 tok  EQUAL
+chat turn 1              prompt  21922 resumed  20480 reply 256 tok  EQUAL
+chat turn 1 (again)      prompt  21922 resumed  20480 reply 256 tok  EQUAL
+chat turn 2              prompt  22201 resumed  20480 reply 256 tok  EQUAL
+chat turn 2 (again)      prompt  22201 resumed  20480 reply 256 tok  EQUAL
+chat turn 3              prompt  22480 resumed  20480 reply 256 tok  EQUAL
+chat turn 3 (again)      prompt  22480 resumed  20480 reply 256 tok  EQUAL
+20/20 equal
+
+## native-bf16-off-long.json vs v066-long.json
+single 6000              prompt   1497 resumed      0 reply 256 tok  EQUAL
+single 6000 (again)      prompt   1497 resumed      0 reply 256 tok  EQUAL
+single 15000             prompt   3843 resumed      0 reply 256 tok  EQUAL
+single 15000 (again)     prompt   3843 resumed      0 reply 256 tok  EQUAL
+single 28000             prompt   7192 resumed      0 reply 256 tok  EQUAL
+single 28000 (again)     prompt   7192 resumed      0 reply 256 tok  EQUAL
+single 45000             prompt  11093 resumed      0 reply 256 tok  EQUAL
+single 45000 (again)     prompt  11093 resumed      0 reply 256 tok  EQUAL
+single 100000            prompt  24561 resumed      0 reply 256 tok  EQUAL
+single 100000 (again)    prompt  24561 resumed      0 reply 256 tok  EQUAL
+single 200000            prompt  50191 resumed      0 reply 256 tok  EQUAL
+single 200000 (again)    prompt  50191 resumed      0 reply 256 tok  EQUAL
+repeat 200000            prompt  50191 resumed      0 reply 256 tok  EQUAL
+repeat 200000 (again)    prompt  50191 resumed      0 reply 256 tok  EQUAL
+chat turn 1              prompt  21922 resumed      0 reply 256 tok  EQUAL
+chat turn 1 (again)      prompt  21922 resumed      0 reply 256 tok  EQUAL
+chat turn 2              prompt  22201 resumed      0 reply 256 tok  EQUAL
+chat turn 2 (again)      prompt  22201 resumed      0 reply 256 tok  EQUAL
+chat turn 3              prompt  22480 resumed      0 reply 256 tok  EQUAL
+chat turn 3 (again)      prompt  22480 resumed      0 reply 256 tok  EQUAL
+20/20 equal
+
