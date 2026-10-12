@@ -25,7 +25,10 @@ Upstream TensorFold v1.0.7 serves only Nemotron on CUDA and has no image path. T
 - **`--kv-cache fp8`**: attention caches stored as e4m3 rows, each with one fp32 scale (amax / 448) per position and key head.
   - That is half of bf16's bytes, so 262,144 tokens fit in one stream beside the tower.
   - The decode kernel quantizes the in-window rows exactly as their commit will. A key's bits therefore never depend on windows, drafts or batching: drafted replies equal undrafted ones, and a concurrent reply equals the same request alone.
-  - bf16 stays available (`KV_CACHE=bf16`) and is bit-exact against TensorFold 0.6.6.
+  - bf16 stays available (`KV_CACHE=bf16`) and, with the prompt cache off, is bit-exact against TensorFold 0.6.6.
+
+- **A prompt cache** (`families/qwen27/cuda/reuse.zig`): a chat's prompt state kept in pinned host memory, so the next turn reads only what is new. Details in [Prompt cache](#prompt-cache).
+- **Merged with upstream main** after 1.0.7 (the 1.0.8 work).
 
 ## Against vLLM on the same card
 
@@ -84,23 +87,48 @@ all 15 checks, thinking off):
 | long context (needles to 224k, facts to 225k) | 55/55 | 55/55 |
 | vision probes | 12/12 | 12/12 |
 | soak: replies equal | 60/60 | 60/60 |
-| soak: turns resuming a kept state | 0/60 (no prompt cache) | not reported |
-| suite time, all checks | **44 min** | 74 min |
+| soak: turns resuming a kept state | **60/60** | not reported |
+| suite time, all checks | **42 min** | 74 min |
 
 The two engines score within a few answers of each other: different 4-bit quantizations of the same model. Soak's
-replies are all equal on both, but the suite scores this recipe's soak 0/60 because the engine has no prompt cache: it
-rereads every turn, so the check's resumes are never exercised. vLLM does not report cached tokens, so its resumes go
-unchecked. vLLM's thinking 0/10 means its replies carried no `reasoning_content` field.
+replies are all equal on both. On this recipe all 60 soak turns also resumed a kept prompt state (see
+[Prompt cache](#prompt-cache)); vLLM does not report cached tokens, so its resumes go unchecked. vLLM's thinking 0/10 means its replies carried no `reasoning_content` field.
 
 In short:
 - **Decode:** this recipe is 2-3x faster at short prompts and 3-6x faster at long ones.
 - **Prefill:** vLLM reads prompts faster up to about 100k tokens; at 215k the two are even.
 - **Quality:** the same within a few answers either way. This recipe returns reasoning in `reasoning_content`; vLLM, as configured, does not.
-- **No prompt cache here:** each turn of a chat is read again in full, while vLLM can reuse a prefix.
+- **Prompt cache:** both reuse a chat's earlier turns. Here a 105k-token chat's next turn starts in 1.5 s instead of 40 s.
+
+## Prompt cache
+
+The engine keeps a chat's prompt state in pinned host memory, so the next turn reads only what is new. A state
+holds every DeltaNet layer's recurrence and conv window plus the attention rows up to the mark, about 275 MiB at
+4,096 tokens. Prompts are prefilled on a fixed 4,096-row grid, so the marks of one chat's turns line up. The
+cache takes 8 GiB by default, never more than half of `MemAvailable`; set it with `PROMPT_CACHE_GIB`
+(`--prompt-cache-gib`). Image prompts are neither kept nor resumed.
+
+`PROMPT_CACHE_GIB=0` turns the cache off and goes back to even prefill chunks, which stay token-identical to
+TensorFold 0.6.6.
+
+Evidence in [`evidence/2026-10-12-prompt-cache/`](evidence/2026-10-12-prompt-cache/):
+- **Multi-turn**, from `tools/turns.py`: a 104,688-token source dump, then two short follow-ups.
+
+  | Turn | prompt tokens | resumed | first token |
+  |---:|---:|---:|---:|
+  | 1 | 104,688 | 0 | 40.38 s |
+  | 2 | 104,746 | 102,400 | **1.49 s** |
+  | 3 | 104,819 | 102,400 | **1.49 s** |
+
+- **Soak:** 3 chats of 20 turns at once beside a decoding stream. All 60 replies equal the same request alone, all
+  60 turns resumed, and the check took 118 s instead of 244 s.
+- **Everything else** in the full suite scores as it did without the cache.
+- **With the cache off**, the 0.6.6 exactness check still matches: serial 4/4, windows 54/54, drafted 4/4, and no
+  reply differs in shared rounds.
 
 ## Measured on this card
 
-RTX 5090 (32 GB), CUDA 13.3, engine `5d8bf485`, `KV_CACHE=fp8`, 262,144-token window, vision loaded. At startup the
+RTX 5090 (32 GB), CUDA 13.3, engine `5d8bf485` (the prompt cache: `2c222ae4`), `KV_CACHE=fp8`, 262,144-token window, vision loaded. At startup the
 engine reports one stream at 8.54 GiB of the 9.4 GiB left after the weights (18.61 GiB).
 
 **fp8 against bf16** ([`evidence/2026-10-12-fp8-kv/`](evidence/2026-10-12-fp8-kv/)):
@@ -159,7 +187,8 @@ To run it as a service:
 
 | Variable | Default | |
 |---|---|---|
-| `KV_CACHE` | `fp8` | `bf16` is bit-exact against 0.6.6 but holds about half the window: set `CONTEXT=122880` with it |
+| `KV_CACHE` | `fp8` | `bf16` with `PROMPT_CACHE_GIB=0` is bit-exact against 0.6.6 but holds about half the window: set `CONTEXT=122880` with it |
+| `PROMPT_CACHE_GIB` | `8` | host memory for kept prompt states, at most half of `MemAvailable`; `0` turns the cache off |
 | `CONTEXT` | `262144` | 65,536 gives 4 streams under fp8 |
 | `PARALLEL` | `auto` | streams at once, as many as the window allows |
 | `PORT` / `HOST` | `30000` / `0.0.0.0` | |
