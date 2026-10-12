@@ -1,0 +1,66 @@
+[
+ {
+  "label": "native-vision",
+  "prompt": "fibonacci-raw",
+  "temperature": 1.0,
+  "tokens": 64,
+  "decode_tps_median": 320.7165365362108,
+  "decode_tps_all": [
+   320.72,
+   516.46,
+   320.58,
+   295.74,
+   345.27
+  ],
+  "ttft_s_median": 0.09898447100022167,
+  "sample": "\n\n<think>\nThe user wants a short Python function that computes the Fibonacci sequence, plus an explanation. Let me think about what approach to take:\n\nOptions:\n"
+ },
+ {
+  "label": "native-vision",
+  "prompt": "gpu-chat-no-think",
+  "temperature": 1.0,
+  "tokens": 64,
+  "decode_tps_median": 243.89044939649932,
+  "decode_tps_all": [
+   259.09,
+   207.51,
+   207.37,
+   344.33,
+   243.89
+  ],
+  "ttft_s_median": 0.0995582759996978,
+  "sample": "### Part 1: How Matrix Multiplication Uses a GPU (Plain English)\n\nImagine you have a giant spreadsheet (Matrix A) and another giant spreadsheet (Matrix B). You "
+ },
+ {
+  "label": "native-vision",
+  "prompt": "fibonacci-raw",
+  "temperature": 0.0,
+  "tokens": 64,
+  "decode_tps_median": 322.9646572488479,
+  "decode_tps_all": [
+   322.75,
+   323.37,
+   323.02,
+   322.88,
+   322.96
+  ],
+  "ttft_s_median": 0.0989918730001591,
+  "sample": "\n\n<think>\nThe user wants a short Python function that computes the Fibonacci sequence, along with an explanation. Let me think about what would be most useful:\n"
+ },
+ {
+  "label": "native-vision",
+  "prompt": "gpu-chat-no-think",
+  "temperature": 0.0,
+  "tokens": 64,
+  "decode_tps_median": 297.6123679302187,
+  "decode_tps_all": [
+   298.04,
+   297.96,
+   296.83,
+   297.61,
+   296.31
+  ],
+  "ttft_s_median": 0.09967710599994462,
+  "sample": "### How Matrix Multiplication Uses a GPU (In Plain English)\n\nTo understand how a GPU handles matrix multiplication, it helps to compare it to a CPU (the main pr"
+ }
+]

@@ -1,0 +1,6 @@
+fp8: prompt 100026: prefill 44.6s (2242 tok/s); decode 256 tokens in 1.7s (153.5 tok/s)
+bf16: prompt 100026: prefill 36.6s (2736 tok/s); decode 256 tokens in 1.8s (143.7 tok/s)
+fp8 (prefetch): prompt 100026: prefill 38.4s (2604 tok/s); decode 256 tokens in 1.9s (133.1 tok/s)
+fp8 100k: prompt 100023: prefill 38.7s (2584 tok/s); decode 512 tokens at 206.6 tok/s
+fp8 250k: prompt 250024: prefill 146.0s (1713 tok/s); decode 512 tokens at 130.7 tok/s
+bf16 100k: prompt 100023: prefill 36.6s (2735 tok/s); decode 512 tokens at 209.2 tok/s

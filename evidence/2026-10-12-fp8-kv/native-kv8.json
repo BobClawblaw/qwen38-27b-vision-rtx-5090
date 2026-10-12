@@ -1,0 +1,32 @@
+{
+ "shapes-read": {
+  "text": "The image contains two geometric shapes positioned side by side on a white background, with text centered beneath them.\n\n- On the left is a solid red circle.\n- On the right is a solid blue square.\n- Below both shapes, centered horizontally, is the text: \u201cORANGE 7351\u201d\n\nNote: Although the text says \u201cORANGE,\u201d the actual colors shown are red and blue \u2014 not orange. The number \u201c7351\u201d appears to be an identifier or code, possibly referencing a color standard or product code, but it does not correspond to the visible colors in the image.\n\nExact text as displayed:  \n**ORANGE 7351**",
+  "prompt_tokens": 270,
+  "completion_tokens": 143,
+  "seconds": 0.74
+ },
+ "photo-jpg": {
+  "text": "This is an abstract gradient image featuring a smooth, diagonal color transition. It blends from a dark, near-black green in the upper left corner to a bright, saturated magenta in the upper right, and from a vivid lime green in the lower left to a soft, pale pinkish-white in the lower right, creating a seamless, ethereal wash of complementary hues.",
+  "prompt_tokens": 798,
+  "completion_tokens": 75,
+  "seconds": 0.71
+ },
+ "two-images": {
+  "text": "Image A contains a solid green circle.\nImage B displays a red circle positioned above a blue square, with vertical text on the left.",
+  "prompt_tokens": 237,
+  "completion_tokens": 29,
+  "seconds": 0.24
+ },
+ "low-detail": {
+  "text": "This image is a smooth, abstract gradient background. It features a soft blend of colors transitioning from vibrant green in the bottom-left corner to bright magenta/pink in the top-right corner. The center area is a muted, desaturated grayish tone where the two primary colors meet and blend. The overall effect is clean, modern, and visually calming, with no distinct shapes or objects \u2014 just a seamless color transition.",
+  "prompt_tokens": 253,
+  "completion_tokens": 85,
+  "seconds": 0.64
+ },
+ "followup": {
+  "text": "14702",
+  "prompt_tokens": 301,
+  "completion_tokens": 6,
+  "seconds": 0.19
+ }
+}

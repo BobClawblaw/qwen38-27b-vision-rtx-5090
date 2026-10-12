@@ -1,0 +1,12 @@
+### run fp8
+story: prompt 29, 128 tokens sha 081098bc7b81 in 1.79s
+code: prompt 30, 128 tokens sha 605e360aac92 in 1.79s
+facts: prompt 28, 128 tokens sha 6f851613368e in 1.79s
+long: prompt 4722, 128 tokens sha c99358b42165 in 3.02s
+### draft fp8
+story: 128 tokens sha 081098bc7b81, rounds 43 accepted 84, 192.6 tok/s
+code: 128 tokens sha 605e360aac92, rounds 17 accepted 110, 485.2 tok/s
+facts: 128 tokens sha 6f851613368e, rounds 26 accepted 101, 317.8 tok/s
+long: 128 tokens sha c99358b42165, rounds 20 accepted 107, 390.8 tok/s
+### multi fp8
+33 rounds (python 33), 142 windows differ from Python's, 3 replies differ; 337.7 tok/s

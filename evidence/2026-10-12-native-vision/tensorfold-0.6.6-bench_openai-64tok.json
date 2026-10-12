@@ -1,0 +1,66 @@
+[
+ {
+  "label": "rtx5090-mlx4bit-dflash2",
+  "prompt": "fibonacci-raw",
+  "temperature": 1.0,
+  "tokens": 64,
+  "decode_tps_median": 288.2138131466051,
+  "decode_tps_all": [
+   278.17,
+   472.08,
+   295.43,
+   272.74,
+   288.21
+  ],
+  "ttft_s_median": 0.09866260199987664,
+  "sample": "\n\n<think>\nThe user wants a short Python function that computes the Fibonacci sequence, plus an explanation. Let me think about what approach to take:\n\nOptions:\n"
+ },
+ {
+  "label": "rtx5090-mlx4bit-dflash2",
+  "prompt": "gpu-chat-no-think",
+  "temperature": 1.0,
+  "tokens": 64,
+  "decode_tps_median": 208.30035726511844,
+  "decode_tps_all": [
+   252.32,
+   187.39,
+   190.23,
+   292.17,
+   208.3
+  ],
+  "ttft_s_median": 0.09882084300011229,
+  "sample": "### Part 1: How Matrix Multiplication Uses a GPU (Plain English)\n\nImagine you have a giant spreadsheet (Matrix A) and another giant spreadsheet (Matrix B). You "
+ },
+ {
+  "label": "rtx5090-mlx4bit-dflash2",
+  "prompt": "fibonacci-raw",
+  "temperature": 0.0,
+  "tokens": 64,
+  "decode_tps_median": 277.44154871368374,
+  "decode_tps_all": [
+   281.1,
+   277.44,
+   279.06,
+   275.03,
+   275.28
+  ],
+  "ttft_s_median": 0.09805077000009987,
+  "sample": "\n\n<think>\nThe user wants a short Python function that computes the Fibonacci sequence, along with an explanation. Let me think about what would be most useful:\n"
+ },
+ {
+  "label": "rtx5090-mlx4bit-dflash2",
+  "prompt": "gpu-chat-no-think",
+  "temperature": 0.0,
+  "tokens": 64,
+  "decode_tps_median": 261.68591257178275,
+  "decode_tps_all": [
+   273.32,
+   269.13,
+   253.04,
+   261.69,
+   251.45
+  ],
+  "ttft_s_median": 0.09815527099999599,
+  "sample": "### How Matrix Multiplication Uses a GPU (In Plain English)\n\nTo understand how a GPU handles matrix multiplication, it helps to compare it to a CPU (the main pr"
+ }
+]

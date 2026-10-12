@@ -1,0 +1,7 @@
+models/
+engine/
+logs/
+captures/
+.venv/
+__pycache__/
+*.pyc

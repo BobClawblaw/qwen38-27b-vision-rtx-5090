@@ -1,0 +1,254 @@
+[
+ {
+  "label": "native-kv8-256k",
+  "prompt": "fibonacci-raw",
+  "temperature": 1.0,
+  "tokens": 64,
+  "decode_tps_median": 319.6201021866627,
+  "decode_tps_all": [
+   320.43,
+   514.75,
+   319.62,
+   294.79,
+   316.29
+  ],
+  "ttft_s_median": 0.09913380199941457,
+  "evidence": [
+   {
+    "prompt_tokens": 14,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "807b516f4c21",
+    "output_sha256": "3570a4f412b472fae7a63de1cbc57b561ac71c3b36cdc3bd3319d1cac7eb0c36"
+   },
+   {
+    "prompt_tokens": 14,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "a965af9dcce8",
+    "output_sha256": "f0dbdc7e79d615d351dbc842483e4b24109b0f89cd87b7258fe6236076397903"
+   },
+   {
+    "prompt_tokens": 14,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "4cc0d4c69363",
+    "output_sha256": "d4b6ed7cc2aec3c099aaf373703ee56777b599b8ad72a4add46128c10a62599e"
+   },
+   {
+    "prompt_tokens": 14,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "425fe4d34ee3",
+    "output_sha256": "15beed710948ab45cd1be9b37474d286a52c2c3bf1c3a867b83e6d11d1a513c8"
+   },
+   {
+    "prompt_tokens": 14,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "60047b1e07ad",
+    "output_sha256": "50c970b3833b15c4d0b577672aa4901094c605e5ddcc4acdc1fe8e28ebab8e3c"
+   }
+  ],
+  "sample": "\n\n<think>\nThe user wants a short Python function that computes the Fibonacci sequence, plus an explanation. Let me think about what approach to take:\n\nOptions:\n"
+ },
+ {
+  "label": "native-kv8-256k",
+  "prompt": "gpu-chat-no-think",
+  "temperature": 1.0,
+  "tokens": 64,
+  "decode_tps_median": 243.18254337616347,
+  "decode_tps_all": [
+   258.49,
+   206.86,
+   217.74,
+   317.03,
+   243.18
+  ],
+  "ttft_s_median": 0.09993637499792385,
+  "evidence": [
+   {
+    "prompt_tokens": 31,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "18887e1462fc",
+    "output_sha256": "ab7026f5e9da2a2d8ab40b2c8764402b0028de1515ed910cffa0e847325aa4a7"
+   },
+   {
+    "prompt_tokens": 31,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "347cd54bf5e1",
+    "output_sha256": "a5a80cb76a84aadab801fe9c0d58d70440d6ddfc6a80a0e008e9d9e721a6a1f4"
+   },
+   {
+    "prompt_tokens": 31,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "a837a67dc99c",
+    "output_sha256": "bdd89eaf4e47757ad53099122fc27e11a9c68079d2b27ffb12596c73262fc12e"
+   },
+   {
+    "prompt_tokens": 31,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "cd328910f26f",
+    "output_sha256": "21538f4eea5b96f9716d1ec3025667a3499cf484a7305b2bfd637fb18ae4674f"
+   },
+   {
+    "prompt_tokens": 31,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "4629c608d2d1",
+    "output_sha256": "551d7c0b6b311b5a8b4c6248366e78dfa97717e822c7577184c9efc3846d0ccc"
+   }
+  ],
+  "sample": "### Part 1: How Matrix Multiplication Uses a GPU (Plain English)\n\nImagine you have a giant spreadsheet (Matrix A) and another giant spreadsheet (Matrix B). You "
+ },
+ {
+  "label": "native-kv8-256k",
+  "prompt": "fibonacci-raw",
+  "temperature": 0.0,
+  "tokens": 64,
+  "decode_tps_median": 321.56519398060635,
+  "decode_tps_all": [
+   322.17,
+   321.89,
+   321.57,
+   321.14,
+   321.1
+  ],
+  "ttft_s_median": 0.09945966899977066,
+  "evidence": [
+   {
+    "prompt_tokens": 14,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "b7dfde1fd03a",
+    "output_sha256": "f1fed5270a1f6552f2ae40895d4cf8e709643345d7eb628eb310350502446a1d"
+   },
+   {
+    "prompt_tokens": 14,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "b7dfde1fd03a",
+    "output_sha256": "f1fed5270a1f6552f2ae40895d4cf8e709643345d7eb628eb310350502446a1d"
+   },
+   {
+    "prompt_tokens": 14,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "b7dfde1fd03a",
+    "output_sha256": "f1fed5270a1f6552f2ae40895d4cf8e709643345d7eb628eb310350502446a1d"
+   },
+   {
+    "prompt_tokens": 14,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "b7dfde1fd03a",
+    "output_sha256": "f1fed5270a1f6552f2ae40895d4cf8e709643345d7eb628eb310350502446a1d"
+   },
+   {
+    "prompt_tokens": 14,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "b7dfde1fd03a",
+    "output_sha256": "f1fed5270a1f6552f2ae40895d4cf8e709643345d7eb628eb310350502446a1d"
+   }
+  ],
+  "sample": "\n\n<think>\nThe user wants a short Python function that computes the Fibonacci sequence, along with an explanation. Let me think about what would be most useful:\n"
+ },
+ {
+  "label": "native-kv8-256k",
+  "prompt": "gpu-chat-no-think",
+  "temperature": 0.0,
+  "tokens": 64,
+  "decode_tps_median": 277.4099392913443,
+  "decode_tps_all": [
+   277.55,
+   277.61,
+   277.39,
+   277.41,
+   277.36
+  ],
+  "ttft_s_median": 0.09984693600199535,
+  "evidence": [
+   {
+    "prompt_tokens": 31,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "b2358c47350d",
+    "output_sha256": "9e6b04467581a4e4ee08142ac9fea8ea502fe5bbcbfd2b8dab05e857af01872c"
+   },
+   {
+    "prompt_tokens": 31,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "b2358c47350d",
+    "output_sha256": "9e6b04467581a4e4ee08142ac9fea8ea502fe5bbcbfd2b8dab05e857af01872c"
+   },
+   {
+    "prompt_tokens": 31,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "b2358c47350d",
+    "output_sha256": "9e6b04467581a4e4ee08142ac9fea8ea502fe5bbcbfd2b8dab05e857af01872c"
+   },
+   {
+    "prompt_tokens": 31,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "b2358c47350d",
+    "output_sha256": "9e6b04467581a4e4ee08142ac9fea8ea502fe5bbcbfd2b8dab05e857af01872c"
+   },
+   {
+    "prompt_tokens": 31,
+    "cached_tokens": 0,
+    "tokens": 64,
+    "cache_state": "cold",
+    "complete": true,
+    "token_sha": "b2358c47350d",
+    "output_sha256": "9e6b04467581a4e4ee08142ac9fea8ea502fe5bbcbfd2b8dab05e857af01872c"
+   }
+  ],
+  "sample": "### Part 1: How Matrix Multiplication Uses a GPU (In Plain English)\n\nTo understand how a GPU handles matrix multiplication, it helps to compare it to a CPU (the"
+ }
+]

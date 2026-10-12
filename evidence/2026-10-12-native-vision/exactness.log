@@ -1,0 +1,84 @@
+### run
+loaded in 4.3s, weights 14.11 GiB
+story: prompt 29, 128 tokens sha 081098bc7b81 in 1.70s MATCH
+code: prompt 30, 128 tokens sha 605e360aac92 in 1.70s MATCH
+facts: prompt 28, 128 tokens sha 8f1bdb866bf5 in 1.70s MATCH
+long: prompt 4722, 128 tokens sha c99358b42165 in 2.93s MATCH
+exit=0
+### windows
+loaded in 4.3s, weights 14.11 GiB
+case 0: chain, 1 streams
+case 1: chain, 1 streams
+case 2: chain, 1 streams
+case 3: chain, 1 streams
+case 4: chain, 1 streams
+case 5: chain, 1 streams
+case 6: chain, 1 streams
+case 7: chain, 1 streams
+case 8: chain, 1 streams
+case 9: chain, 1 streams
+case 10: chain, 1 streams
+case 11: chain, 1 streams
+case 12: chain, 1 streams
+case 13: chain, 1 streams
+case 14: chain, 1 streams
+case 15: chain, 1 streams
+case 16: shared, 2 streams
+case 17: shared, 4 streams
+case 18: shared, 8 streams
+case 19: shared, 16 streams
+case 20: shared, 4 streams
+case 21: shared, 4 streams
+case 22: shared, 5 streams
+case 23: shared, 1 streams
+case 24: shared, 2 streams
+case 25: shared, 3 streams
+case 26: shared, 4 streams
+case 27: shared, 8 streams
+case 28: shared, 8 streams
+case 29: shared, 16 streams
+case 30: shared, 2 streams
+case 31: shared, 2 streams
+case 32: shared, 2 streams
+case 33: shared, 2 streams
+case 34: shared, 2 streams
+case 35: shared, 3 streams
+case 36: shared, 3 streams
+case 37: shared, 3 streams
+case 38: shared, 3 streams
+case 39: shared, 3 streams
+case 40: shared, 4 streams
+case 41: shared, 4 streams
+case 42: shared, 4 streams
+case 43: shared, 4 streams
+case 44: shared, 4 streams
+case 45: shared, 5 streams
+case 46: shared, 5 streams
+case 47: shared, 5 streams
+case 48: shared, 5 streams
+case 49: shared, 5 streams
+case 50: tree, 1 streams
+case 51: tree, 1 streams
+case 52: tree, 2 streams
+case 53: tree, 16 streams
+54 cases, 0 rows differ
+exit=0
+### draft
+loaded in 4.3s, weights 14.11 GiB
+drafter loaded in 2.4s
+story: 128 tokens sha 081098bc7b81, rounds 43 accepted 84, 201.2 tok/s MATCH; python rounds 42 accepted 85
+code: 128 tokens sha 605e360aac92, rounds 17 accepted 110, 506.2 tok/s MATCH; python rounds 17 accepted 110
+facts: 128 tokens sha 8f1bdb866bf5, rounds 28 accepted 99, 309.0 tok/s MATCH; python rounds 28 accepted 99
+long: 128 tokens sha c99358b42165, rounds 21 accepted 106, 387.4 tok/s MATCH; python rounds 21 accepted 106
+exit=0
+### multi
+loaded in 3.5s, weights 14.11 GiB
+round 0 stream 4: first window that differs from Python's (tree 16 rows, python tree 16)
+stream 0: 96 tokens sha 157bc8b4f3f5 rounds 9 accepted 86 MATCH; python rounds 9 accepted 86
+stream 1: 88 tokens sha 63a22434fd75 rounds 29 accepted 58 MATCH; python rounds 29 accepted 58
+stream 2: 96 tokens sha 2b82f6a76da2 rounds 27 accepted 68 MATCH; python rounds 27 accepted 68
+stream 3: 96 tokens sha 6d0ef9240df2 rounds 27 accepted 68 MATCH; python rounds 27 accepted 68
+stream 4: 92 tokens sha 779eeba77003 rounds 33 accepted 58 MATCH; python rounds 33 accepted 58
+stream 5: 96 tokens sha 3ea63df9f60d rounds 29 accepted 66 MATCH; python rounds 29 accepted 66
+33 rounds (python 33), 112 windows differ from Python's, 0 replies differ; 339.0 tok/s
+exit=0

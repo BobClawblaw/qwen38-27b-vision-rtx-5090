@@ -1,0 +1,35 @@
+[
+ {
+  "label": "vllm",
+  "target": 32000,
+  "prompt_tokens": 33918,
+  "completion_tokens": 512,
+  "prefill_s": 6.53,
+  "prefill_tps": 5191.6,
+  "decode_tps": 69.9,
+  "needle_found": true,
+  "reply_head": "The secret passphrase is **a72494f227**.\n\n### Code Summary\n\nThis source dump contains the Zig implementation for **Tenso"
+ },
+ {
+  "label": "vllm",
+  "target": 100000,
+  "prompt_tokens": 105334,
+  "completion_tokens": 512,
+  "prefill_s": 33.05,
+  "prefill_tps": 3187.0,
+  "decode_tps": 36.0,
+  "needle_found": true,
+  "reply_head": "0df7449092\n\nThe code is a large-scale implementation of a distributed AI inference and training framework called \"Tensor"
+ },
+ {
+  "label": "vllm",
+  "target": 200000,
+  "prompt_tokens": 214766,
+  "completion_tokens": 512,
+  "prefill_s": 114.8,
+  "prefill_tps": 1870.8,
+  "decode_tps": 21.3,
+  "needle_found": true,
+  "reply_head": "264dfe8b36\n\nThe provided source code is a large-scale implementation of a distributed AI inference and training framewor"
+ }
+]

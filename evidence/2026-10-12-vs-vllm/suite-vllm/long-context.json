@@ -1,0 +1,168 @@
+{
+ "name": "long-context",
+ "score": 1.0,
+ "cases": 55,
+ "passed": 55,
+ "seconds": 734.9922602176666,
+ "notes": [
+  "needles 15/15 to 224k, facts 10/10@28k, 10/10@57k, 10/10@114k, 10/10@225k, slowest prefill 1779 tok/s"
+ ],
+ "details": {
+  "needles": [
+   {
+    "tokens": 7121,
+    "depth": 0.1,
+    "found": true,
+    "seconds": 0.9506476189999375,
+    "prefill_tok_s": 7490.683043514221,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 7124,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 0.9547048809981789,
+    "prefill_tok_s": 7461.991806883398,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 7152,
+    "depth": 0.9,
+    "found": true,
+    "seconds": 0.9551976510010718,
+    "prefill_tok_s": 7487.455598853829,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 28509,
+    "depth": 0.1,
+    "found": true,
+    "seconds": 4.705942648997734,
+    "prefill_tok_s": 6058.084878291454,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 28513,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 4.711757720000605,
+    "prefill_tok_s": 6051.45716193496,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 28538,
+    "depth": 0.9,
+    "found": true,
+    "seconds": 4.7099067320014,
+    "prefill_tok_s": 6059.143338465479,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 56999,
+    "depth": 0.1,
+    "found": true,
+    "seconds": 12.641783652001322,
+    "prefill_tok_s": 4508.778315548572,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 57047,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 12.661902576997818,
+    "prefill_tok_s": 4505.405064767609,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 56992,
+    "depth": 0.9,
+    "found": true,
+    "seconds": 12.639147624002362,
+    "prefill_tok_s": 4509.16483416725,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 114584,
+    "depth": 0.02,
+    "found": true,
+    "seconds": 38.49466165500053,
+    "prefill_tok_s": 2976.620525384338,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 114659,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 38.58197447299972,
+    "prefill_tok_s": 2971.8282064656955,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 114566,
+    "depth": 0.98,
+    "found": true,
+    "seconds": 38.4863011569978,
+    "prefill_tok_s": 2976.7994469681316,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 224738,
+    "depth": 0.02,
+    "found": true,
+    "seconds": 125.12626626800193,
+    "prefill_tok_s": 1796.0897156368792,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 224825,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 126.37755653500062,
+    "prefill_tok_s": 1778.994674087832,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 224752,
+    "depth": 0.98,
+    "found": true,
+    "seconds": 125.10183038799732,
+    "prefill_tok_s": 1796.55245093491,
+    "reply": "7-4-3-3-5"
+   }
+  ],
+  "facts": [
+   {
+    "tokens": 28632,
+    "recalled": 10,
+    "of": 10,
+    "seconds": 5.510110227998666,
+    "prefill_tok_s": 5196.266284204529,
+    "reply": "Avery: 563\nBlake: 986\nCasey: 673\nDevin: 977\nEmery: 899\nFinley: 576\nHarper: 562\nJordan: 620\nKendall: 975\nMorgan: 701"
+   },
+   {
+    "tokens": 57099,
+    "recalled": 10,
+    "of": 10,
+    "seconds": 13.628453671997704,
+    "prefill_tok_s": 4189.690288731798,
+    "reply": "Avery: 563\nBlake: 986\nCasey: 673\nDevin: 977\nEmery: 899\nFinley: 576\nHarper: 562\nJordan: 620\nKendall: 975\nMorgan: 701"
+   },
+   {
+    "tokens": 114758,
+    "recalled": 10,
+    "of": 10,
+    "seconds": 40.82759427500059,
+    "prefill_tok_s": 2810.795052655557,
+    "reply": "Avery: 563\nBlake: 986\nCasey: 673\nDevin: 977\nEmery: 899\nFinley: 576\nHarper: 562\nJordan: 620\nKendall: 975\nMorgan: 701"
+   },
+   {
+    "tokens": 225035,
+    "recalled": 10,
+    "of": 10,
+    "seconds": 127.87695789999998,
+    "prefill_tok_s": 1759.7775525437335,
+    "reply": "Avery: 563\nBlake: 986\nCasey: 673\nDevin: 977\nEmery: 899\nFinley: 576\nHarper: 562\nJordan: 620\nKendall: 975\nMorgan: 701"
+   }
+  ]
+ }
+}

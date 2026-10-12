@@ -1,0 +1,16 @@
+### run fp8
+loaded in 5.3s, weights 14.11 GiB
+story: prompt 29, 128 tokens sha aa9a6e81d02c in 1.71s DIFFER at token 32 (python sha 081098bc7b81)
+code: prompt 30, 128 tokens sha 605e360aac92 in 1.71s MATCH
+facts: prompt 28, 128 tokens sha 830433777a9c in 1.71s DIFFER at token 22 (python sha 8f1bdb866bf5)
+long: prompt 4722, 128 tokens sha ac86a9dc67d5 in 2.95s DIFFER at token 3 (python sha c99358b42165)
+### draft fp8
+drafter loaded in 2.5s
+story: 128 tokens sha 081098bc7b81, rounds 43 accepted 84, 201.0 tok/s
+code: 128 tokens sha 605e360aac92, rounds 17 accepted 110, 507.4 tok/s
+facts: 128 tokens sha e770fbd99ace, rounds 25 accepted 102, 345.6 tok/s
+long: 128 tokens sha ac86a9dc67d5, rounds 20 accepted 107, 406.2 tok/s
+### multi fp8
+stream 4: 92 tokens sha 6e1b8cf518da rounds 35 accepted 56 DIFFER; python rounds 33 accepted 58
+stream 5: 96 tokens sha 60ab6cb20ab7 rounds 28 accepted 67 DIFFER; python rounds 29 accepted 66
+35 rounds (python 33), 144 windows differ from Python's, 5 replies differ; 340.5 tok/s

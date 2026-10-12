@@ -1,0 +1,7 @@
+story: prompt 29, 128 steps: top-1 agree 128/128, KL mean 0.00105 max 0.01092 nats, pick logprob gap 0.00157
+code: prompt 30, 128 steps: top-1 agree 128/128, KL mean 0.00018 max 0.00227 nats, pick logprob gap 0.00123
+facts: prompt 28, 128 steps: top-1 agree 125/128, KL mean 0.00070 max 0.00542 nats, pick logprob gap 0.00476
+long: prompt 4722, 128 steps: top-1 agree 128/128, KL mean 0.00049 max 0.00766 nats, pick logprob gap -0.00063
+src16k: prompt 16027, 128 steps: top-1 agree 127/128, KL mean 0.00127 max 0.01897 nats, pick logprob gap 0.00014
+src60k: prompt 60027, 128 steps: top-1 agree 127/128, KL mean 0.00079 max 0.01694 nats, pick logprob gap 0.00215
+overall top-1 agree 763/768

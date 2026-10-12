@@ -1,0 +1,22 @@
+quality suite: http://127.0.0.1:30000 as qwen38-nvfp4; checks: drafts, concurrent, behaviour, tools, json, ifeval, gsm8k, mgsm, mmlu, humaneval, repetition, long-context, vision, soak, snapshot
+drafts            12/12     100.0%  (26s)  drafted 127 tok/s vs undrafted 126 tok/s
+concurrent        12/12     100.0%  (26s)  4 streams together vs alone
+streaming          4/4      100.0%  (9s)  identical
+multiturn          8/8      100.0%  (5s)  recalled 8/8 facts
+stop               3/3      100.0%  (1s)  3/3 stopped before the string
+thinking           0/10       0.0%  (8s)  10 replies without reasoning_content, 0 with think tags in content
+copy               2/2      100.0%  (1s)  2/2 byte-identical
+max-tokens         3/3      100.0%  (1s)  3/3 exact
+tools             58/60      96.7%  (30s)  "How do you say 'where is the station' in": got []
+json              30/30     100.0%  (7s)  all valid
+ifeval           129/150     86.0%  (549s)  loose 129/150, strict 122/150, 150 covered prompts
+gsm8k            240/250     96.0%  (598s)  misses at [12, 45, 62, 85, 93, 119, 139, 157, 201, 244]
+mgsm             217/240     90.4%  (749s)  de 27/30, es 29/30, fr 26/30, ja 27/30, zh 28/30, ru 29/30, sw 25/30, bn 26/30
+mmlu             263/342     76.9%  (1148s)  57 subjects x 6; weakest college_mathematics 2/6, high_school_mathematics 2/6, high_school_physics 2/6
+humaneval        153/164     93.3%  (250s)  pass@1 greedy; failed ['HumanEval_116', 'HumanEval_127', 'HumanEval_129', 'HumanEval_130', 'HumanEval_132', 'HumanEval_145'] ...
+repetition         8/8      100.0%  (76s)  repeated 4-grams 0.18% mean, max 0.51%; 0 replies hit max_tokens
+long-context      55/55     100.0%  (735s)  needles 15/15 to 224k, facts 10/10@28k, 10/10@57k, 10/10@114k, 10/10@225k, slowest prefill 1779 tok/s
+vision            12/12     100.0%  (1s)  all probes answered
+soak              60/60     100.0%  (200s)  3 chats x 20 turns at once beside a decoding stream (5.2k-5.9k-token prompts): 60/60 equal to the same request alone, 0 errors, server answers after; cached tokens not reported
+snapshot          12/12     100.0%  (13s)  replies written to /storage/tensorfold-qwen38-27b-5090/quality-runs/vllm-full/replies.json
+report: /storage/tensorfold-qwen38-27b-5090/quality-runs/vllm-full/report.md

@@ -1,0 +1,3 @@
+depth 0.10: prompt 255054 tokens, 199.8s -> 'TANGERINE-4481' OK
+depth 0.50: prompt 255055 tokens, 200.1s -> 'TANGERINE-4521' OK
+depth 0.90: prompt 255055 tokens, 200.1s -> 'TANGERINE-4561' OK

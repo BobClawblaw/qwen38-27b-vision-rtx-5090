@@ -1,0 +1,11 @@
+{
+ "name": "snapshot",
+ "score": 1.0,
+ "cases": 12,
+ "passed": 12,
+ "seconds": 5.9477925300598145,
+ "notes": [
+  "replies written to /storage/tensorfold-qwen38-27b-5090/quality-runs/native-full/replies.json"
+ ],
+ "details": {}
+}

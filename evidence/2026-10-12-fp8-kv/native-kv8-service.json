@@ -1,0 +1,32 @@
+{
+ "shapes-read": {
+  "text": "The image contains two geometric shapes positioned side by side on a white background, with text centered beneath them.\n\n- On the left is a solid red circle.\n- On the right is a solid blue square.\n- Below both shapes, centered horizontally, is the text: \u201cORANGE 7351\u201d\n\nNote: Although the text says \u201cORANGE\u201d, the actual colors shown are red and blue \u2014 not orange. The number \u201c7351\u201d appears to be an identifier or code, possibly referencing a color standard or product code, but it does not correspond to the visible colors in the image.\n\nExact text as displayed:  \n**ORANGE 7351**",
+  "prompt_tokens": 270,
+  "completion_tokens": 143,
+  "seconds": 0.77
+ },
+ "photo-jpg": {
+  "text": "This is an abstract gradient image featuring a smooth, diagonal blend of colors. It transitions from a deep green in the lower-left corner to a vibrant magenta in the upper-right, with a soft, hazy white area in the bottom-right that creates a subtle fade.",
+  "prompt_tokens": 798,
+  "completion_tokens": 55,
+  "seconds": 0.66
+ },
+ "two-images": {
+  "text": "Image A contains a single solid green circle.\nImage B displays a red circle positioned above a blue square, with vertical text on the left.",
+  "prompt_tokens": 237,
+  "completion_tokens": 30,
+  "seconds": 0.25
+ },
+ "low-detail": {
+  "text": "This image is a smooth, abstract gradient background. It features a soft blend of colors transitioning from a vibrant green in the bottom-left corner to a bright magenta/pink in the top-right corner. The center area is a muted, desaturated grayish tone where the two primary colors meet and blend. The overall effect is clean, modern, and visually calming, with no distinct shapes or objects\u2014just a seamless color transition.",
+  "prompt_tokens": 253,
+  "completion_tokens": 87,
+  "seconds": 0.64
+ },
+ "followup": {
+  "text": "14702",
+  "prompt_tokens": 301,
+  "completion_tokens": 6,
+  "seconds": 0.19
+ }
+}

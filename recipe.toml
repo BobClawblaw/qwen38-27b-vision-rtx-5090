@@ -1,0 +1,14 @@
+# What this recipe serves and builds. setup.sh reads it; serve.sh takes the same paths from the environment.
+
+[model]
+repo = "TensorFold/Qwen3.8-27B-MLX-4bit"         # MLX 4-bit, group 64, carries the vision tower
+revision = "22d8d538154e0e5b6f8dcb1fcc74a60a0798104c"
+drafter = "z-lab/Qwen3.8-27B-DFlash2"
+drafter_revision = "50307d4c4cde6860d4eee73e2547cd786fe8e8a4"
+
+[engine]
+repo = "https://github.com/BobClawblaw/TensorFold.git"
+branch = "qwen27-cuda-1.0.7"                       # upstream PR ashhart/TensorFold#726
+sha = "5d8bf48592d41a6496cd907589237f7830455bb9"   # 1.0.7 + #608 + #598/#614 + CUDA vision + --kv-cache fp8
+zig = "0.17.0"
+sm = "120"

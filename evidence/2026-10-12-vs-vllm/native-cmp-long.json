@@ -1,0 +1,35 @@
+[
+ {
+  "label": "native",
+  "target": 32000,
+  "prompt_tokens": 33916,
+  "completion_tokens": 512,
+  "prefill_s": 10.22,
+  "prefill_tps": 3319.4,
+  "decode_tps": 224.3,
+  "needle_found": true,
+  "reply_head": "8026a30f20\n\nThe provided code is a Zig implementation of a CLI tool named `tensorfold`, designed for running, checking, "
+ },
+ {
+  "label": "native",
+  "target": 100000,
+  "prompt_tokens": 105334,
+  "completion_tokens": 512,
+  "prefill_s": 40.77,
+  "prefill_tps": 2583.6,
+  "decode_tps": 181.5,
+  "needle_found": true,
+  "reply_head": "346326ab3a\n\nThe code is a large-scale implementation of **TensorFold**, a high-performance inference and serving framewo"
+ },
+ {
+  "label": "native",
+  "target": 200000,
+  "prompt_tokens": 214767,
+  "completion_tokens": 512,
+  "prefill_s": 114.66,
+  "prefill_tps": 1873.1,
+  "decode_tps": 125.7,
+  "needle_found": true,
+  "reply_head": "The secret passphrase is `ee6f40af48`.\n\nThe codebase is a high-performance inference engine called **TensorFold**, writt"
+ }
+]
