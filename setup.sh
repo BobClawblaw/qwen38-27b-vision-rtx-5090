@@ -22,5 +22,5 @@ hf download "$(pin model drafter)" --revision "$(pin model drafter_revision)" --
 [ -d "$TF_SRC/.git" ] || git clone --branch "$(pin engine branch)" "$(pin engine repo)" "$TF_SRC"
 git -C "$TF_SRC" fetch -q origin "$(pin engine branch)"
 git -C "$TF_SRC" checkout -q "$(pin engine sha)"
-(cd "$TF_SRC" && "$ZIG" build install native -Dnvcc="$NVCC" -Dsm="$(pin engine sm)" -Dversion=1.0.7)
+(cd "$TF_SRC" && "$ZIG" build install native -Dnvcc="$NVCC" -Dsm="$(pin engine sm)" -Dversion=1.0.9)
 echo "built $TF_SRC/zig-out/native/bin/tensorfold-native at $(git -C "$TF_SRC" rev-parse --short HEAD)"

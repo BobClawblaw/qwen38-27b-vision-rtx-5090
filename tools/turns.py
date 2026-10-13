@@ -13,6 +13,8 @@ src = os.environ.get("TF_SRC", os.path.join(os.path.dirname(os.path.abspath(__fi
 corpus = ""
 for f in sorted(glob.glob(os.path.join(src, "zig/src/**/*.zig"), recursive=True)):
     corpus += f"\n// ===== {os.path.basename(f)} =====\n" + open(f).read()
+if not corpus:
+    sys.exit(f"no .zig sources under {src}/zig/src: set TF_SRC to a TensorFold checkout")
 while len(corpus) < size * 3.2:
     corpus += corpus
 questions = ["Which file defines the HTTP server's routes? One sentence.",

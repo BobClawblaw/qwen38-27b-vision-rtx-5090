@@ -1,0 +1,23 @@
+######## 1. bf16 exactness vs the 0.6.6 captures (17:11:09)
+story: prompt 29, 128 tokens sha 081098bc7b81 in 1.71s MATCH
+code: prompt 30, 128 tokens sha 605e360aac92 in 1.71s MATCH
+facts: prompt 28, 128 tokens sha 8f1bdb866bf5 in 1.71s MATCH
+long: prompt 4722, 128 tokens sha c99358b42165 in 2.93s MATCH
+54 cases, 0 rows differ
+story: 128 tokens sha 081098bc7b81, rounds 43 accepted 84, 201.3 tok/s MATCH; python rounds 42 accepted 85
+code: 128 tokens sha 605e360aac92, rounds 17 accepted 110, 507.2 tok/s MATCH; python rounds 17 accepted 110
+facts: 128 tokens sha 8f1bdb866bf5, rounds 28 accepted 99, 309.0 tok/s MATCH; python rounds 28 accepted 99
+long: 128 tokens sha c99358b42165, rounds 21 accepted 106, 388.1 tok/s MATCH; python rounds 21 accepted 106
+33 rounds (python 33), 112 windows differ from Python's, 0 replies differ; 339.6 tok/s
+
+######## 2. fp8: serial, drafted, shared (compare shas with evidence kv8-invariance.log) (17:12:11)
+story: prompt 29, 128 tokens sha 081098bc7b81 in 1.79s
+code: prompt 30, 128 tokens sha 605e360aac92 in 1.79s
+facts: prompt 28, 128 tokens sha 6f851613368e in 1.79s
+long: prompt 4722, 128 tokens sha c99358b42165 in 3.02s
+story: 128 tokens sha 081098bc7b81, rounds 43 accepted 84, 192.3 tok/s
+code: 128 tokens sha 605e360aac92, rounds 17 accepted 110, 485.0 tok/s
+facts: 128 tokens sha 6f851613368e, rounds 26 accepted 101, 317.6 tok/s
+long: 128 tokens sha c99358b42165, rounds 20 accepted 107, 391.9 tok/s
+33 rounds (python 33), 142 windows differ from Python's, 3 replies differ; 337.7 tok/s
+

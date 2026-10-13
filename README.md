@@ -28,7 +28,7 @@ Upstream TensorFold v1.0.7 serves only Nemotron on CUDA and has no image path. T
   - bf16 stays available (`KV_CACHE=bf16`) and is exact against TensorFold 0.6.6, with the prompt cache on or off.
 
 - **A prompt cache** (`families/qwen27/cuda/reuse.zig`): a chat's prompt state kept in pinned host memory, so the next turn reads only what is new. Details in [Prompt cache](#prompt-cache).
-- **Merged with upstream main** after 1.0.7 (the 1.0.8 work).
+- **Merged with upstream main** through 1.0.9.
 
 ## Against vLLM on the same card
 
@@ -175,6 +175,15 @@ fp8 costs short prompts about 5%, because the decode kernel quantizes the window
 - 54/54 verify windows identical in logit bytes.
 - Drafted replies identical, 4/4.
 - Shared rounds: no reply differs.
+
+**After merging upstream 1.0.9** (engine `e3b72103`, [`evidence/2026-10-13-merge-1.0.9/`](evidence/2026-10-13-merge-1.0.9/)):
+the same checks give the same results.
+- bf16 against 0.6.6: serial 4/4, windows 54/54, drafted 4/4, and no reply differs in shared rounds.
+- fp8: serial, drafted and shared-round replies are identical to before the merge.
+- Cache on, bf16: 20/20 equal to 0.6.6, 12 of them after a resume.
+- Images: the stress set gives the same results.
+- A 105k-token chat's next turn starts in 1.35 s.
+- Short-prompt decode: 306 / 219 / 308 / 283 tok/s.
 
 Against 0.6.6 on short prompts, native is 11-17% faster: 321 / 244 / 323 / 298 tok/s against 288 / 208 / 277 / 262.
 Image chats take 0.2-0.7 s against 0.5-1.6 s.

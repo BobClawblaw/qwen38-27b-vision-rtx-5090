@@ -1,0 +1,48 @@
+
+######## 3. server bf16 + prompt cache: exact_cache.py vs 0.6.6 (17:16:08)
+info: DFlash2 drafts every stream: /storage/tensorfold-qwen38-27b-5090/models/Qwen3.8-27B-DFlash2
+[tensorfold] CUDA sm_120 device 0 (NVIDIA GeForce RTX 5090): model 18.61 GiB and 0.72 GiB kept for the image tower's calls; 1 stream at once, 7.81 GiB each at a 122880-token window, of 9.4 GiB left after a 1.0 GiB reserve; prompts in passes of up to 4096 rows, a 8.0 GiB prompt cache in host memory; glue kernels captured at /storage/tensorfold-qwen38-27b-5090/kernels/sm120
+[tensorfold] serving qwen38-27b at http://127.0.0.1:30111/v1 (sampling: temperature 1.0, top_k 20, top_p 0.95; drafts: on; context: 122880; loaded in 10.4s)
+exact_cache exit 0
+single 6000              prompt 1497 resumed 0 EQUAL
+single 6000 (again)      prompt 1497 resumed 0 EQUAL
+single 15000             prompt 3843 resumed 0 EQUAL
+single 15000 (again)     prompt 3843 resumed 0 EQUAL
+single 28000             prompt 7192 resumed 0 EQUAL
+single 28000 (again)     prompt 7192 resumed 4096 EQUAL
+single 45000             prompt 11093 resumed 0 EQUAL
+single 45000 (again)     prompt 11093 resumed 8192 EQUAL
+single 100000            prompt 24561 resumed 0 EQUAL
+single 100000 (again)    prompt 24561 resumed 20480 EQUAL
+single 200000            prompt 50191 resumed 0 EQUAL
+single 200000 (again)    prompt 50191 resumed 49152 EQUAL
+repeat 200000            prompt 50191 resumed 49152 EQUAL
+repeat 200000 (again)    prompt 50191 resumed 49152 EQUAL
+chat turn 1              prompt 21922 resumed 0 EQUAL
+chat turn 1 (again)      prompt 21922 resumed 20480 EQUAL
+chat turn 2              prompt 22201 resumed 20480 EQUAL
+chat turn 2 (again)      prompt 22201 resumed 20480 EQUAL
+chat turn 3              prompt 22480 resumed 20480 EQUAL
+chat turn 3 (again)      prompt 22480 resumed 20480 EQUAL
+equal 20/20
+
+######## 4. server as the service runs it (fp8, 256K) (17:17:27)
+info: DFlash2 drafts every stream: /storage/tensorfold-qwen38-27b-5090/models/Qwen3.8-27B-DFlash2
+[tensorfold] CUDA sm_120 device 0 (NVIDIA GeForce RTX 5090): model 18.61 GiB and 0.72 GiB kept for the image tower's calls; 1 stream at once, 8.54 GiB each at a 262144-token window (fp8 caches), of 9.4 GiB left after a 1.0 GiB reserve; prompts in passes of up to 4096 rows, a 8.0 GiB prompt cache in host memory; glue kernels captured at /storage/tensorfold-qwen38-27b-5090/kernels/sm120
+[tensorfold] serving qwen38-27b at http://127.0.0.1:30111/v1 (sampling: temperature 1.0, top_k 20, top_p 0.95; drafts: on; context: 262144; loaded in 10.6s)
+chunk-boundary: prompt 8829 4.8s -> 'The image displays a smooth, grainy gradient that transitions from a dark, muted green in the lower-left corner to a vibrant, bright magenta in the upper-right corner.'
+max-image: prompt 4126 4.4s -> 'There are **7** colored vertical bars in the image.\n\nFrom left to right, the colors are:\n\n1. Black  \n2. Dark green (forest green)  \n3. Light green (emerald or mint green)  \n4. Purple (violet)  \n5. Lav'
+thinking-on: prompt 301 0.8s -> '7351' [reasoning 725 chars]
+four-images: prompt 1052 0.6s -> '1. Green circle.\n2. Red circle and blue square.\n3. Grayscale gradient.\n4. Red circle, blue square, and text "ORANGE 7351".'
+five-images: REFUSED/ERROR {'http': 400, 'body': '{"error": {"message": "a request may hold at most 4 images (--vision-max-images); it has 5", "type": "invalid_request_error"}}'}
+concurrent text 0: EQUALS solo
+concurrent text 1: EQUALS solo
+concurrent text 2: EQUALS solo
+concurrent image: prompt 789 0.0s -> 'This image displays a smooth, abstract gradient that transitions from a deep green in the lower left corner to a vibrant magenta in the upper right, with a soft, grainy texture overlaying the entire s'
+{"label": "merge109", "prompt": "fibonacci-raw", "temperature": 1.0, "decode_tps_median": 305.85153703548565, "decode_tps_all": [305.66, 490.26, 305.85, 281.27, 327.47], "ttft_s_median": 0.09956186698400415}
+{"label": "merge109", "prompt": "gpu-chat-no-think", "temperature": 1.0, "decode_tps_median": 219.48134231390767, "decode_tps_all": [263.33, 187.93, 187.7, 281.34, 219.48], "ttft_s_median": 0.1001407720032148}
+{"label": "merge109", "prompt": "fibonacci-raw", "temperature": 0.0, "decode_tps_median": 307.9291311302057, "decode_tps_all": [307.93, 307.52, 308.02, 308.09, 307.47], "ttft_s_median": 0.09937678798451088}
+{"label": "merge109", "prompt": "gpu-chat-no-think", "temperature": 0.0, "decode_tps_median": 283.3499532853268, "decode_tps_all": [283.9, 281.04, 282.66, 283.35, 283.61], "ttft_s_median": 0.10024959099246189}
+
+######## done (17:47:20)
+service restarted: 17:47:23
