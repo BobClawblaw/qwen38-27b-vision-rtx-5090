@@ -1,0 +1,58 @@
+
+######## 1. bf16 exactness vs the 0.6.6 captures (17:55:44)
+story: prompt 29, 128 tokens sha 081098bc7b81 in 1.71s MATCH
+code: prompt 30, 128 tokens sha 605e360aac92 in 1.71s MATCH
+facts: prompt 28, 128 tokens sha 8f1bdb866bf5 in 1.71s MATCH
+long: prompt 4722, 128 tokens sha c99358b42165 in 2.93s MATCH
+54 cases, 0 rows differ
+story: 128 tokens sha 081098bc7b81, rounds 43 accepted 84, 201.4 tok/s MATCH; python rounds 42 accepted 85
+code: 128 tokens sha 605e360aac92, rounds 17 accepted 110, 507.9 tok/s MATCH; python rounds 17 accepted 110
+facts: 128 tokens sha 8f1bdb866bf5, rounds 28 accepted 99, 309.1 tok/s MATCH; python rounds 28 accepted 99
+long: 128 tokens sha c99358b42165, rounds 21 accepted 106, 388.4 tok/s MATCH; python rounds 21 accepted 106
+33 rounds (python 33), 112 windows differ from Python's, 0 replies differ; 339.7 tok/s
+
+######## 2. fp8 serial and drafted shas (17:56:45)
+story: prompt 29, 128 tokens sha 081098bc7b81 in 1.79s
+code: prompt 30, 128 tokens sha 605e360aac92 in 1.79s
+facts: prompt 28, 128 tokens sha 6f851613368e in 1.79s
+long: prompt 4722, 128 tokens sha c99358b42165 in 3.02s
+story: 128 tokens sha 081098bc7b81, rounds 43 accepted 84, 192.2 tok/s
+code: 128 tokens sha 605e360aac92, rounds 17 accepted 110, 485.1 tok/s
+facts: 128 tokens sha 6f851613368e, rounds 26 accepted 101, 317.9 tok/s
+long: 128 tokens sha c99358b42165, rounds 20 accepted 107, 391.8 tok/s
+
+######## 3. vision tower, decode and patches vs 0.6.6 fixtures (17:57:10)
+tower loaded in 0.5s, 0.86 GiB
+shapes.png: decode 517x389, 0 of 603339 bytes differ from PIL's; patches grid 24x32, 0 of 1179648 values differ
+shapes.png: grid 24x32, 192 rows in 204.7 ms; row cosine min 0.99222 mean 0.99978; max error 22.5000; 6.9% values equal
+photo.png: decode 1024x768, 0 of 2359296 bytes differ from PIL's; patches grid 48x64, 0 of 4718592 values differ
+photo.png: grid 48x64, 768 rows in 124.5 ms; row cosine min 0.98928 mean 0.99969; max error 11.0000; 4.5% values equal
+large.png: decode 2000x1500, 0 of 9000000 bytes differ from PIL's; patches grid 94x124, 0 of 17903616 values differ
+large.png: grid 94x124, 2914 rows in 1911.9 ms; row cosine min 0.98254 mean 0.99975; max error 25.5000; 4.9% values equal
+tiny.png: decode 20x15, 0 of 900 bytes differ from PIL's; patches grid 2x4, 0 of 12288 values differ
+tiny.png: grid 2x4, 2 rows in 4.0 ms; row cosine min 0.99998 mean 0.99998; max error 0.2500; 14.9% values equal
+logo.png: decode 96x96, 0 of 27648 bytes differ from PIL's; patches grid 6x6, 0 of 55296 values differ
+logo.png: grid 6x6, 9 rows in 5.0 ms; row cosine min 0.99997 mean 0.99998; max error 0.5000; 12.8% values equal
+palette.png: decode 517x389, 0 of 603339 bytes differ from PIL's; patches grid 24x32, 0 of 1179648 values differ
+palette.png: grid 24x32, 192 rows in 14.6 ms; row cosine min 0.99369 mean 0.99979; max error 15.0000; 6.7% values equal
+gray.png: decode 1024x768, 0 of 2359296 bytes differ from PIL's; patches grid 48x64, 0 of 4718592 values differ
+gray.png: grid 48x64, 768 rows in 120.7 ms; row cosine min 0.98101 mean 0.99982; max error 8.7500; 6.1% values equal
+photo.jpg: decode 1024x768, 0 of 2359296 bytes differ from PIL's; patches grid 48x64, 0 of 4718592 values differ
+photo.jpg: grid 48x64, 768 rows in 120.7 ms; row cosine min 0.99004 mean 0.99970; max error 13.5000; 4.9% values equal
+rotated.jpg: decode 389x517, 0 of 603339 bytes differ from PIL's; patches grid 32x24, 0 of 1179648 values differ
+rotated.jpg: grid 32x24, 192 rows in 14.6 ms; row cosine min 0.99626 mean 0.99985; max error 5.8750; 6.3% values equal
+vision exit 0
+
+######## 4. server as the service runs it (fp8, 256K): images (17:57:14)
+chunk-boundary: prompt 8829 4.7s -> 'The image displays a smooth, grainy gradient that transitions from a dark, muted green in the lower-left corner to a vibrant, bright magenta in the upper-right corner.'
+max-image: prompt 4126 4.4s -> 'There are **7** colored vertical bars in the image.\n\nFrom left to right, the colors are:\n\n1. Black  \n2. Dark green (forest green)  \n3. Light green (emerald or mint green)  \n4. Purple (violet)  \n5. Lav'
+thinking-on: prompt 301 0.8s -> '7351' [reasoning 725 chars]
+four-images: prompt 1052 0.6s -> '1. Green circle.\n2. Red circle and blue square.\n3. Grayscale gradient.\n4. Red circle, blue square, and text "ORANGE 7351".'
+five-images: REFUSED/ERROR {'http': 400, 'body': '{"error": {"message": "a request may hold at most 4 images (--vision-max-images); it has 5", "type": "invalid_request_error"}}'}
+concurrent text 0: EQUALS solo
+concurrent text 1: EQUALS solo
+concurrent text 2: EQUALS solo
+concurrent image: prompt 789 0.0s -> 'This image displays a smooth, abstract gradient that transitions from a deep green in the lower left corner to a vibrant magenta in the upper right, with a soft, grainy texture overlaying the entire s'
+
+######## done (17:57:40)
+service restarted: 17:57:43

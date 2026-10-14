@@ -194,6 +194,10 @@ the same checks give the same results again.
 - A 105k-token chat's next turn starts in 1.36 s.
 - Short-prompt decode: 305 / 219 / 306 / 283 tok/s.
 
+**Engine `bcd433c0`** ([`evidence/2026-10-14-lean-comments/`](evidence/2026-10-14-lean-comments/)) changes comments only, for upstream's new comment-style check, and moves one CLI check into its own file.
+Rechecked: bf16 against 0.6.6 serial 4/4, windows 54/54, drafted 4/4, and no reply differs in shared rounds; fp8 serial and drafted replies are identical; image decode and patches equal 0.6.6 on all 9 fixtures; the image stress set answers as before.
+The prompt cache and speed were not rerun.
+
 Against 0.6.6 on short prompts, native is 11-17% faster: 321 / 244 / 323 / 298 tok/s against 288 / 208 / 277 / 262.
 Image chats take 0.2-0.7 s against 0.5-1.6 s.
 
