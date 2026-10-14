@@ -9,6 +9,6 @@ drafter_revision = "50307d4c4cde6860d4eee73e2547cd786fe8e8a4"
 [engine]
 repo = "https://github.com/BobClawblaw/TensorFold.git"
 branch = "qwen27-cuda-1.0.7"                       # upstream PR ashhart/TensorFold#726
-sha = "e3b72103a539fb77dd23739b6bfb84f93d8ddf68"   # 1.0.7 + main (1.0.9) + #608 + #598/#614 + CUDA vision + fp8 KV + prompt cache
+sha = "4e15fae59ed7e18d2c79eea8724352eee2cc5b7f"   # 1.0.7 + main (1.0.11) + #608 + #598/#614 + CUDA vision + fp8 KV + prompt cache
 zig = "0.17.0"
 sm = "120"
