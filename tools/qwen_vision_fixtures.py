@@ -60,6 +60,8 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--model", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--fp32", action="store_true",
+                    help="also write the tower's rows in fp32 (math attention): the reference tf-qwen35-cuda vision bounds both towers by")
     a = ap.parse_args()
     import torch
     from torch.nn.attention import SDPBackend, sdpa_kernel
@@ -90,9 +92,17 @@ def main() -> int:
                                  grid_thw=torch.tensor([[t, h, w]], device="cuda:0"), return_dict=True).pooler_output
         feats = feats.to(torch.bfloat16).contiguous().cpu()
         (out / f"{stem}.bf16").write_bytes(feats.view(torch.int16).numpy().tobytes())
-        entries.append({"name": name, "file": name, "rgb": f"{stem}.rgb", "size": [rgb.shape[1], rgb.shape[0]],
-                        "grid": [h, w], "pixels": f"{stem}.f32", "features": f"{stem}.bf16",
-                        "tokens": h * w // 4})
+        entry = {"name": name, "file": name, "rgb": f"{stem}.rgb", "size": [rgb.shape[1], rgb.shape[0]],
+                 "grid": [h, w], "pixels": f"{stem}.f32", "features": f"{stem}.bf16", "tokens": h * w // 4}
+        if a.fp32:
+            tower32 = vision.tower.float()
+            with torch.inference_mode(), sdpa_kernel([SDPBackend.MATH]):
+                ref = tower32(torch.tensor(pixels, dtype=torch.float32, device="cuda:0"),
+                              grid_thw=torch.tensor([[t, h, w]], device="cuda:0"), return_dict=True).pooler_output
+            (out / f"{stem}.ref32").write_bytes(ref.float().contiguous().cpu().numpy().tobytes())
+            vision.tower.to(torch.bfloat16)
+            entry["reference"] = f"{stem}.ref32"
+        entries.append(entry)
         print(f"{name}: {rgb.shape[1]}x{rgb.shape[0]} -> grid {h}x{w}, {h * w // 4} tokens", flush=True)
     (out / "manifest.json").write_text(json.dumps({"images": entries, "cap_pixels": cap, "min_pixels": floor},
                                                   indent=1) + "\n")
