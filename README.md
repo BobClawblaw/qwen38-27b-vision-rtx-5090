@@ -237,6 +237,17 @@ To run it as a service:
 - Thinking is on by default. Turn it off per request with `"chat_template_kwargs": {"enable_thinking": false}`.
 - Images go in `image_url` parts as data URLs (PNG, JPEG).
 - A request can hold up to 4 images, sharing 4,096 visual tokens. `detail: low` caps one image at 256.
+- **No structured output on this build.** The qwen27 CUDA engine has no grammar masking, so it refuses these with a 400:
+  - `response_format` (`json_object`, `json_schema`) and the `guided_*` fields: "structured output ... is not supported
+    by this engine yet";
+  - `tool_choice: "required"` or a named function: "... is not supported by this engine yet: send \"auto\"".
+
+  Tool calls with `tool_choice: "auto"` (the default) work: 59/60 in the quality table's tools row. Its json row asks
+  for JSON in the prompt, without a grammar. TensorFold's qwen3_5 CUDA engine (1.1.1 with upstream PRs
+  [#1079](https://github.com/ashhart/TensorFold/pull/1079) and [#1080](https://github.com/ashhart/TensorFold/pull/1080))
+  serves both through `lib/libtfgrammar.so`, built by `zig build grammar`. On this card it passed the
+  [recipe harness](https://github.com/BobClawblaw/recipe-harness)'s structured check 18/18 and tools check 5/5. This
+  recipe does not build that engine yet.
 
 ## Kernels
 
