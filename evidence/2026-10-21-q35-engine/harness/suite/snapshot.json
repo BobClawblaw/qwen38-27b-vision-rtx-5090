@@ -1,0 +1,11 @@
+{
+ "name": "snapshot",
+ "score": 1.0,
+ "cases": 12,
+ "passed": 12,
+ "seconds": 6.2857749462127686,
+ "notes": [
+  "replies written to <harness>/runs/qwen38-27b-5090/20261021-073551-full/suite/replies.json"
+ ],
+ "details": {}
+}

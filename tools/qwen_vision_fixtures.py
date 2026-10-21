@@ -2,8 +2,9 @@
 """Fixtures for the native Qwen vision path, from TensorFold 0.6.6's --vision frontend and tower on CUDA.
 
 For a fixed image set: each image's file, its decoded RGB (images.py), its patches and grid (QwenImageProcessor's
-processor at 0.6.6's per-image cap), and the tower's merged rows (QwenCudaVision, bf16, flash attention). The Zig
-checks compare their own decode, patches and rows against these: ``tf-qwen27-cuda vision MODEL --fixtures DIR``.
+processor at 0.6.6's per-image cap), and the tower's merged rows (QwenCudaVision, bf16, flash attention). With
+--fp32 also the tower's rows in fp32 (math attention), the reference both towers are measured against: copy
+NAME.ref32 to OUT/NAME.ref.f32 and run ``tf-qwen35-cuda MODEL vision OUT TOKENS NAME.f32@HxW...`` on the patches.
 """
 
 from __future__ import annotations

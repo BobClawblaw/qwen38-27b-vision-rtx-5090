@@ -1,0 +1,20 @@
+--- shapes-read: prompt 270 tokens, 82 out, 0.5s
+The image contains two geometric shapes and a line of text, all set against a plain white background.
+
+- On the left, there is a solid red circle.
+- To the right of the circle, there is a solid blue square.
+- Below both shapes, centered horizontally, is the text "ORANGE 7351" written in a bold, black, sans-serif font.
+
+--- photo-jpg: prompt 798 tokens, 62 out, 0.7s
+This is an abstract gradient image featuring a smooth, diagonal blend of colors. It transitions from a dark, near-black corner in the upper left through vibrant magenta and pink tones to a bright, luminous green in the lower right, creating a soft, ethereal haze with no distinct shapes or patterns.
+
+--- two-images: prompt 292 tokens, 42 out, 0.3s
+Image A shows a solid green circle.
+Image B displays a red circle positioned above a blue square, with the text "ORANGE7561" written vertically to the left of the circle.
+
+--- low-detail: prompt 253 tokens, 75 out, 0.7s
+This image is a smooth, abstract gradient background. It features a soft blend of colors transitioning from vibrant magenta/pink in the upper right to bright green in the lower left, with a muted grayish-white area in the center where the two colors meet. The transition is seamless and diffuse, creating a modern, minimalist aesthetic often used for digital backgrounds or design elements.
+
+--- followup: prompt 301 tokens, 6 out, 0.2s
+14702
+

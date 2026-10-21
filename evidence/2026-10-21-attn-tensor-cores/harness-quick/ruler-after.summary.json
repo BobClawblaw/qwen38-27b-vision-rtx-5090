@@ -1,0 +1,39 @@
+{
+ "ok": null,
+ "summary": "c=1 250.9/483.9/326.1/305.6 ttft 0.10-0.10s",
+ "metrics": {
+  "cells": [
+   {
+    "concurrency": 1,
+    "phase": "prose",
+    "per_stream": 250.94371197354255,
+    "aggregate": 250.94371197354255,
+    "ttft": 0.09987655188888311
+   },
+   {
+    "concurrency": 1,
+    "phase": "code",
+    "per_stream": 483.8942204256164,
+    "aggregate": 483.8942204256164,
+    "ttft": 0.09973407199140638
+   },
+   {
+    "concurrency": 1,
+    "phase": "structured",
+    "per_stream": 326.09392383217414,
+    "aggregate": 326.09392383217414,
+    "ttft": 0.09998781001195312
+   },
+   {
+    "concurrency": 1,
+    "phase": "list",
+    "per_stream": 305.5569739735719,
+    "aggregate": 305.5569739735719,
+    "ttft": 0.09949218295514584
+   }
+  ]
+ },
+ "name": "ruler-after",
+ "type": "ruler",
+ "seconds": 9.4
+}

@@ -1,0 +1,17 @@
+{
+ "ok": null,
+ "summary": "humaneval 151/164",
+ "metrics": {
+  "scores": {
+   "humaneval": {
+    "passed": 151,
+    "cases": 164,
+    "score": 0.9207317073170732
+   }
+  },
+  "thinking_args": "--only humaneval --sandbox-image python:3.11-slim"
+ },
+ "name": "suite-humaneval",
+ "type": "suite",
+ "seconds": 73.2
+}

@@ -5,3 +5,5 @@ captures/
 .venv/
 __pycache__/
 *.pyc
+xgrammar/
+decoders/

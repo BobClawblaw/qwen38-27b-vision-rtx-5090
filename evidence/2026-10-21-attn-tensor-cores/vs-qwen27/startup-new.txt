@@ -1,0 +1,2 @@
+[tensorfold] CUDA sm_120 device 0 (NVIDIA GeForce RTX 5090): model 17.89 GiB; 1 stream at once, 9.02 GiB each at a 262144-token window (fp8 caches), of 12.0 GiB left after a 1.0 GiB reserve; prompts in passes of up to 4096 rows, a 8.0 GiB prompt cache in host memory with 0 MiB of device staging; own glue kernels
+[tensorfold] serving qwen38-27b at http://0.0.0.0:30000/v1 (sampling: temperature 1.0, top_k 20, top_p 0.95; drafts: on; context: 262144; loaded in 9.0s)

@@ -1,0 +1,113 @@
+{
+ "ok": false,
+ "summary": "cut at max_tokens: gsm8k 10; no cases (errors) in humaneval; drafts 12/12, concurrent 12/12, streaming 4/4, multiturn 7/8, stop 3/3, thinking 10/10, copy 2/2, max-tokens 3/3, tools 59/60, json 30/30, ifeval 126/150, gsm8k 238/250, mgsm 214/240, mmlu 270/342, humaneval 0/0, repetition 8/8, long-context 55/55, vision 12/12, soak 60/60, snapshot 12/12",
+ "metrics": {
+  "scores": {
+   "drafts": {
+    "passed": 12,
+    "cases": 12,
+    "score": 1.0
+   },
+   "concurrent": {
+    "passed": 12,
+    "cases": 12,
+    "score": 1.0
+   },
+   "streaming": {
+    "passed": 4,
+    "cases": 4,
+    "score": 1.0
+   },
+   "multiturn": {
+    "passed": 7,
+    "cases": 8,
+    "score": 0.875
+   },
+   "stop": {
+    "passed": 3,
+    "cases": 3,
+    "score": 1.0
+   },
+   "thinking": {
+    "passed": 10,
+    "cases": 10,
+    "score": 1.0
+   },
+   "copy": {
+    "passed": 2,
+    "cases": 2,
+    "score": 1.0
+   },
+   "max-tokens": {
+    "passed": 3,
+    "cases": 3,
+    "score": 1.0
+   },
+   "tools": {
+    "passed": 59,
+    "cases": 60,
+    "score": 0.9833333333333333
+   },
+   "json": {
+    "passed": 30,
+    "cases": 30,
+    "score": 1.0
+   },
+   "ifeval": {
+    "passed": 126,
+    "cases": 150,
+    "score": 0.84
+   },
+   "gsm8k": {
+    "passed": 238,
+    "cases": 250,
+    "score": 0.952,
+    "truncated": 10
+   },
+   "mgsm": {
+    "passed": 214,
+    "cases": 240,
+    "score": 0.8916666666666667
+   },
+   "mmlu": {
+    "passed": 270,
+    "cases": 342,
+    "score": 0.7894736842105263
+   },
+   "humaneval": {
+    "passed": 0,
+    "cases": 0,
+    "score": 0.0
+   },
+   "repetition": {
+    "passed": 8,
+    "cases": 8,
+    "score": 1.0
+   },
+   "long-context": {
+    "passed": 55,
+    "cases": 55,
+    "score": 1.0
+   },
+   "vision": {
+    "passed": 12,
+    "cases": 12,
+    "score": 1.0
+   },
+   "soak": {
+    "passed": 60,
+    "cases": 60,
+    "score": 1.0
+   },
+   "snapshot": {
+    "passed": 12,
+    "cases": 12,
+    "score": 1.0
+   }
+  },
+  "thinking_args": ""
+ },
+ "name": "suite",
+ "type": "suite",
+ "seconds": 2319.2
+}

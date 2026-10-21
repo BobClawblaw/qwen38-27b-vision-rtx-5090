@@ -1,6 +1,6 @@
 # Copy to /etc/systemd/system/, set User, Group and the two paths to your checkout, then
 #   sudo systemctl daemon-reload && sudo systemctl enable --now tensorfold-qwen38
-# Knobs go in a drop-in (sudo systemctl edit tensorfold-qwen38), e.g. Environment=KV_CACHE=bf16 CONTEXT=122880
+# Knobs go in a drop-in (sudo systemctl edit tensorfold-qwen38), e.g. Environment=KV_CACHE=bf16 CONTEXT=131072
 [Unit]
 Description=Qwen3.8-27B + DFlash2 + vision on TensorFold native (CUDA, RTX 5090)
 After=network-online.target

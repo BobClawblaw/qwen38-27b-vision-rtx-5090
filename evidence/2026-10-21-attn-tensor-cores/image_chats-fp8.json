@@ -1,0 +1,32 @@
+{
+ "shapes-read": {
+  "text": "The image contains two geometric shapes and a line of text, all set against a plain white background.\n\n- On the left, there is a solid red circle.\n- To the right of the circle, there is a solid blue square.\n- Below both shapes, centered horizontally, is the text \"ORANGE 7351\" written in a bold, black, sans-serif font.",
+  "prompt_tokens": 270,
+  "completion_tokens": 82,
+  "seconds": 0.47
+ },
+ "photo-jpg": {
+  "text": "This is an abstract gradient image featuring a smooth, diagonal blend of colors. It transitions from deep magenta and purple in the upper right to vibrant green and white in the lower left, with a soft, grainy texture overlaying the entire surface.",
+  "prompt_tokens": 798,
+  "completion_tokens": 51,
+  "seconds": 0.62
+ },
+ "two-images": {
+  "text": "Image A shows a solid green circle.\nImage B displays a red circle positioned above a blue square, with the text \"ORANGE7561\" written vertically to the left of the circle.",
+  "prompt_tokens": 292,
+  "completion_tokens": 42,
+  "seconds": 0.33
+ },
+ "low-detail": {
+  "text": "This image is a smooth, abstract gradient background. It features a soft blend of colors transitioning from vibrant magenta/pink in the upper right to bright green in the lower left, with a muted grayish-white area in the center where the two colors meet. The transition is seamless and diffuse, creating a modern, minimalist aesthetic often used for digital backgrounds or design elements.",
+  "prompt_tokens": 253,
+  "completion_tokens": 75,
+  "seconds": 0.81
+ },
+ "followup": {
+  "text": "14702",
+  "prompt_tokens": 301,
+  "completion_tokens": 6,
+  "seconds": 0.2
+ }
+}

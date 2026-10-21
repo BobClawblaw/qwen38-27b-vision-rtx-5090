@@ -1,0 +1,10 @@
+{
+ "ok": null,
+ "summary": "gpu: 28054 MiB, 32607 MiB",
+ "metrics": {
+  "gpu": null
+ },
+ "name": "memory-idle",
+ "type": "memory",
+ "seconds": 0.0
+}

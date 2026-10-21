@@ -1,0 +1,24 @@
+[
+ {
+  "label": "new",
+  "target": 32000,
+  "prompt_tokens": 33758,
+  "completion_tokens": 512,
+  "prefill_s": 10.21,
+  "prefill_tps": 3307.4,
+  "decode_tps": 135.0,
+  "needle_found": true,
+  "reply_head": "f3e6365c34\n\nThe code is a Zig implementation of a CLI tool named `tensorfold` for managing and running AI models (specif"
+ },
+ {
+  "label": "new",
+  "target": 100000,
+  "prompt_tokens": 104610,
+  "completion_tokens": 512,
+  "prefill_s": 41.1,
+  "prefill_tps": 2545.4,
+  "decode_tps": 78.7,
+  "needle_found": true,
+  "reply_head": "f2b044650d\n\nThe code is a large-scale implementation of **TensorFold**, a high-performance inference and serving framewo"
+ }
+]

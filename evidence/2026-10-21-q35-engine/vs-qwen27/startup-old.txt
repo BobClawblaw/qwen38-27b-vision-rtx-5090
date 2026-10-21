@@ -1,0 +1,4 @@
+info: DFlash2 drafts every stream: <previous-recipe>/models/Qwen3.8-27B-DFlash2
+info: image tower loaded: 0.86 GiB, 0.72 GiB kept for one image call
+[tensorfold] CUDA sm_120 device 0 (NVIDIA GeForce RTX 5090): model 18.61 GiB and 0.72 GiB kept for the image tower's calls; 1 stream at once, 8.54 GiB each at a 262144-token window (fp8 caches), of 9.4 GiB left after a 1.0 GiB reserve; prompts in passes of up to 4096 rows, a 8.0 GiB prompt cache in host memory; glue kernels captured at <previous-recipe>/kernels/sm120
+[tensorfold] serving qwen38-27b at http://0.0.0.0:30000/v1 (sampling: temperature 1.0, top_k 20, top_p 0.95; drafts: on; context: 262144; loaded in 21.4s)

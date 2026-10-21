@@ -8,7 +8,21 @@ drafter_revision = "50307d4c4cde6860d4eee73e2547cd786fe8e8a4"
 
 [engine]
 repo = "https://github.com/BobClawblaw/TensorFold.git"
-branch = "qwen27-cuda-1.0.7"                       # upstream PR ashhart/TensorFold#726
-sha = "bcd433c03fe2ab5edc5dc35249773ca8f1196d90"   # 1.0.7 + main (1.0.11) + #608 + #598/#614 + CUDA vision + fp8 KV + prompt cache
+branch = "q35-decode-attn-tc"                      # upstream PR ashhart/TensorFold#1168 (on #1080, on #1079)
+sha = "50c056581395b7dfdd9a5c2bd52c91f72df6be4f"   # 1.1.1 + the qwen3_5 CUDA engine: decode (#1079), prefill (#1080), fp8 decode attention (#1168)
+version = "1.1.1"
 zig = "0.17.0"
 sm = "120"
+
+[grammar]
+# structured output and forced tool calls: libtfgrammar, built by `zig build grammar` from this xgrammar release
+repo = "https://github.com/mlc-ai/xgrammar"
+tag = "v0.2.8"
+
+[decoders]
+# JPEG and WebP images: the engine checks for these releases, the ones its decoded pixels are pinned to, and
+# refuses either format with another; setup.sh builds both into the engine's lib folder
+jpeg_repo = "https://github.com/libjpeg-turbo/libjpeg-turbo.git"
+jpeg_tag = "3.1.4.1"
+webp_repo = "https://chromium.googlesource.com/webm/libwebp"
+webp_tag = "v1.6.0"

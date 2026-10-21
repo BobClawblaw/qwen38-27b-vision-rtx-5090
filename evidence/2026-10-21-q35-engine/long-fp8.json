@@ -1,0 +1,35 @@
+[
+ {
+  "label": "fp8",
+  "target": 32000,
+  "prompt_tokens": 33758,
+  "completion_tokens": 512,
+  "prefill_s": 10.29,
+  "prefill_tps": 3280.9,
+  "decode_tps": 134.9,
+  "needle_found": true,
+  "reply_head": "93b3245116\n\nThe code is a Zig implementation of a CLI tool named `tensorfold` for managing and running AI models (specif"
+ },
+ {
+  "label": "fp8",
+  "target": 100000,
+  "prompt_tokens": 104609,
+  "completion_tokens": 512,
+  "prefill_s": 41.65,
+  "prefill_tps": 2511.7,
+  "decode_tps": 70.6,
+  "needle_found": true,
+  "reply_head": "c8a6d478aa\n\nThe code is a large-scale implementation of **TensorFold**, a high-performance inference engine written in Z"
+ },
+ {
+  "label": "fp8",
+  "target": 200000,
+  "prompt_tokens": 214898,
+  "completion_tokens": 512,
+  "prefill_s": 117.66,
+  "prefill_tps": 1826.4,
+  "decode_tps": 49.3,
+  "needle_found": true,
+  "reply_head": "c14d25a1d7\n\nThe code is a large-scale implementation of **TensorFold**, a high-performance inference and cluster managem"
+ }
+]
