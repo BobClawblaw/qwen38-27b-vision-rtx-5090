@@ -1,0 +1,15 @@
+{
+ "name": "ifeval",
+ "score": 0.8666666666666667,
+ "cases": 150,
+ "passed": 130,
+ "seconds": 252.94004106521606,
+ "notes": [
+  "loose 130/150, strict 122/150, 150 covered prompts"
+ ],
+ "details": {
+  "strict": 122,
+  "loose": 130,
+  "n": 150
+ }
+}

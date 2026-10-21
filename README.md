@@ -99,32 +99,33 @@ SGLang, llama.cpp, ExLlamaV3 or SparkInfer.
 against 0.76-0.95 s on vLLM. Both read the image's text correctly.
 
 **Quality** (the [qwen quality suite](https://github.com/BobClawblaw/qwen38-flashnext-int4mixed-2x-dgx-sparks/tree/main/quality),
-through the [recipe harness](https://github.com/BobClawblaw/recipe-harness), thinking off). This table was measured on
-engine `2bd805a4`, before #1168, whose attention rounds its weights to bf16 and so changes replies slightly; the
-quality suite has not been rerun on `50c05658` ([`evidence/2026-10-21-q35-engine/harness/`](evidence/2026-10-21-q35-engine/harness/)).
-The exactness rows (drafts, concurrent, soak) were rerun on `50c05658` and are the same (below).
+through the [recipe harness](https://github.com/BobClawblaw/recipe-harness), thinking off, on engine `50c05658`:
+[`evidence/2026-10-21-attn-tensor-cores/harness/`](evidence/2026-10-21-attn-tensor-cores/harness/)). The suite took
+38 minutes. The last column is the same suite on engine `2bd805a4`, before #1168
+([`evidence/2026-10-21-q35-engine/harness/`](evidence/2026-10-21-q35-engine/harness/)); #1168's attention rounds its
+weights to bf16, which changes replies slightly.
 
-| Check | this recipe | vLLM NVFP4 |
-|---|---:|---:|
-| drafts (drafted equals undrafted) | 12/12 | 12/12 |
-| concurrent (4 together equal alone) | 12/12 | 12/12 |
-| behaviour: streaming, stop, copy, max-tokens | 12/12 | 12/12 |
-| behaviour: multiturn recall | 7/8 | **8/8** |
-| behaviour: thinking (`reasoning_content`, no tag leaks) | **10/10** | 0/10 |
-| tools | **59/60** | 58/60 |
-| json | 30/30 | 30/30 |
-| IFEval (loose / strict) | 126 / 119 of 150 | **129 / 122** of 150 |
-| GSM8K | 238/250 | **240/250** |
-| MGSM (8 languages) | 214/240 | **217/240** |
-| MMLU (57 subjects x 6) | **270/342** | 263/342 |
-| HumanEval pass@1 | 151/164 | **153/164** |
-| repetition | 8/8 | 8/8 |
-| long context (needles to 224k, facts to 225k) | 55/55 | 55/55 |
-| vision probes | 12/12 | 12/12 |
-| soak: replies equal | 60/60 | 60/60 |
-| soak: turns resuming a kept state | **60/60** | not reported |
+| Check | this recipe | vLLM NVFP4 | engine `2bd805a4` |
+|---|---:|---:|---:|
+| drafts (drafted equals undrafted) | 12/12 | 12/12 | 12/12 |
+| concurrent (4 together equal alone) | 12/12 | 12/12 | 12/12 |
+| behaviour: streaming, stop, copy, max-tokens | 12/12 | 12/12 | 12/12 |
+| behaviour: multiturn recall | 7/8 | **8/8** | 7/8 |
+| behaviour: thinking (`reasoning_content`, no tag leaks) | **10/10** | 0/10 | 10/10 |
+| tools | **59/60** | 58/60 | 59/60 |
+| json | 30/30 | 30/30 | 30/30 |
+| IFEval (loose / strict) | **130** / 122 of 150 | 129 / 122 of 150 | 126 / 119 of 150 |
+| GSM8K | 240/250 | 240/250 | 238/250 |
+| MGSM (8 languages) | 213/240 | **217/240** | 214/240 |
+| MMLU (57 subjects x 6) | **271/342** | 263/342 | 270/342 |
+| HumanEval pass@1 | 151/164 | **153/164** | 151/164 |
+| repetition | 8/8 | 8/8 | 8/8 |
+| long context (needles to 224k, facts to 225k) | 55/55 | 55/55 | 55/55 |
+| vision probes | 12/12 | 12/12 | 12/12 |
+| soak: replies equal | 60/60 | 60/60 | 60/60 |
+| soak: turns resuming a kept state | **60/60** | not reported | 60/60 |
 
-GSM8K's 12 misses include 10 replies cut at the suite's 1,024-token cap. Thinking-on quality (`--plan thinking`) was
+GSM8K's 10 misses include 9 replies cut at the suite's 1,024-token cap. Thinking-on quality (`--plan thinking`) was
 not run on this engine.
 
 The harness's `quick` plan on `50c05658` ([`harness-quick/`](evidence/2026-10-21-attn-tensor-cores/harness-quick/)):
@@ -133,7 +134,8 @@ The harness's `quick` plan on `50c05658` ([`harness-quick/`](evidence/2026-10-21
 - **tools:** 5/5 tool calls right: `auto`, `required`, and a named function plain, with thinking on and streamed;
 - **sampling:** 9/9 seeded replies equal on repeat and undrafted;
 - **decode ruler** (prose / code / structured / list): 254.5 / 486.0 / 327.4 / 306.6 tok/s fresh, 250.9 / 483.9 /
-  326.1 / 305.6 after the checks.
+  326.1 / 305.6 after the checks. Around the quality suite: 254.6 / 485.5 / 327.4 / 306.7 before it, 257.1 / 482.4 /
+  325.1 / 304.7 after its 38 minutes.
 
 The two engines score within a few answers of each other: different 4-bit quantizations of the same model.
 
@@ -195,14 +197,14 @@ shows 28,054 MiB in use when idle.
 The fp8 cache's decode attention runs on tensor cores (#1168); the bf16 cache's still takes one key at a time, so
 bf16 decodes much slower after a long prompt.
 
-Not rerun on this engine: the quality suite (above), fp8 against bf16 teacher-forced KL, the vision tower against fp32
+Not rerun on this engine: fp8 against bf16 teacher-forced KL, the vision tower against fp32
 references, and token exactness against TensorFold 0.6.6. The previous engine's results are in the evidence folders at
 [`f9caf52`](https://github.com/BobClawblaw/qwen38-27b-vision-rtx-5090/tree/f9caf52).
 
 **Decode on a long-running server.** On engine `2bd805a4`, after the full quality suite (about 40 minutes of mixed
 load), the harness's decode ruler read 234 / 372 / 288 / 292 tok/s against 251 / 478 / 322 / 308 on a fresh server,
-and restarting the server restored it. On `50c05658` the `quick` plan's ruler after about four minutes of checks is
-within 1.4% of fresh (above); the longer run has not been repeated.
+and restarting the server restored it. On `50c05658` the ruler after the 38-minute suite is within 1% of fresh
+(above). The earlier slowdown's cause was not found, so it is not known whether #1168 removed it or the run missed it.
 
 ## Setup
 

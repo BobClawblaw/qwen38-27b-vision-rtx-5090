@@ -1,0 +1,113 @@
+{
+ "ok": false,
+ "summary": "cut at max_tokens: gsm8k 9; drafts 12/12, concurrent 12/12, streaming 4/4, multiturn 7/8, stop 3/3, thinking 10/10, copy 2/2, max-tokens 3/3, tools 59/60, json 30/30, ifeval 130/150, gsm8k 240/250, mgsm 213/240, mmlu 271/342, humaneval 151/164, repetition 8/8, long-context 55/55, vision 12/12, soak 60/60, snapshot 12/12",
+ "metrics": {
+  "scores": {
+   "drafts": {
+    "passed": 12,
+    "cases": 12,
+    "score": 1.0
+   },
+   "concurrent": {
+    "passed": 12,
+    "cases": 12,
+    "score": 1.0
+   },
+   "streaming": {
+    "passed": 4,
+    "cases": 4,
+    "score": 1.0
+   },
+   "multiturn": {
+    "passed": 7,
+    "cases": 8,
+    "score": 0.875
+   },
+   "stop": {
+    "passed": 3,
+    "cases": 3,
+    "score": 1.0
+   },
+   "thinking": {
+    "passed": 10,
+    "cases": 10,
+    "score": 1.0
+   },
+   "copy": {
+    "passed": 2,
+    "cases": 2,
+    "score": 1.0
+   },
+   "max-tokens": {
+    "passed": 3,
+    "cases": 3,
+    "score": 1.0
+   },
+   "tools": {
+    "passed": 59,
+    "cases": 60,
+    "score": 0.9833333333333333
+   },
+   "json": {
+    "passed": 30,
+    "cases": 30,
+    "score": 1.0
+   },
+   "ifeval": {
+    "passed": 130,
+    "cases": 150,
+    "score": 0.8666666666666667
+   },
+   "gsm8k": {
+    "passed": 240,
+    "cases": 250,
+    "score": 0.96,
+    "truncated": 9
+   },
+   "mgsm": {
+    "passed": 213,
+    "cases": 240,
+    "score": 0.8875
+   },
+   "mmlu": {
+    "passed": 271,
+    "cases": 342,
+    "score": 0.7923976608187134
+   },
+   "humaneval": {
+    "passed": 151,
+    "cases": 164,
+    "score": 0.9207317073170732
+   },
+   "repetition": {
+    "passed": 8,
+    "cases": 8,
+    "score": 1.0
+   },
+   "long-context": {
+    "passed": 55,
+    "cases": 55,
+    "score": 1.0
+   },
+   "vision": {
+    "passed": 12,
+    "cases": 12,
+    "score": 1.0
+   },
+   "soak": {
+    "passed": 60,
+    "cases": 60,
+    "score": 1.0
+   },
+   "snapshot": {
+    "passed": 12,
+    "cases": 12,
+    "score": 1.0
+   }
+  },
+  "thinking_args": "--sandbox-image python:3.11-slim"
+ },
+ "name": "suite",
+ "type": "suite",
+ "seconds": 2276.5
+}
