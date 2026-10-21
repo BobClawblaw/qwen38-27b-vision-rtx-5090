@@ -1,0 +1,24 @@
+[
+ {
+  "label": "bf16-old",
+  "target": 32000,
+  "prompt_tokens": 34094,
+  "completion_tokens": 512,
+  "prefill_s": 10.27,
+  "prefill_tps": 3319.6,
+  "decode_tps": 112.5,
+  "needle_found": true,
+  "reply_head": "40c7ba2153\n\nThe code is a Zig implementation of a CLI tool named `tensorfold` for managing and running large language mo"
+ },
+ {
+  "label": "bf16-old",
+  "target": 100000,
+  "prompt_tokens": 104864,
+  "completion_tokens": 512,
+  "prefill_s": 39.57,
+  "prefill_tps": 2649.9,
+  "decode_tps": 73.4,
+  "needle_found": true,
+  "reply_head": "The secret passphrase is 6e9bd11eeb.\n\nThe code provided is a large collection of Zig source files for a project called *"
+ }
+]

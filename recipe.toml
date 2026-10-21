@@ -9,7 +9,7 @@ drafter_revision = "50307d4c4cde6860d4eee73e2547cd786fe8e8a4"
 [engine]
 repo = "https://github.com/BobClawblaw/TensorFold.git"
 branch = "q35-decode-attn-tc"                      # upstream PR ashhart/TensorFold#1168 (on #1080, on #1079)
-sha = "50c056581395b7dfdd9a5c2bd52c91f72df6be4f"   # 1.1.1 + the qwen3_5 CUDA engine: decode (#1079), prefill (#1080), fp8 decode attention (#1168)
+sha = "d6260feb8d311e3e71292505b0feaf8ea41b7c69"   # 1.1.1 + the qwen3_5 CUDA engine: decode (#1079), prefill (#1080), decode attention (#1168)
 version = "1.1.1"
 zig = "0.17.0"
 sm = "120"

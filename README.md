@@ -14,8 +14,12 @@ Serve [TensorFold/Qwen3.8-27B-MLX-4bit](https://huggingface.co/TensorFold/Qwen3.
 
 The recipe builds TensorFold 1.1.1 with three upstream PRs: [#1079](https://github.com/ashhart/TensorFold/pull/1079)
 (the qwen3_5 CUDA engine's decode), [#1080](https://github.com/ashhart/TensorFold/pull/1080) (its prefill) and
-[#1168](https://github.com/ashhart/TensorFold/pull/1168) (its fp8 decode attention on tensor cores). That is the
-[`q35-decode-attn-tc`](https://github.com/BobClawblaw/TensorFold/tree/q35-decode-attn-tc) branch at `50c05658`.
+[#1168](https://github.com/ashhart/TensorFold/pull/1168) (its decode attention on tensor cores, for fp8 and bf16 caches).
+That is the [`q35-decode-attn-tc`](https://github.com/BobClawblaw/TensorFold/tree/q35-decode-attn-tc) branch at
+`d6260feb`. #1168's first commit, `50c05658`, moved the fp8 cache to tensor cores and the second, `d6260feb`, the bf16
+cache. The second leaves the fp8 path bit-identical: on a fresh build of `d6260feb` the fp8 cache's greedy reply to a
+64,811-token prompt equals `50c05658`'s byte for byte ([`evidence/2026-10-21-bf16-attn/`](evidence/2026-10-21-bf16-attn/)).
+The fp8 measurements below were taken on `50c05658`.
 - Every kernel is built from the engine's own CUDA sources (`TENSORFOLD_CUDA_KERNELS=native`), with no captured Triton kernels.
 - `setup.sh` also builds three libraries the server loads from `zig-out/native/lib`:
   - `libtfgrammar.so` (`zig build grammar` on [xgrammar](https://github.com/mlc-ai/xgrammar) v0.2.8), for structured output and forced tool calls;
@@ -191,11 +195,11 @@ shows 28,054 MiB in use when idle.
 | | fp8 (default) | bf16 |
 |---|---:|---:|
 | Window with vision, one stream | 262,144 (9.02 GiB) | 131,072 measured (8.90 GiB) |
-| 100k-token prompt (`longspeed.py`): prefill / decode | 39.2 s / 216.6 tok/s | 37.5 s / 82.1 tok/s |
-| Short prompts (code sampled / chat sampled / code greedy / chat greedy) | 327 / 235 / 345 / 301 | 340 / 245 / 341 / 298 |
+| 100k-token prompt (`longspeed.py`): prefill / decode | 39.2 s / 216.6 tok/s | 37.3 s / 267.6 tok/s |
+| Short prompts (code sampled / chat sampled / code greedy / chat greedy) | 327 / 235 / 345 / 301 | 326 / 246 / 352 / 300 |
 
-The fp8 cache's decode attention runs on tensor cores (#1168); the bf16 cache's still takes one key at a time, so
-bf16 decodes much slower after a long prompt.
+The bf16 column is engine `d6260feb` (#1168's second commit), on a fresh build: both caches' decode attention runs on
+tensor cores. Before it, bf16 decoded 82.1 tok/s after the same 100k-token prompt.
 
 Not rerun on this engine: fp8 against bf16 teacher-forced KL, the vision tower against fp32
 references, and token exactness against TensorFold 0.6.6. The previous engine's results are in the evidence folders at
