@@ -3,29 +3,29 @@
  "plan": "after-long",
  "url": "http://127.0.0.1:30000",
  "model": "qwen38-27b",
- "started": "20261022-103029",
+ "started": "20261022-110702",
  "status": "done",
  "checks": [
   {
    "name": "ruler-fresh",
    "type": "ruler",
    "ok": null,
-   "summary": "c=1 256.9/497.6/326.5/313.2 ttft 0.06-1.67s",
-   "seconds": 30.4
+   "summary": "c=1 257.5/496.1/326.2/312.4 ttft 0.05-0.05s",
+   "seconds": 8.8
   },
   {
    "name": "prefill-245k",
    "type": "prefill",
    "ok": null,
-   "summary": "245409 tokens 1980.8 tok/s (123.896 s)",
-   "seconds": 128.5
+   "summary": "245333 tokens 2007.9 tok/s (122.185 s)",
+   "seconds": 127.0
   },
   {
    "name": "ruler-after-long",
    "type": "ruler",
    "ok": null,
-   "summary": "c=1 257.7/497.5/326.4/312.7 ttft 0.05-4.34s",
-   "seconds": 39.2
+   "summary": "c=1 257.7/498.2/326.0/312.2 ttft 0.05-0.05s",
+   "seconds": 28.1
   }
  ],
  "identity": {
@@ -38,7 +38,7 @@
    "exit": 0
   },
   "served_model": {
-   "value": "{\"object\": \"list\", \"data\": [{\"id\": \"qwen38-27b\", \"object\": \"model\", \"created\": 1792665039, \"owned_by\": \"tensorfold\", \"context_length\": 262144, \"max_model_len\": 262144, \"reasoning\": {\"default_enabled\": true, \"supported_efforts\": [\"xhigh\", \"medium\", \"low\", \"none\"]}}, {\"id\": \"qwen38-nvfp4\", \"object\": \"model\", \"created\": 1792665039, \"owned_by\": \"tensorfold\", \"context_length\": 262144, \"max_model_len\": 262144, \"reasoning\": {\"default_enabled\": true, \"supported_efforts\": [\"xhigh\", \"medium\", \"low\", \"none\"]}}]}",
+   "value": "{\"object\": \"list\", \"data\": [{\"id\": \"qwen38-27b\", \"object\": \"model\", \"created\": 1792667234, \"owned_by\": \"tensorfold\", \"context_length\": 262144, \"max_model_len\": 262144, \"reasoning\": {\"default_enabled\": true, \"supported_efforts\": [\"xhigh\", \"medium\", \"low\", \"none\"]}}, {\"id\": \"qwen38-nvfp4\", \"object\": \"model\", \"created\": 1792667234, \"owned_by\": \"tensorfold\", \"context_length\": 262144, \"max_model_len\": 262144, \"reasoning\": {\"default_enabled\": true, \"supported_efforts\": [\"xhigh\", \"medium\", \"low\", \"none\"]}}]}",
    "exit": 0
   },
   "suite_commit": {
@@ -46,5 +46,5 @@
    "exit": 0
   }
  },
- "finished": "20261022-103357"
+ "finished": "20261022-110958"
 }

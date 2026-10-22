@@ -1,0 +1,36 @@
+{
+ "target": "qwen38-27b-5090",
+ "plan": "humaneval-fresh",
+ "url": "http://127.0.0.1:30000",
+ "model": "qwen38-27b",
+ "started": "20261022-115029",
+ "status": "done",
+ "checks": [
+  {
+   "name": "suite-humaneval",
+   "type": "suite",
+   "ok": null,
+   "summary": "humaneval 152/164",
+   "seconds": 56.0
+  }
+ ],
+ "identity": {
+  "recipe_commit": {
+   "value": "0356cea",
+   "exit": 0
+  },
+  "engine_commit": {
+   "value": "18d93451",
+   "exit": 0
+  },
+  "served_model": {
+   "value": "{\"object\": \"list\", \"data\": [{\"id\": \"qwen38-27b\", \"object\": \"model\", \"created\": 1792669840, \"owned_by\": \"tensorfold\", \"context_length\": 262144, \"max_model_len\": 262144, \"reasoning\": {\"default_enabled\": true, \"supported_efforts\": [\"xhigh\", \"medium\", \"low\", \"none\"]}}, {\"id\": \"qwen38-nvfp4\", \"object\": \"model\", \"created\": 1792669840, \"owned_by\": \"tensorfold\", \"context_length\": 262144, \"max_model_len\": 262144, \"reasoning\": {\"default_enabled\": true, \"supported_efforts\": [\"xhigh\", \"medium\", \"low\", \"none\"]}}]}",
+   "exit": 0
+  },
+  "suite_commit": {
+   "value": "291734b3cf5a",
+   "exit": 0
+  }
+ },
+ "finished": "20261022-115136"
+}

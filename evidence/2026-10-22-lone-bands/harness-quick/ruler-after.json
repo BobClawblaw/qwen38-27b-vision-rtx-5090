@@ -6,36 +6,36 @@
   {
    "concurrency": 1,
    "phase": "prose",
-   "per_stream": 257.47363600671804,
-   "aggregate": 257.47363600671804,
-   "ttft": 0.052411232027225196,
+   "per_stream": 253.32390591686965,
+   "aggregate": 253.32390591686965,
+   "ttft": 0.052635686937719584,
    "tokens_mean": 256.0,
    "runs": 3
   },
   {
    "concurrency": 1,
    "phase": "code",
-   "per_stream": 497.6692684306176,
-   "aggregate": 497.6692684306176,
-   "ttft": 0.052866878104396164,
+   "per_stream": 496.41862086936663,
+   "aggregate": 496.41862086936663,
+   "ttft": 0.05303269799333066,
    "tokens_mean": 256.0,
    "runs": 3
   },
   {
    "concurrency": 1,
    "phase": "structured",
-   "per_stream": 326.1208188248858,
-   "aggregate": 326.1208188248858,
-   "ttft": 0.05301442707423121,
+   "per_stream": 325.5388231158797,
+   "aggregate": 325.5388231158797,
+   "ttft": 0.05323208589106798,
    "tokens_mean": 153.0,
    "runs": 3
   },
   {
    "concurrency": 1,
    "phase": "list",
-   "per_stream": 312.3118922305437,
-   "aggregate": 312.3118922305437,
-   "ttft": 0.05208370590116829,
+   "per_stream": 312.2945608475053,
+   "aggregate": 312.2945608475053,
+   "ttft": 0.05234624003060162,
    "tokens_mean": 225.0,
    "runs": 3
   }

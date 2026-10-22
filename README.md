@@ -21,7 +21,7 @@ below was measured on a fresh `setup.sh` build of it ([`evidence/2026-10-22-lone
 unless it says otherwise.
 - Prompts run with int8 activations by default (`PROMPT_PRECISION=int8`, `--prompt-precision int8`): each 4-bit
   projection's inputs are rounded to int8 with one scale a 64-input group, and the matmul runs on the int8 tensor
-  cores. Prefill takes 20-27% less time than with bf16 activations. Replies differ slightly from bf16 prompts' (the
+  cores. Prefill takes 20-26% less time than with bf16 activations. Replies differ slightly from bf16 prompts' (the
   measured divergence is in [#1176](https://github.com/ashhart/TensorFold/pull/1176)); drafted replies still equal
   undrafted ones. `PROMPT_PRECISION=bf16` keeps the exact bf16 path.
 - A long prompt no longer slows the short replies after it (#1079's top commit, `f15dad20`; see
@@ -50,22 +50,24 @@ on the same day as the first:
 
 | | this version (`18d93451`) | this build, bf16 prompts | `0d3322a1` | `d6260feb` |
 |---|---:|---:|---:|---:|
-| Fixed 35,554-token prompt, 512 greedy tokens, whole request ([`tools/fixedlen.py`](tools/fixedlen.py), prompt cache off, two runs) | **10.01-10.02 s** | 12.93-13.07 s | 10.0-10.2 s | 12.8-13.1 s |
-| Its first token | **7.90-7.94 s** | 10.66-10.79 s | 7.90-7.96 s | |
-| Fixed 109,537-token prompt, the same | **37.85-37.87 s** | 46.55-46.71 s | 37.8-37.9 s | 46.1-46.4 s |
-| Its first token | **34.9-35.0 s** | 43.5-43.7 s | 34.9-35.1 s | |
-| 100,024-token prompt ([`tools/longspeed.py`](tools/longspeed.py)): prefill / decode | **31.3 s** / 213.7 tok/s | | 31.1 s / 216.0 tok/s | 39.2 s / 216.6 tok/s |
-| 250,024-token prompt: prefill / decode | **98.4 s** / 146.2 tok/s | | 98.2 s / 139.5 tok/s | 110.7 s / 151.1 tok/s |
-| Harness decode ruler, fresh server (prose / code / structured / list) | 257.3 / 496.8 / 325.5 / 312.0 | | 257.1 / 497.2 / 325.7 / 312.3 | 254.5 / 486.0 / 327.4 / 306.6 |
-| The ruler right after a 512-token prose reply to a cold 245k-token prompt (harness `after-long` plan) | **257.7 / 497.5** / 326.4 / 312.7 | | 238.6 / 415.6 / 326.2 / 312.0 | |
+| Fixed 35,554-token prompt, 512 greedy tokens, whole request ([`tools/fixedlen.py`](tools/fixedlen.py), prompt cache off, two runs) | **9.94-9.95 s** | 12.90-12.92 s | 10.0-10.2 s | 12.8-13.1 s |
+| Its first token | **7.85-7.87 s** | 10.63-10.65 s | 7.90-7.96 s | |
+| Fixed 109,537-token prompt, the same | **37.47-37.59 s** | 46.19-46.22 s | 37.8-37.9 s | 46.1-46.4 s |
+| Its first token | **34.63-34.65 s** | 43.16-43.20 s | 34.9-35.1 s | |
+| 100,024-token prompt ([`tools/longspeed.py`](tools/longspeed.py)): prefill / decode | **30.9 s** / 215.5 tok/s | | 31.1 s / 216.0 tok/s | 39.2 s / 216.6 tok/s |
+| 250,024-token prompt: prefill / decode | **97.5 s** / 145.0 tok/s | | 98.2 s / 139.5 tok/s | 110.7 s / 151.1 tok/s |
+| Harness decode ruler, fresh server (prose / code / structured / list) | 257.7 / 497.7 / 326.3 / 312.5 | | 257.1 / 497.2 / 325.7 / 312.3 | 254.5 / 486.0 / 327.4 / 306.6 |
+| The ruler right after a 512-token prose reply to a cold 245k-token prompt (harness `after-long` plan) | **257.7 / 498.2** / 326.0 / 312.2 | | 233.1 / 371.0 / 326.1 / 312.3 | |
+| The ruler after the 37-minute quality suite | **257.2 / 497.7** / 326.2 / 312.5 | | 239.1 / 378.3 / 292.8 / 297.2 (the earlier int8 engine) | |
 
-- **Prefill:** int8 activations take 20-27% off the time to first token at 35k and 110k tokens; on the same build the
+- **Prefill:** int8 activations take 20-26% off the time to first token at 35k and 110k tokens; on the same build the
   int8 and bf16 columns differ only in the prompt's arithmetic.
-- **Decode:** the ruler is level on a fresh server. On the fixed prompts decode ran 243-247 tok/s at 35k and 173-179
-  at 110k with int8 prompts, against 225-226 and 169 with bf16. A long reply's speed depends on how many drafts it
-  accepts, which moves with the reply's text (at 250k: 146.2, 139.5 and 151.1).
-- **After a long prompt:** on `0d3322a1` the short replies right after one long reply ran 7% slower on prose and 17%
-  on code; this version keeps them at fresh speed. The replies to the fixed prompts are byte-identical to `0d3322a1`'s.
+- **Decode:** the ruler is level on a fresh server. On the fixed prompts decode ran 246-247 tok/s at 35k and 174-180
+  at 110k with int8 prompts, against 226-227 and 169 with bf16. A long reply's speed depends on how many drafts it
+  accepts, which moves with the reply's text (at 250k: 145.0, 139.5 and 151.1).
+- **After a long prompt:** on `0d3322a1` the short replies right after one long reply ran 9% slower on prose and 25%
+  on code; this version keeps them at fresh speed, and after the whole quality suite too. The replies to the fixed
+  prompts are byte-identical to `0d3322a1`'s.
 
 Until 2026-10-21 the recipe built the qwen27 CUDA engine on TensorFold 1.0.11 (fork branch `qwen27-cuda-1.0.7`,
 upstream PR [#726](https://github.com/ashhart/TensorFold/pull/726)). That version is at
@@ -95,10 +97,10 @@ SGLang, llama.cpp, ExLlamaV3 or SparkInfer.
 
 | Cell | this recipe | vLLM NVFP4 |
 |---|---:|---:|
-| Code, sampled (T=1) | **318.6** | 113.2 |
-| Chat, sampled (T=1) | **246.4** | 110.2 |
-| Code, greedy | **319.7** | 119.2 |
-| Chat, greedy | **300.0** | 114.1 |
+| Code, sampled (T=1) | **319.3** | 113.2 |
+| Chat, sampled (T=1) | **247.1** | 110.2 |
+| Code, greedy | **320.0** | 119.2 |
+| Chat, greedy | **299.1** | 114.1 |
 | First token (chat) | **0.05 s** | 0.06 s |
 
 **Long prompts** ([`tools/longbench.py`](tools/longbench.py)):
@@ -108,20 +110,21 @@ SGLang, llama.cpp, ExLlamaV3 or SparkInfer.
 
 | Prompt (this recipe / vLLM) | this recipe: prefill | vLLM: prefill | this recipe: decode | vLLM: decode | needle |
 |---:|---:|---:|---:|---:|---|
-| 33,756 / 33,916 | 7.6 s (4,427 tok/s) | **6.5 s** (5,192 tok/s) | **205.7** tok/s | 69.9 tok/s | both found |
-| 104,608 / 105,334 | 33.3 s (3,140 tok/s) | **33.1 s** (3,187 tok/s) | **152.3** tok/s | 36.0 tok/s | both found |
-| 214,893 / 214,767 | **100.6 s** (2,137 tok/s) | 114.8 s (1,871 tok/s) | **112.9** tok/s | 21.3 tok/s | both found |
+| 33,761 / 33,916 | 7.6 s (4,432 tok/s) | **6.5 s** (5,192 tok/s) | **196.2** tok/s | 69.9 tok/s | both found |
+| 104,608 / 105,334 | 33.2 s (3,152 tok/s) | **33.1 s** (3,187 tok/s) | **156.1** tok/s | 36.0 tok/s | both found |
+| 214,896 / 214,767 | **99.3 s** (2,163 tok/s) | 114.8 s (1,871 tok/s) | **140.0** tok/s | 21.3 tok/s | both found |
 
-**Images:** one image chat (a 640x400 PNG, 200-token cap, greedy) takes 0.47-0.67 s end to end on this recipe (the first of five runs is the slowest)
+**Images:** one image chat (a 640x400 PNG, 200-token cap, greedy) takes 0.46-0.60 s end to end on this recipe (the first of five runs is the slowest)
 against 0.76-0.95 s on vLLM. Both read the image's text correctly.
 
 **Quality** (the [qwen quality suite](https://github.com/BobClawblaw/qwen38-flashnext-int4mixed-2x-dgx-sparks/tree/main/quality),
-through the [recipe harness](https://github.com/BobClawblaw/recipe-harness), thinking off). The suite was not rerun on
-the published build. The int8 column is the int8 engine two revisions before `18d93451`, served on this card
-([`harness-quality/`](evidence/2026-10-22-int8-prompts/harness-quality/)). One later revision only stopped reserving
-int8 memory when int8 is off. The other (`f15dad20`) changes only how many draft rows a round verifies, and drafted
-replies equal undrafted ones. The greedy replies to a 64,811-token prompt and the replies to the short benchmark
-prompts are byte-identical across the three, and `18d93451`'s to the fixed 35k and 110k prompts equal `0d3322a1`'s. The bf16 column is the previous version's engine, `50c05658` on 1.1.1
+through the [recipe harness](https://github.com/BobClawblaw/recipe-harness), thinking off). The int8 column is this
+build's fresh `setup.sh` build ([`harness-quality/`](evidence/2026-10-22-lone-bands/harness-quality/); HumanEval in a
+second run, `suite-humaneval/`, because the first could not reach the sandbox). Every score equals the earlier int8
+engine's ([`evidence/2026-10-22-int8-prompts/harness-quality/`](evidence/2026-10-22-int8-prompts/harness-quality/)),
+and so do the replies, except two of the 12 vision probes worded differently ("Yellow" for "yellow", "showing" for
+"containing"). The same probes on a freshly started server of this build give the earlier run's words, so greedy
+replies can depend on what the server ran before. The bf16 column is the previous version's engine, `50c05658` on 1.1.1
 ([`evidence/2026-10-21-attn-tensor-cores/harness/`](evidence/2026-10-21-attn-tensor-cores/harness/)), and the last
 column `2bd805a4`, before #1168 ([`evidence/2026-10-21-q35-engine/harness/`](evidence/2026-10-21-q35-engine/harness/)).
 
@@ -148,24 +151,24 @@ column `2bd805a4`, before #1168 ([`evidence/2026-10-21-q35-engine/harness/`](evi
 GSM8K's 9 misses with int8 prompts include 8 replies cut at the suite's 1,024-token cap. Thinking-on quality (`--plan
 thinking`) was not run on this engine.
 
-The harness's `quick` plan on the fresh build of `18d93451` ([`harness-quick/`](evidence/2026-10-22-lone-bands/harness-quick/)):
+The harness's `quick` plan on the same build ([`harness-quick/`](evidence/2026-10-22-lone-bands/harness-quick/)):
 - **drafts** 12/12, **concurrent** 12/12 and **soak** 60/60 (all 60 turns resumed a kept state);
 - **structured:** 18/18 replies obey their format, drafted equals plain 12/12, and a bad regex is refused with a 400;
 - **tools:** 5/5 tool calls right: `auto`, `required`, and a named function plain, with thinking on and streamed;
 - **sampling:** 9/9 seeded replies equal on repeat and undrafted;
-- **decode ruler** (prose / code / structured / list): 257.3 / 496.8 / 325.5 / 312.0 tok/s fresh, 257.5 / 497.7 /
-  326.1 / 312.3 after the checks.
+- **decode ruler** (prose / code / structured / list): 257.7 / 497.7 / 326.3 / 312.5 tok/s fresh, 253.3 / 496.4 /
+  325.5 / 312.3 after the checks.
 
 The engines score within a few answers of each other: int8 and bf16 prompts on the same weights, and different
 4-bit quantizations of the same model.
 
 In short, against this vLLM configuration only:
-- **Decode:** this recipe measured 2-3x faster at short prompts and 3-5x at long ones. Against vLLM with MTP-3, as
+- **Decode:** this recipe measured 2-3x faster at short prompts and 3-7x at long ones. Against vLLM with MTP-3, as
   reported elsewhere, the gap would be smaller; we have not measured how much.
 - **Prefill:** vLLM reads a 34k-token prompt faster, the two are level at 105k, and this recipe is faster at 215k.
   First token on a short chat is 0.05 s here and 0.06 s on vLLM.
 - **Quality:** the same within a few answers either way. This recipe returns reasoning in `reasoning_content`; vLLM, as configured, does not.
-- **Prompt cache:** here a 105k-token chat's next turn starts in 1.14 s instead of 34 s. vLLM does not report cached
+- **Prompt cache:** here a 105k-token chat's next turn starts in 1.14 s instead of 33.6 s. vLLM does not report cached
   tokens, so we did not measure its prefix caching.
 - **Concurrency:** both ran one request at a time. This recipe serves one stream at the full window; batching
   servers reach higher total throughput under concurrent load.
@@ -181,8 +184,8 @@ Evidence in [`evidence/2026-10-22-lone-bands/`](evidence/2026-10-22-lone-bands/)
 
   | Turn | prompt tokens | resumed | first token |
   |---:|---:|---:|---:|
-  | 1 | 104,570 | 0 | 34.0 s |
-  | 2 | 104,628 | 102,400 | 1.14 s |
+  | 1 | 104,571 | 0 | 33.6 s |
+  | 2 | 104,629 | 102,400 | 1.14 s |
   | 3 | 104,703 | 102,400 | 1.14 s |
 
 - **Cache on against off:** a fixed 3-turn chat (21,456 to 21,600 tokens, greedy, 128 tokens a turn) on a server
@@ -197,9 +200,9 @@ RTX 5090 (32 GB), CUDA 13.3, engine `18d93451`, int8 prompts, 262,144-token wind
 engine reports the model and its working memory at 18.13 GiB and one stream at 9.02 GiB of the 11.8 GiB left after a
 1.0 GiB reserve. `nvidia-smi` shows 27,984 MiB in use when idle.
 
-- **Needle in 255,054 tokens** of source code at depths 0.10, 0.33, 0.50 and 0.90: found 4/4, 130-131 s a prompt.
-- **Prefill and decode** ([`tools/longspeed.py`](tools/longspeed.py), 512 tokens): 100,024 tokens in 31.3 s, then
-  213.7 tok/s; 250,024 tokens in 98.4 s, then 146.2 tok/s.
+- **Needle in 255,054 tokens** of source code at depths 0.10, 0.33, 0.50 and 0.90: found 4/4, 129-130 s a prompt.
+- **Prefill and decode** ([`tools/longspeed.py`](tools/longspeed.py), 512 tokens): 100,024 tokens in 30.9 s, then
+  215.5 tok/s; 250,024 tokens in 97.5 s, then 145.0 tok/s.
 - **Images** (`tools/image_chats.py`, `tools/image_stress.py`, and one picture sent as PNG, JPEG and WebP): all
   three formats read the picture's text and shape under fp8 and bf16 caches, and the chats describe their images
   correctly, except that one reads the vertical text in an EXIF-rotated JPEG as "ORANGE7561" (it says "ORANGE 7351").
@@ -212,8 +215,8 @@ engine reports the model and its working memory at 18.13 GiB and one stream at 9
 | | fp8 (default) | bf16 |
 |---|---:|---:|
 | Window with vision, one stream | 262,144 (9.02 GiB) | 131,072 measured (8.90 GiB) |
-| 100k-token prompt (`longspeed.py`): prefill / decode | 31.3 s / 213.7 tok/s | 29.7 s / 197.6 tok/s |
-| Short prompts (code sampled / chat sampled / code greedy / chat greedy) | 319 / 247 / 320 / 300 | 300 / 245 / 325 / 297 |
+| 100k-token prompt (`longspeed.py`): prefill / decode | 30.9 s / 215.5 tok/s | 29.5 s / 198.0 tok/s |
+| Short prompts (code sampled / chat sampled / code greedy / chat greedy) | 319 / 247 / 320 / 299 | 300 / 245 / 325 / 298 |
 
 Not rerun on this engine: fp8 against bf16 teacher-forced KL, the vision tower against fp32
 references, and token exactness against TensorFold 0.6.6. The previous engine's results are in the evidence folders at
@@ -235,11 +238,12 @@ deadlines for retrying draft-window widths.
 
 `f15dad20` keeps the costs a context band each (under 8,192 tokens, then one band a doubling) and caps a carried
 deadline at 256 rounds. The harness's `after-long` plan runs the ruler, one 512-token prose reply to a cold
-245,409-token prompt, and the ruler again. This version reads 257.7 / 497.5 / 326.4 / 312.7 after the long reply
-against 256.9 / 497.6 / 326.5 / 313.2 fresh; `0d3322a1` read 238.6 / 415.6 / 326.2 / 312.0 against 257.6 / 498.2 /
-326.4 / 312.7 ([`harness-after-long/`](evidence/2026-10-22-lone-bands/harness-after-long/),
-[`harness-after-long-0d3322a1/`](evidence/2026-10-22-lone-bands/harness-after-long-0d3322a1/)). The full quality suite
-was not rerun on this version.
+245,333-token prompt, and the ruler again. This version reads 257.7 / 498.2 / 326.0 / 312.2 after the long reply
+against 257.5 / 496.1 / 326.2 / 312.4 fresh; `0d3322a1` read 233.1 / 371.0 / 326.1 / 312.3 against 256.8 / 496.1 /
+324.8 / 312.1 ([`harness-after-long/`](evidence/2026-10-22-lone-bands/harness-after-long/),
+[`harness-after-long-0d3322a1/`](evidence/2026-10-22-lone-bands/harness-after-long-0d3322a1/)). After the 37-minute
+quality suite this version's ruler read 257.2 / 497.7 / 326.2 / 312.5 against 257.1 / 497.1 / 325.8 / 312.1 before it
+([`harness-quality/`](evidence/2026-10-22-lone-bands/harness-quality/)).
 
 ## Setup
 
@@ -265,7 +269,7 @@ To run it as a service:
 | Variable | Default | |
 |---|---|---|
 | `KV_CACHE` | `fp8` | `bf16` holds half the window: set `CONTEXT=131072` with it |
-| `PROMPT_PRECISION` | `int8` | the prompt matmuls' activations; `bf16` is exact and takes 24-37% longer to read a prompt |
+| `PROMPT_PRECISION` | `int8` | the prompt matmuls' activations; `bf16` is exact and takes 25-36% longer to read a prompt |
 | `PROMPT_CACHE_GIB` | `8` | host memory for kept prompt states, at most half of `MemAvailable`; `0` turns the cache off |
 | `CONTEXT` | `262144` | the window |
 | `PARALLEL` | `auto` | streams at once, as many as the window allows: one at 262,144 (more streams were not measured on this engine) |

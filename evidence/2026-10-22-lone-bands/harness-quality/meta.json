@@ -1,0 +1,50 @@
+{
+ "target": "qwen38-27b-5090",
+ "plan": "quality-off",
+ "url": "http://127.0.0.1:30000",
+ "model": "qwen38-27b",
+ "started": "20261022-111239",
+ "status": "done",
+ "checks": [
+  {
+   "name": "ruler-fresh",
+   "type": "ruler",
+   "ok": null,
+   "summary": "c=1 257.1/497.1/325.8/312.1 ttft 0.05-0.05s",
+   "seconds": 8.8
+  },
+  {
+   "name": "suite",
+   "type": "suite",
+   "ok": false,
+   "summary": "cut at max_tokens: gsm8k 8; no cases (errors) in humaneval; drafts 12/12, concurrent 12/12, streaming 4/4, multiturn 7/8, stop 3/3, thinking 10/10, copy 2/2, max-tokens 3/3, tools 58/60, json 30/30, ifeval 129/150, gsm8k 241/250, mgsm 215/240, mmlu 270/342, humaneval 0/0, repetition 8/8, long-context 55/55, vision 12/12, soak 60/60, snapshot 12/12",
+   "seconds": 2203.8
+  },
+  {
+   "name": "ruler-after",
+   "type": "ruler",
+   "ok": null,
+   "summary": "c=1 257.2/497.7/326.2/312.5 ttft 0.05-0.05s",
+   "seconds": 8.7
+  }
+ ],
+ "identity": {
+  "recipe_commit": {
+   "value": "0356cea",
+   "exit": 0
+  },
+  "engine_commit": {
+   "value": "18d93451",
+   "exit": 0
+  },
+  "served_model": {
+   "value": "{\"object\": \"list\", \"data\": [{\"id\": \"qwen38-27b\", \"object\": \"model\", \"created\": 1792667569, \"owned_by\": \"tensorfold\", \"context_length\": 262144, \"max_model_len\": 262144, \"reasoning\": {\"default_enabled\": true, \"supported_efforts\": [\"xhigh\", \"medium\", \"low\", \"none\"]}}, {\"id\": \"qwen38-nvfp4\", \"object\": \"model\", \"created\": 1792667569, \"owned_by\": \"tensorfold\", \"context_length\": 262144, \"max_model_len\": 262144, \"reasoning\": {\"default_enabled\": true, \"supported_efforts\": [\"xhigh\", \"medium\", \"low\", \"none\"]}}]}",
+   "exit": 0
+  },
+  "suite_commit": {
+   "value": "291734b3cf5a",
+   "exit": 0
+  }
+ },
+ "finished": "20261022-114951"
+}

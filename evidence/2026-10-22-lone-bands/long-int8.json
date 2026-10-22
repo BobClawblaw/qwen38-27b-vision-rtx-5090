@@ -2,34 +2,34 @@
  {
   "label": "int8",
   "target": 32000,
-  "prompt_tokens": 33756,
+  "prompt_tokens": 33761,
   "completion_tokens": 512,
   "prefill_s": 7.62,
-  "prefill_tps": 4427.0,
-  "decode_tps": 205.7,
+  "prefill_tps": 4432.2,
+  "decode_tps": 196.2,
   "needle_found": true,
-  "reply_head": "062773bb7e\n\nThe code is a Zig implementation of a CLI tool named `tensorfold` for managing and running AI models (specif"
+  "reply_head": "65c254d67d\n\nThe code is a Zig implementation of a CLI tool named `tensorfold` for managing and running AI models (specif"
  },
  {
   "label": "int8",
   "target": 100000,
   "prompt_tokens": 104608,
   "completion_tokens": 512,
-  "prefill_s": 33.32,
-  "prefill_tps": 3139.6,
-  "decode_tps": 152.3,
+  "prefill_s": 33.18,
+  "prefill_tps": 3152.3,
+  "decode_tps": 156.1,
   "needle_found": true,
-  "reply_head": "The secret passphrase is 11ea3f7824.\n\nThe code is a large-scale Zig implementation of a distributed AI inference and tra"
+  "reply_head": "The secret passphrase is `4eb850c14c`.\n\nThe code provided is a comprehensive implementation of **TensorFold**, a high-pe"
  },
  {
   "label": "int8",
   "target": 200000,
-  "prompt_tokens": 214893,
+  "prompt_tokens": 214896,
   "completion_tokens": 512,
-  "prefill_s": 100.58,
-  "prefill_tps": 2136.6,
-  "decode_tps": 112.9,
+  "prefill_s": 99.33,
+  "prefill_tps": 2163.4,
+  "decode_tps": 140.0,
   "needle_found": true,
-  "reply_head": "fd95ac183f\n\nThe code is a large-scale implementation of **TensorFold**, a high-performance inference and cluster managem"
+  "reply_head": "79201be22d\n\nThe provided code is a large-scale implementation of a distributed AI inference and training system, likely "
  }
 ]

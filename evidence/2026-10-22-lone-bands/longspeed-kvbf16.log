@@ -1,2 +1,2 @@
 100000: Token indices sequence length is longer than the specified maximum sequence length for this model (2809897 > 262144). Running this sequence through the model will result in indexing errors
-100000: prompt 100024: prefill 29.7s (3366 tok/s); decode 512 tokens at 197.6 tok/s
+100000: prompt 100024: prefill 29.5s (3395 tok/s); decode 512 tokens at 198.0 tok/s
