@@ -123,8 +123,10 @@ build's fresh `setup.sh` build ([`harness-quality/`](evidence/2026-10-22-lone-ba
 second run, `suite-humaneval/`, because the first could not reach the sandbox). Every score equals the earlier int8
 engine's ([`evidence/2026-10-22-int8-prompts/harness-quality/`](evidence/2026-10-22-int8-prompts/harness-quality/)),
 and so do the replies, except two of the 12 vision probes worded differently ("Yellow" for "yellow", "showing" for
-"containing"). The same probes on a freshly started server of this build give the earlier run's words, so greedy
-replies can depend on what the server ran before. The bf16 column is the previous version's engine, `50c05658` on 1.1.1
+"containing"). The two older columns' runs say "Yellow" as well. Rerun on this build, these two probes did not give
+those words again: 107 replies over 9 server starts (fresh, after each suite check alone, after the whole suite in its
+order, and beside other streams, drafted and undrafted) all said "yellow" and "containing". What makes a suite run land
+on the other word is not known. The bf16 column is the previous version's engine, `50c05658` on 1.1.1
 ([`evidence/2026-10-21-attn-tensor-cores/harness/`](evidence/2026-10-21-attn-tensor-cores/harness/)), and the last
 column `2bd805a4`, before #1168 ([`evidence/2026-10-21-q35-engine/harness/`](evidence/2026-10-21-q35-engine/harness/)).
 
