@@ -1,0 +1,9 @@
+chunk-boundary: prompt 8829 4.1s -> 'The image displays a smooth, grainy gradient that transitions from a dark, muted green in the lower-left corner to a vibrant magenta in the upper-right corner.'
+max-image: prompt 4126 4.2s -> 'There are **7** colored vertical bars in the image.\n\nFrom left to right, the colors are:\n\n1. Black  \n2. Dark green (forest green)  \n3. Lighter green (emerald or mint green)  \n4. Purple (violet)  \n5. L'
+thinking-on: prompt 301 0.8s -> '7351' [reasoning 820 chars]
+four-images: prompt 1175 0.5s -> '1. Green circle.\n2. Red circle and blue square.\n3. Grayscale gradient.\n4. Red circle and blue square with text "ORANGE 7351".'
+five-images: REFUSED/ERROR {'http': 400, 'body': '{"error": {"message": "a request may hold at most 4 images (--vision-max-images); it has 5", "type": "invalid_request_error"}}'}
+concurrent text 0: EQUALS solo
+concurrent text 1: EQUALS solo
+concurrent text 2: EQUALS solo
+concurrent image: prompt 789 0.0s -> 'This image features a smooth, grainy gradient that transitions from a dark, near-black corner in the upper left, through a muted grayish center, to vibrant magenta in the upper right and bright green '

@@ -1,0 +1,50 @@
+{
+ "target": "qwen38-27b-5090",
+ "plan": "after-long",
+ "url": "http://127.0.0.1:30000",
+ "model": "qwen38-27b",
+ "started": "20261022-102641",
+ "status": "done",
+ "checks": [
+  {
+   "name": "ruler-fresh",
+   "type": "ruler",
+   "ok": null,
+   "summary": "c=1 257.6/498.2/326.4/312.7 ttft 0.05-0.05s",
+   "seconds": 8.8
+  },
+  {
+   "name": "prefill-245k",
+   "type": "prefill",
+   "ok": null,
+   "summary": "245484 tokens 2004.2 tok/s (122.483 s)",
+   "seconds": 127.5
+  },
+  {
+   "name": "ruler-after-long",
+   "type": "ruler",
+   "ok": null,
+   "summary": "c=1 238.6/415.6/326.2/312.0 ttft 0.05-2.33s",
+   "seconds": 30.5
+  }
+ ],
+ "identity": {
+  "recipe_commit": {
+   "value": "0356cea",
+   "exit": 0
+  },
+  "engine_commit": {
+   "value": "0d3322a1",
+   "exit": 0
+  },
+  "served_model": {
+   "value": "{\"object\": \"list\", \"data\": [{\"id\": \"qwen38-27b\", \"object\": \"model\", \"created\": 1792664811, \"owned_by\": \"tensorfold\", \"context_length\": 262144, \"max_model_len\": 262144, \"reasoning\": {\"default_enabled\": true, \"supported_efforts\": [\"xhigh\", \"medium\", \"low\", \"none\"]}}, {\"id\": \"qwen38-nvfp4\", \"object\": \"model\", \"created\": 1792664811, \"owned_by\": \"tensorfold\", \"context_length\": 262144, \"max_model_len\": 262144, \"reasoning\": {\"default_enabled\": true, \"supported_efforts\": [\"xhigh\", \"medium\", \"low\", \"none\"]}}]}",
+   "exit": 0
+  },
+  "suite_commit": {
+   "value": "291734b3cf5a",
+   "exit": 0
+  }
+ },
+ "finished": "20261022-102938"
+}

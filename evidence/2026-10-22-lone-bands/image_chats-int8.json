@@ -1,0 +1,32 @@
+{
+ "shapes-read": {
+  "text": "Based on the image provided, here is a description of the shapes and their colors, followed by the exact text:\n\n- **Shapes and Colors:**\n  - On the left, there is a solid **red circle**.\n  - On the right, there is a solid **blue square**.\n\n- **Text:**\n  - Below the two shapes, centered, is the text: **ORANGE 7351**\n\n*(Note: The text says \u201cORANGE 7351\u201d, but the shapes shown are red and blue \u2014 not orange. This may be an intentional mismatch or error in the image.)*",
+  "prompt_tokens": 270,
+  "completion_tokens": 130,
+  "seconds": 0.47
+ },
+ "photo-jpg": {
+  "text": "This is an abstract gradient image featuring a smooth, diagonal blend of colors. It transitions from a dark, near-black corner in the upper left through vibrant magenta and pink tones to a bright, luminous green in the lower right, creating a soft, hazy, and atmospheric visual effect.",
+  "prompt_tokens": 798,
+  "completion_tokens": 60,
+  "seconds": 0.57
+ },
+ "two-images": {
+  "text": "Image A shows a solid green circle on a white background.\nImage B displays a red circle above a blue square, with the text \"ORANGE7561\" written vertically to the left of the circle.",
+  "prompt_tokens": 292,
+  "completion_tokens": 45,
+  "seconds": 0.26
+ },
+ "low-detail": {
+  "text": "This image is a smooth, abstract gradient background. It features a soft blend of colors transitioning from vibrant magenta/pink in the upper right to bright green in the lower left, with a muted grayish-white area in the center where the two hues meet. The transition is seamless and diffused, creating a modern, minimalist aesthetic often used for digital backgrounds or design elements.",
+  "prompt_tokens": 253,
+  "completion_tokens": 76,
+  "seconds": 0.51
+ },
+ "followup": {
+  "text": "14702",
+  "prompt_tokens": 301,
+  "completion_tokens": 6,
+  "seconds": 0.13
+ }
+}
