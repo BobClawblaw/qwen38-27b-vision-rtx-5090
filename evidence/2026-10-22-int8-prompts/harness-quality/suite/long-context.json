@@ -1,0 +1,168 @@
+{
+ "name": "long-context",
+ "score": 1.0,
+ "cases": 55,
+ "passed": 55,
+ "seconds": 670.857878446579,
+ "notes": [
+  "needles 15/15 to 224k, facts 10/10@28k, 10/10@57k, 10/10@114k, 10/10@225k, slowest prefill 2082 tok/s"
+ ],
+ "details": {
+  "needles": [
+   {
+    "tokens": 7121,
+    "depth": 0.1,
+    "found": true,
+    "seconds": 1.4963319210801274,
+    "prefill_tok_s": 4758.970853779358,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 7124,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 1.4543937909184024,
+    "prefill_tok_s": 4898.260735492707,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 7152,
+    "depth": 0.9,
+    "found": true,
+    "seconds": 1.4498428530059755,
+    "prefill_tok_s": 4932.948412423924,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 28509,
+    "depth": 0.1,
+    "found": true,
+    "seconds": 6.477606744039804,
+    "prefill_tok_s": 4401.162516732247,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 28513,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 6.471344628022052,
+    "prefill_tok_s": 4406.039492400657,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 28538,
+    "depth": 0.9,
+    "found": true,
+    "seconds": 5.69180668098852,
+    "prefill_tok_s": 5013.873731045919,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 56999,
+    "depth": 0.1,
+    "found": true,
+    "seconds": 14.877400419092737,
+    "prefill_tok_s": 3831.2472874529212,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 57047,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 14.897342122974806,
+    "prefill_tok_s": 3829.3407997941886,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 56992,
+    "depth": 0.9,
+    "found": true,
+    "seconds": 9.97042833303567,
+    "prefill_tok_s": 5716.103470817266,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 114584,
+    "depth": 0.02,
+    "found": true,
+    "seconds": 38.53528851806186,
+    "prefill_tok_s": 2973.4823432369885,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 114659,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 38.46300982509274,
+    "prefill_tok_s": 2981.0199597327933,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 114566,
+    "depth": 0.98,
+    "found": true,
+    "seconds": 38.51485264801886,
+    "prefill_tok_s": 2974.592712245339,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 224738,
+    "depth": 0.02,
+    "found": true,
+    "seconds": 107.55325920006726,
+    "prefill_tok_s": 2089.550811119069,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 224825,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 107.98133706802037,
+    "prefill_tok_s": 2082.072755390838,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 224752,
+    "depth": 0.98,
+    "found": true,
+    "seconds": 107.57095223094802,
+    "prefill_tok_s": 2089.3372731094887,
+    "reply": "7-4-3-3-5"
+   }
+  ],
+  "facts": [
+   {
+    "tokens": 28632,
+    "recalled": 10,
+    "of": 10,
+    "seconds": 6.602156328968704,
+    "prefill_tok_s": 4336.7649254788985,
+    "reply": "Avery: 563\nBlake: 986\nCasey: 673\nDevin: 977\nEmery: 899\nFinley: 576\nHarper: 562\nJordan: 620\nKendall: 975\nMorgan: 701"
+   },
+   {
+    "tokens": 57099,
+    "recalled": 10,
+    "of": 10,
+    "seconds": 15.607502551050857,
+    "prefill_tok_s": 3658.432847486897,
+    "reply": "Avery: 563\nBlake: 986\nCasey: 673\nDevin: 977\nEmery: 899\nFinley: 576\nHarper: 562\nJordan: 620\nKendall: 975\nMorgan: 701"
+   },
+   {
+    "tokens": 114758,
+    "recalled": 10,
+    "of": 10,
+    "seconds": 38.74894051498268,
+    "prefill_tok_s": 2961.57774831618,
+    "reply": "Avery: 563\nBlake: 986\nCasey: 673\nDevin: 977\nEmery: 899\nFinley: 576\nHarper: 562\nJordan: 620\nKendall: 975\nMorgan: 701"
+   },
+   {
+    "tokens": 225035,
+    "recalled": 10,
+    "of": 10,
+    "seconds": 108.4445630190894,
+    "prefill_tok_s": 2075.1155589090004,
+    "reply": "Avery: 563\nBlake: 986\nCasey: 673\nDevin: 977\nEmery: 899\nFinley: 576\nHarper: 562\nJordan: 620\nKendall: 975\nMorgan: 701"
+   }
+  ]
+ }
+}

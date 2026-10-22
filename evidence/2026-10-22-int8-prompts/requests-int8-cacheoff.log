@@ -1,0 +1,7 @@
+[tensorfold] done chatcmpl prompt=21456 cached=0 thinking=False effort=none tokens=49 sha=9e8b0a5db15a finish=stop rounds=13 accepted=36/173 ttft=4.379 decode=0.273 elapsed=4.653 queued=0.000 tok/s=175.6
+[tensorfold] done chatcmpl prompt=21530 cached=0 thinking=False effort=none tokens=44 sha=cdb62db0c237 finish=stop rounds=11 accepted=33/155 ttft=4.422 decode=0.229 elapsed=4.652 queued=0.000 tok/s=187.5
+[tensorfold] done chatcmpl prompt=21600 cached=0 thinking=False effort=none tokens=35 sha=c496bddb147b finish=stop rounds=10 accepted=25/191 ttft=4.434 decode=0.237 elapsed=4.671 queued=0.000 tok/s=143.5
+[tensorfold] done chatcmpl prompt=35554 cached=0 thinking=False effort=none tokens=512 sha=2a394e4b69e6 finish=length rounds=109 accepted=411/1593 ttft=7.902 decode=2.130 elapsed=10.032 queued=0.000 tok/s=239.9
+[tensorfold] done chatcmpl prompt=109537 cached=0 thinking=False effort=none tokens=512 sha=ca2cec472d8e finish=length rounds=129 accepted=382/1402 ttft=34.908 decode=2.900 elapsed=37.809 queued=0.000 tok/s=176.2
+[tensorfold] done chatcmpl prompt=35554 cached=0 thinking=False effort=none tokens=512 sha=2a394e4b69e6 finish=length rounds=116 accepted=404/1324 ttft=7.960 decode=2.247 elapsed=10.206 queued=0.000 tok/s=227.4
+[tensorfold] done chatcmpl prompt=109537 cached=0 thinking=False effort=none tokens=512 sha=ca2cec472d8e finish=length rounds=127 accepted=384/1440 ttft=35.052 decode=2.851 elapsed=37.903 queued=0.000 tok/s=179.2

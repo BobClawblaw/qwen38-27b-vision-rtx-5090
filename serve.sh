@@ -6,6 +6,7 @@
 # Knobs (env): PORT (30000), HOST (0.0.0.0), CONTEXT (262144), PARALLEL (auto), NAME (qwen38-27b), ALIAS
 #   (qwen38-nvfp4), KV_CACHE (fp8: e4m3 attention caches with one scale a row, 262k with vision in one stream;
 #   bf16: half the window, set CONTEXT=131072 with it), MODELS (./models), TF_SRC (./engine)
+#   PROMPT_PRECISION (int8: prompt matmuls on int8 activations, a 64-input group a scale; bf16: the slower exact path)
 #   PROMPT_CACHE_GIB (8: host memory for kept prompt states, at most half of MemAvailable; 0 turns the cache off)
 #   MAX_TOKENS (the engine's default: the output cap when a request sends no max_tokens)
 #   THINKING_BUDGET (the engine's default: a cap on reasoning tokens a reply)
@@ -24,6 +25,6 @@ exec "$TF_SRC/zig-out/native/bin/tensorfold-native" serve "$MODELS/Qwen3.8-27B-M
   --name "${NAME:-qwen38-27b}" --alias "${ALIAS:-qwen38-nvfp4}" \
   --host "${HOST:-0.0.0.0}" --port "${PORT:-30000}" \
   --context "${CONTEXT:-262144}" --parallel "${PARALLEL:-auto}" \
-  --kv-cache "${KV_CACHE:-fp8}" \
+  --kv-cache "${KV_CACHE:-fp8}" --prompt-precision "${PROMPT_PRECISION:-int8}" \
   ${MAX_TOKENS:+--max-tokens "$MAX_TOKENS"} ${THINKING_BUDGET:+--thinking-budget "$THINKING_BUDGET"} \
   --vision ${PROMPT_CACHE_GIB:+--prompt-cache-gib "$PROMPT_CACHE_GIB"}

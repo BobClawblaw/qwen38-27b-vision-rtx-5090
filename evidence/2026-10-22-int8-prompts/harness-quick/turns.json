@@ -1,0 +1,102 @@
+{
+ "turn1": {
+  "status": 200,
+  "text": "Three rivers in Europe are the Danube, the Rhine, and the Volga.",
+  "ttft": 1.076,
+  "ttft_any": 1.076,
+  "usage": {
+   "prompt_tokens": 5509,
+   "completion_tokens": 19,
+   "total_tokens": 5528,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  },
+  "s": 1.161,
+  "finish": "stop",
+  "tool_calls": null
+ },
+ "turn2": {
+  "status": 200,
+  "text": "The Volga is the longest of the three. It is approximately 3,530 kilometers (2,193 miles) long, making it the longest river entirely within Europe. The Danube is about 2,8",
+  "ttft": 0.294,
+  "ttft_any": 0.294,
+  "usage": {
+   "prompt_tokens": 5547,
+   "completion_tokens": 48,
+   "total_tokens": 5595,
+   "prompt_tokens_details": {
+    "cached_tokens": 4096
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  },
+  "s": 0.467,
+  "finish": "length",
+  "tool_calls": null
+ },
+ "turn3": {
+  "status": 200,
+  "text": "The Rhine is the shortest of the three. It is approximately 1,230 kilometers (764 miles) long, compared to the Danube (~2,850 km) and the Volga (~3,",
+  "ttft": 0.299,
+  "ttft_any": 0.299,
+  "usage": {
+   "prompt_tokens": 5613,
+   "completion_tokens": 48,
+   "total_tokens": 5661,
+   "prompt_tokens_details": {
+    "cached_tokens": 4096
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  },
+  "s": 0.484,
+  "finish": "length",
+  "tool_calls": null
+ },
+ "turn3_again": {
+  "status": 200,
+  "text": "The Rhine is the shortest of the three. It is approximately 1,230 kilometers (764 miles) long, compared to the Danube (~2,850 km) and the Volga (~3,",
+  "ttft": 0.298,
+  "ttft_any": 0.298,
+  "usage": {
+   "prompt_tokens": 5613,
+   "completion_tokens": 48,
+   "total_tokens": 5661,
+   "prompt_tokens_details": {
+    "cached_tokens": 4096
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  },
+  "s": 0.484,
+  "finish": "length",
+  "tool_calls": null
+ },
+ "turn3_cold": {
+  "status": 200,
+  "text": "The Rhine is the shortest of the three. It is approximately 1,230 kilometers (764 miles) long, compared to the Danube (~2,850 km) and the Volga (~3,",
+  "ttft": 0.299,
+  "ttft_any": 0.299,
+  "usage": {
+   "prompt_tokens": 5613,
+   "completion_tokens": 48,
+   "total_tokens": 5661,
+   "prompt_tokens_details": {
+    "cached_tokens": 4096
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  },
+  "s": 0.484,
+  "finish": "length",
+  "tool_calls": null
+ }
+}

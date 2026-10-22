@@ -1,0 +1,11 @@
+{
+ "name": "snapshot",
+ "score": 1.0,
+ "cases": 12,
+ "passed": 12,
+ "seconds": 5.904043436050415,
+ "notes": [
+  "replies written to the run's suite/replies.json (not exported)"
+ ],
+ "details": {}
+}

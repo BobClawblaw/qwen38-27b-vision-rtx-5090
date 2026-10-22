@@ -1,0 +1,5 @@
+Token indices sequence length is longer than the specified maximum sequence length for this model (2809897 > 262144). Running this sequence through the model will result in indexing errors
+depth 0.10: prompt 255054 tokens, 130.1s -> 'TANGERINE-4481' OK
+depth 0.33: prompt 255054 tokens, 130.6s -> 'TANGERINE-4504' OK
+depth 0.50: prompt 255054 tokens, 130.7s -> 'TANGERINE-4521' OK
+depth 0.90: prompt 255055 tokens, 130.7s -> 'TANGERINE-4561' OK
