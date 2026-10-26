@@ -1,0 +1,11 @@
+{
+ "name": "humaneval",
+ "score": 0.0,
+ "cases": 0,
+ "passed": 0,
+ "seconds": 55.73767161369324,
+ "notes": [
+  "failed: sandbox failed: Unable to find image 'tf-qwen38-int4mixed:native-v1.0.12' locally\ndocker: Error resp"
+ ],
+ "details": {}
+}

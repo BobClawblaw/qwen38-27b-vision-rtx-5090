@@ -1,0 +1,11 @@
+{
+ "name": "snapshot",
+ "score": 1.0,
+ "cases": 12,
+ "passed": 12,
+ "seconds": 5.4031147956848145,
+ "notes": [
+  "replies written to /storage/recipe-harness/runs/qwen38-27b-5090/20261026-000635-quality-penalized/suite/replies.json"
+ ],
+ "details": {}
+}

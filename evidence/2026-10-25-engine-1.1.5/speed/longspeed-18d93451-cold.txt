@@ -1,0 +1,5 @@
+model 18.13 GiB; 1 stream at once, 9.02 GiB each at a 262144-token window (fp8 caches), of 11.8 GiB left after a 1.0 GiB reserve
+== 18d93451 longspeed 250000  [clocks: 2902 MHz, 58]
+prompt 250024: prefill 125.0s (2000 tok/s); decode 512 tokens at 142.1 tok/s
+== 18d93451 longspeed 100000  [clocks: 2887 MHz, 65]
+prompt 100024: prefill 30.4s (3289 tok/s); decode 512 tokens at 209.8 tok/s

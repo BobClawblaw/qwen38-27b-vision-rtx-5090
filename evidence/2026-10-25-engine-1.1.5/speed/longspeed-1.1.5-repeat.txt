@@ -1,0 +1,6 @@
+== longspeed 250000  [clocks: 2902 MHz, 58, 0x0000000000000400]
+prompt 250024: prefill 127.3s (1964 tok/s); decode 512 tokens at 148.6 tok/s
+== longspeed 250000  [clocks: 2887 MHz, 66, 0x0000000000000400]
+prompt 250024: prefill 127.2s (1966 tok/s); decode 512 tokens at 153.6 tok/s
+== longspeed 100000  [clocks: 2880 MHz, 66, 0x0000000000000400]
+prompt 100024: prefill 31.3s (3196 tok/s); decode 512 tokens at 222.2 tok/s

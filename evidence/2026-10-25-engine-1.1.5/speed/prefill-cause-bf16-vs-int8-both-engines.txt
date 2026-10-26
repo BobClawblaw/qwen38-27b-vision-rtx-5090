@@ -1,0 +1,20 @@
+tensorfold-native-1.1.5 bf16 longspeed: prompt 100024: prefill 38.9s (2569 tok/s); decode 512 tokens at 225.6 tok/s
+== tensorfold-native-1.1.5 bf16 (prompt cached ttft decode elapsed)
+prompt=35554	cached=0	ttft=10.774	decode=2.112	elapsed=12.886
+prompt=109537	cached=0	ttft=43.757	decode=2.925	elapsed=46.682
+  log lines mentioning a fallback: 0
+tensorfold-native-1.1.5 int8 longspeed: prompt 100024: prefill 31.2s (3204 tok/s); decode 512 tokens at 227.0 tok/s
+== tensorfold-native-1.1.5 int8 (prompt cached ttft decode elapsed)
+prompt=35554	cached=0	ttft=8.112	decode=1.951	elapsed=10.063
+prompt=109537	cached=0	ttft=35.540	decode=2.733	elapsed=38.273
+  log lines mentioning a fallback: 0
+tensorfold-native-q35-int8-18d93451 bf16 longspeed: prompt 100024: prefill 38.1s (2625 tok/s); decode 512 tokens at 209.5 tok/s
+== tensorfold-native-q35-int8-18d93451 bf16 (prompt cached ttft decode elapsed)
+prompt=35554	cached=0	ttft=10.611	decode=2.242	elapsed=12.853
+prompt=109537	cached=0	ttft=43.129	decode=3.030	elapsed=46.158
+  log lines mentioning a fallback: 0
+tensorfold-native-q35-int8-18d93451 int8 longspeed: prompt 100024: prefill 30.4s (3294 tok/s); decode 512 tokens at 213.6 tok/s
+== tensorfold-native-q35-int8-18d93451 int8 (prompt cached ttft decode elapsed)
+prompt=35554	cached=0	ttft=7.837	decode=2.104	elapsed=9.941
+prompt=109537	cached=0	ttft=34.652	decode=2.895	elapsed=37.547
+  log lines mentioning a fallback: 0

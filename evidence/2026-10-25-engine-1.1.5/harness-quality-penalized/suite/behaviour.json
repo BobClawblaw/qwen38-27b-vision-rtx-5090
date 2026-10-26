@@ -1,0 +1,73 @@
+[
+ {
+  "name": "streaming",
+  "score": 0.0,
+  "cases": 4,
+  "passed": 0,
+  "seconds": 3.313056707382202,
+  "notes": [
+   "'Explain how a bloom filter wor' differs",
+   "'Write a Python function that r' differs",
+   "'List seven countries that bord' differs",
+   "'Describe the water cycle to a ' differs"
+  ],
+  "details": {}
+ },
+ {
+  "name": "multiturn",
+  "score": 0.875,
+  "cases": 8,
+  "passed": 7,
+  "seconds": 3.7530572414398193,
+  "notes": [
+   "recalled 7/8 facts"
+  ],
+  "details": {
+   "reply": "My name is Odile.\nI live in Lyon.\nMy cat Pistache is 7 years old.\nI work as a luthier.\nI am flying to Montreal on November 14th."
+  }
+ },
+ {
+  "name": "stop",
+  "score": 1.0,
+  "cases": 3,
+  "passed": 3,
+  "seconds": 0.2726407051086426,
+  "notes": [
+   "3/3 stopped before the string"
+  ],
+  "details": {}
+ },
+ {
+  "name": "thinking",
+  "score": 1.0,
+  "cases": 10,
+  "passed": 10,
+  "seconds": 3.2351760864257812,
+  "notes": [
+   "0 replies without reasoning_content, 0 with think tags in content"
+  ],
+  "details": {}
+ },
+ {
+  "name": "copy",
+  "score": 1.0,
+  "cases": 2,
+  "passed": 2,
+  "seconds": 0.2545957565307617,
+  "notes": [
+   "2/2 byte-identical"
+  ],
+  "details": {}
+ },
+ {
+  "name": "max-tokens",
+  "score": 1.0,
+  "cases": 3,
+  "passed": 3,
+  "seconds": 0.38106274604797363,
+  "notes": [
+   "3/3 exact"
+  ],
+  "details": {}
+ }
+]

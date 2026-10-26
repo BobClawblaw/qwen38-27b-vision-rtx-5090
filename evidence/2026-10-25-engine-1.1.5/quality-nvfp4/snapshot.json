@@ -1,0 +1,11 @@
+{
+ "name": "snapshot",
+ "score": 1.0,
+ "cases": 12,
+ "passed": 12,
+ "seconds": 6.561061143875122,
+ "notes": [
+  "replies written to /storage/qwen38-kl/quality-nvfp4/replies.json"
+ ],
+ "details": {}
+}

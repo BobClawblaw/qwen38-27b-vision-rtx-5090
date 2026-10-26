@@ -1,0 +1,11 @@
+{
+ "name": "humaneval",
+ "score": 0.0,
+ "cases": 0,
+ "passed": 0,
+ "seconds": 51.57682514190674,
+ "notes": [
+  "failed: sandbox failed: permission denied while trying to connect to the docker API at unix:///var/run/docke"
+ ],
+ "details": {}
+}

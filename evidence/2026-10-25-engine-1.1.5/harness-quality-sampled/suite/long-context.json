@@ -1,0 +1,168 @@
+{
+ "name": "long-context",
+ "score": 1.0,
+ "cases": 55,
+ "passed": 55,
+ "seconds": 680.9330923557281,
+ "notes": [
+  "needles 15/15 to 224k, facts 10/10@28k, 10/10@57k, 10/10@114k, 10/10@225k, slowest prefill 2064 tok/s"
+ ],
+ "details": {
+  "needles": [
+   {
+    "tokens": 7121,
+    "depth": 0.1,
+    "found": true,
+    "seconds": 1.4997383458539844,
+    "prefill_tok_s": 4748.161584109623,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 7124,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 1.4911214068997651,
+    "prefill_tok_s": 4777.612317169881,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 7152,
+    "depth": 0.9,
+    "found": true,
+    "seconds": 1.4871107710059732,
+    "prefill_tok_s": 4809.325666548664,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 28509,
+    "depth": 0.1,
+    "found": true,
+    "seconds": 6.5408838170114905,
+    "prefill_tok_s": 4358.5852917695875,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 28513,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 6.520649295067415,
+    "prefill_tok_s": 4372.724050896102,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 28538,
+    "depth": 0.9,
+    "found": true,
+    "seconds": 5.751887243008241,
+    "prefill_tok_s": 4961.501989575618,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 56999,
+    "depth": 0.1,
+    "found": true,
+    "seconds": 15.105907803867012,
+    "prefill_tok_s": 3773.2919292284196,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 57047,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 15.111148563213646,
+    "prefill_tok_s": 3775.1597611100433,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 56992,
+    "depth": 0.9,
+    "found": true,
+    "seconds": 10.02993871201761,
+    "prefill_tok_s": 5682.188260204788,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 114584,
+    "depth": 0.02,
+    "found": true,
+    "seconds": 39.04418018879369,
+    "prefill_tok_s": 2934.726749183671,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 114659,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 39.04657792393118,
+    "prefill_tok_s": 2936.467319194363,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 114566,
+    "depth": 0.98,
+    "found": true,
+    "seconds": 39.07815423398279,
+    "prefill_tok_s": 2931.7147200461213,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 224738,
+    "depth": 0.02,
+    "found": true,
+    "seconds": 108.62052299198695,
+    "prefill_tok_s": 2069.019682556483,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 224825,
+    "depth": 0.5,
+    "found": true,
+    "seconds": 108.93945399788208,
+    "prefill_tok_s": 2063.7610319248606,
+    "reply": "7-4-3-3-5"
+   },
+   {
+    "tokens": 224752,
+    "depth": 0.98,
+    "found": true,
+    "seconds": 108.62902462179773,
+    "prefill_tok_s": 2068.986633935962,
+    "reply": "7-4-3-3-5"
+   }
+  ],
+  "facts": [
+   {
+    "tokens": 28632,
+    "recalled": 10,
+    "of": 10,
+    "seconds": 7.528816093923524,
+    "prefill_tok_s": 3802.9883640149965,
+    "reply": "Avery: 563\nBlake: 986\nCasey: 673\nDevin: 977\nEmery: 899\nFinley: 576\nHarper: 562\nJordan: 620\nKendall: 975\nMorgan: 701"
+   },
+   {
+    "tokens": 57099,
+    "recalled": 10,
+    "of": 10,
+    "seconds": 15.958934979047626,
+    "prefill_tok_s": 3577.870332510589,
+    "reply": "Avery: 563\nBlake: 986\nCasey: 673\nDevin: 977\nEmery: 899\nFinley: 576\nHarper: 562\nJordan: 620\nKendall: 975\nMorgan: 701"
+   },
+   {
+    "tokens": 114758,
+    "recalled": 10,
+    "of": 10,
+    "seconds": 40.279663217952475,
+    "prefill_tok_s": 2849.0307721553354,
+    "reply": "Avery: 563\nBlake: 986\nCasey: 673\nDevin: 977\nEmery: 899\nFinley: 576\nHarper: 562\nJordan: 620\nKendall: 975\nMorgan: 701"
+   },
+   {
+    "tokens": 225035,
+    "recalled": 10,
+    "of": 10,
+    "seconds": 110.21865078690462,
+    "prefill_tok_s": 2041.7143413874653,
+    "reply": "Avery: 563\nBlake: 986\nCasey: 673\nDevin: 977\nEmery: 899\nFinley: 576\nHarper: 562\nJordan: 620\nKendall: 975\nMorgan: 701"
+   }
+  ]
+ }
+}

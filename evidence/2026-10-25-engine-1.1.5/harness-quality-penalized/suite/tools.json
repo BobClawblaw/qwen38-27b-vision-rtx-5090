@@ -1,0 +1,13 @@
+{
+ "name": "tools",
+ "score": 0.95,
+ "cases": 60,
+ "passed": 57,
+ "seconds": 23.74565100669861,
+ "notes": [
+  "'Set a timer for 5 minutes.': got [('set_timer', {'seconds': 300, 'label': '5 minute timer'})]",
+  "'Reminder: submit the report, 2026-10-15T': got [('create_reminder', {'text': 'submit the report', 'when': '2026-10-15t09:00:00'})]",
+  "'Remind me to renew the passport on 2027-': got [('create_reminder', {'text': 'renew passport', 'when': '2027-01-15'})]"
+ ],
+ "details": {}
+}
