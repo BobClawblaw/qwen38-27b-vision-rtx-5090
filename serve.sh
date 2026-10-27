@@ -17,6 +17,8 @@ MODELS="${MODELS:-$PWD/models}"
 TF_SRC="${TF_SRC:-$PWD/engine}"
 # the engine's own CUDA kernels (no captured glue kernels with this engine)
 export TENSORFOLD_CUDA_KERNELS="${TENSORFOLD_CUDA_KERNELS:-native}"
+# streams beside the first take 256-position pages of one pool (0: one stream at the full window, a window each)
+export TF_QWEN_KV_PAGES="${TF_QWEN_KV_PAGES:-256}"
 # structured output needs libtfgrammar beside the binary (setup.sh builds it); the engine loads it on the first
 # structured request and keeps a miss until restart, so refuse to start without it
 [ -f "$TF_SRC/zig-out/native/lib/libtfgrammar.so" ] || { echo "no $TF_SRC/zig-out/native/lib/libtfgrammar.so: rerun setup.sh" >&2; exit 1; }

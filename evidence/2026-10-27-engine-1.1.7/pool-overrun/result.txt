@@ -1,0 +1,26 @@
+TensorFold 1.1.7, recipe defaults with TF_QWEN_KV_PAGES=256 (CONTEXT=262144, PARALLEL=auto: 4 streams, the first in its own
+window, 3 more on 338 pages of 256 rows), fp8 caches, int8 prompts. python3 pool_pressure.py with TF_SRC at the v1.1.7
+checkout; greedy, 64 tokens, thinking off. The three requests beside the first need about 163k tokens of pages; the pool holds
+86,528.
+
+together:
+0 {'ok': True, 'sha': '8b7b6c0daf77', 'prompt_tokens': 48354, 's': 38.7, 'text': 'cli.zig\ncuda_checks.zig\ncuda_dory.zig'}
+1 {'ok': True, 'sha': '2e13a464f860', 'prompt_tokens': 66678, 's': 58.7, 'text': 'glm_sampling_pending.zig\ngradient_pending.zig\nhc_activation.zig'}
+2 {'ok': True, 'sha': '62c0fbb75a20', 'prompt_tokens': 48004, 's': 15.1, 'text': 'reader.zig\nreader_test.zig\nrows.zig'}
+3 {'ok': True, 'sha': 'd00ec9331147', 'prompt_tokens': 48627, 's': 29.4, 'text': 'lanes.zig\nlearned_dirs.zig\nlearned_disk.zig'}
+alone:
+0 {'ok': True, 'sha': '8b7b6c0daf77', 'prompt_tokens': 48354, 's': 1.2, 'text': 'cli.zig\ncuda_checks.zig\ncuda_dory.zig'}
+1 {'ok': True, 'sha': '2e13a464f860', 'prompt_tokens': 66678, 's': 0.7, 'text': 'glm_sampling_pending.zig\ngradient_pending.zig\nhc_activation.zig'}
+2 {'ok': True, 'sha': '62c0fbb75a20', 'prompt_tokens': 48004, 's': 12.9, 'text': 'reader.zig\nreader_test.zig\nrows.zig'}
+3 {'ok': True, 'sha': 'd00ec9331147', 'prompt_tokens': 48627, 's': 13.0, 'text': 'lanes.zig\nlearned_dirs.zig\nlearned_disk.zig'}
+together == alone: 4/4; errors together: 0
+
+Alone runs 0 and 1 resumed their prompts from the prompt cache (resumed at 45,056 and 65,536 tokens); 2 and 3 ran fresh.
+The server answered /health afterwards (31.5 GB active, 0 waiting).
+
+beyond_pool.py (same server): request A (48,349 tokens, 1,500-token reply) starts first; 3 s later request B (125,310
+tokens, more than the whole page pool) arrives while A decodes.
+A (first, long decode): {'ok': True, 'prompt_tokens': 48349, 'out': 1438, 's': 8.0}
+B (beyond the pool): {'ok': True, 'prompt_tokens': 125310, 'out': 32, 's': 51.8}
+B completed; nothing hung or failed, and the server answered /health afterwards. (A's prompt was resumed from the prompt
+cache: the same text as pool_pressure.py's request 0.)

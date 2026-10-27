@@ -4,8 +4,8 @@ Serve [TensorFold/Qwen3.8-27B-MLX-4bit](https://huggingface.co/TensorFold/Qwen3.
 [z-lab/Qwen3.8-27B-DFlash2](https://huggingface.co/z-lab/Qwen3.8-27B-DFlash2) drafter on a single RTX 5090 (sm_120,
 32 GB), through [TensorFold](https://github.com/ashhart/TensorFold)'s native Zig engine on CUDA:
 - text and images (PNG, JPEG, WebP) in one OpenAI-compatible API (`image_url` parts);
-- the model's full 262,144-token window, with the vision tower loaded, in one stream, or up to 8 streams at shorter
-  windows ([Streams](#streams));
+- the model's full 262,144-token window, with the vision tower loaded, for one stream, with three more streams beside it
+  on a shared pool of KV pages; or up to 8 streams at shorter windows ([Streams](#streams));
 - DFlash2 drafts on every reply;
 - structured output (`response_format`) and forced tool calls (`tool_choice: "required"` or a named function);
 - a prompt cache that resumes a chat's kept state on the next turn;
@@ -38,7 +38,7 @@ the whole-window streams plan were not run on 1.1.7. What 1.1.7 changes for this
   1.1.5 ignored them, so requests that send them now get penalized draws (the suite's penalized run is below).
 - Paged streams (`TF_QWEN_KV_PAGES`) take the same attention as whole windows
   ([#1373](https://github.com/ashhart/TensorFold/pull/1373)), and on this card they now keep replies exact, which
-  1.1.5's did not: 8 streams at 65,536 tokens each are measured in [Streams](#streams).
+  1.1.5's did not. Pages are now the recipe's default (`TF_QWEN_KV_PAGES=256`): see [Streams](#streams).
 - An int8 prompt chunk that falls back to bf16 is counted and logged once
   ([#1371](https://github.com/ashhart/TensorFold/pull/1371)).
 
@@ -237,8 +237,9 @@ In short, against this vLLM configuration only:
 - **Quality:** the same within a few answers either way. This recipe returns reasoning in `reasoning_content`; vLLM, as configured, does not.
 - **Prompt cache:** here a 105k-token chat's next turn starts in 1.14 s instead of 33.6 s. vLLM does not report cached
   tokens, so we did not measure its prefix caching.
-- **Concurrency:** both ran one request at a time. This recipe serves one stream at the full window; batching
-  servers reach higher total throughput under concurrent load.
+- **Concurrency:** both ran one request at a time, on an earlier engine that served one stream at the full window.
+  This recipe now serves up to four streams by default ([Streams](#streams)); vLLM was not measured under concurrent
+  load.
 
 ## Prompt cache
 
@@ -292,8 +293,29 @@ references, and token exactness against TensorFold 0.6.6. The previous engine's 
 
 ### Streams
 
-One stream at the full window is the default. With a shorter window the card holds several, each with its own whole KV
-window, and the engine shares its rounds between them. Eight streams at 262,144 do not fit, not even on pages: the
+**The default (since 1.1.7):** `TF_QWEN_KV_PAGES=256` with `CONTEXT=262144 PARALLEL=auto` serves four streams. The
+first has its own 262,144-token window (9.02 GiB); the other three take 256-row pages from one pool of 338 (86,528
+tokens, 2.68 GiB) as they need them. When the pool runs out, a request waits for pages instead of failing. On 1.1.7
+([`evidence/2026-10-27-engine-1.1.7/`](evidence/2026-10-27-engine-1.1.7/)):
+
+| Default launch, paged (1.1.7) | 1 user | 2 users | 4 users |
+|---|---:|---:|---:|
+| prose / code tok/s over all streams ([`harness-streams-paged-default/`](evidence/2026-10-27-engine-1.1.7/harness-streams-paged-default/)) | 278.0 / 535.5 | 445.8 / 737.1 | 741.9 / 1396.5 |
+| its first token | 0.06 s | 0.09 s | 0.15 s |
+
+- Four streams together equal the same chats alone 12/12, and drafted equals undrafted 12/12.
+- The `quick` plan passes every check as on whole windows: soak 60/60, structured output 18/18, tools 5/5, sampling
+  9/9, and a resumed turn equals a cold one. Vision is 12/12. One stream decodes at 277.6 / 535.8 / 351.3 / 336.9 tok/s
+  ([`harness-quick-paged-default/`](evidence/2026-10-27-engine-1.1.7/harness-quick-paged-default/),
+  [`harness-vision-paged-default/`](evidence/2026-10-27-engine-1.1.7/harness-vision-paged-default/)).
+- Four greedy requests of 48k to 67k tokens at once, so that the three beside the first need about 163k tokens of pages
+  against the pool's 86,528, all completed with replies equal to the same requests alone (4/4, no errors). The paged
+  ones waited for pages, taking 15-59 s instead of 1-13 s alone. A 125,310-token request, more than the whole pool,
+  sent while the first stream decoded, completed in 51.8 s ([`pool-overrun/`](evidence/2026-10-27-engine-1.1.7/pool-overrun/)).
+- `nvidia-smi` shows 30,914 MiB in use after loading and 31,088 MiB under load, against 28,122 MiB with whole windows.
+
+`TF_QWEN_KV_PAGES=0` goes back to one stream at the full window. With a shorter window the card holds several streams,
+each with its own whole KV window, and the engine shares its rounds between them. Eight streams at 262,144 do not fit, not even on pages: the
 engine refuses with 6.38 GiB needed for seven more streams' fixed parts, state runs and a page each, against the 2.75 GiB
 one 262k window leaves. The harness's `streams` plan on 1.1.5 (the
 decode ruler at 1, 2, 4 and 8 users, 256 tokens a reply, median of 3; then 12 chats four at a time against the same
@@ -388,7 +410,8 @@ To run it as a service:
 | `PROMPT_PRECISION` | `int8` | the prompt matmuls' activations; `bf16` is exact and takes 25-36% longer to read a prompt |
 | `PROMPT_CACHE_GIB` | `8` | host memory for kept prompt states, at most half of `MemAvailable`; `0` turns the cache off |
 | `CONTEXT` | `262144` | the window |
-| `PARALLEL` | `auto` | streams at once: one at 262,144. `PARALLEL=N` with a shorter `CONTEXT` serves N streams in shared rounds, each with a whole window ([Streams](#streams)); `CONTEXT=32768 PARALLEL=4` and `CONTEXT=8192 PARALLEL=8` are measured, and with `TF_QWEN_KV_PAGES=256` (pages from one pool) `CONTEXT=65536 PARALLEL=8` |
+| `TF_QWEN_KV_PAGES` | `256` | streams beside the first take pages of this many positions from one pool; `0`: a whole window each ([Streams](#streams)) |
+| `PARALLEL` | `auto` | streams at once: four at 262,144 with pages, one with `TF_QWEN_KV_PAGES=0`. `PARALLEL=N` with a shorter `CONTEXT` serves N streams in shared rounds, each with a whole window ([Streams](#streams)); `CONTEXT=32768 PARALLEL=4` and `CONTEXT=8192 PARALLEL=8` are measured, and with `TF_QWEN_KV_PAGES=256` (pages from one pool) `CONTEXT=65536 PARALLEL=8` |
 | `MAX_TOKENS` | the engine's | the output cap for a request that sends no `max_tokens` |
 | `THINKING_BUDGET` | the engine's | a cap on a reply's reasoning tokens |
 | `PORT` / `HOST` | `30000` / `0.0.0.0` | |
