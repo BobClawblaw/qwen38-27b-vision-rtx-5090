@@ -33,11 +33,12 @@ Every serving check is unchanged: drafted equals undrafted 12/12, 4 streams toge
 structured output 18/18, tools 5/5, 9/9 seeded replies equal on repeat and undrafted, a resumed turn equals a cold one;
 vision 12/12 ([`harness-quick/`](evidence/2026-10-27-engine-1.1.7/harness-quick/),
 [`harness-vision/`](evidence/2026-10-27-engine-1.1.7/harness-vision/)). The quality suite, the long-prompt speeds and
-the streams plan were not run on 1.1.7. What 1.1.7 changes for this recipe, from its changelog:
+the whole-window streams plan were not run on 1.1.7. What 1.1.7 changes for this recipe:
 - `presence_penalty` and `frequency_penalty` are applied ([#1346](https://github.com/ashhart/TensorFold/pull/1346));
   1.1.5 ignored them, so requests that send them now get penalized draws (the suite's penalized run is below).
 - Paged streams (`TF_QWEN_KV_PAGES`) take the same attention as whole windows
-  ([#1373](https://github.com/ashhart/TensorFold/pull/1373)); see [Streams](#streams).
+  ([#1373](https://github.com/ashhart/TensorFold/pull/1373)), and on this card they now keep replies exact, which
+  1.1.5's did not: 8 streams at 65,536 tokens each are measured in [Streams](#streams).
 - An int8 prompt chunk that falls back to bf16 is counted and logged once
   ([#1371](https://github.com/ashhart/TensorFold/pull/1371)).
 
@@ -309,15 +310,29 @@ undrafted (12/12). `nvidia-smi` shows 25,694 MiB in use at 8192 x 8 and 25,760 M
 ruler's aggregate is the sum of the streams' decode rates, so a cell with more users than lanes would overcount the
 queued ones and is left out.
 
-1.1.5 can also give the streams beside the first pages of one pool (`TF_QWEN_KV_PAGES=256`), which fits more streams at
-long windows (at 65,536 x 8: 1,095 pages, 8.69 GiB). On this card that path does not keep replies exact: the 12 chats
-four at a time equal the same chats alone in 6 to 8 of 12 cases, against 12 of 12 with whole windows, for fp8 and
-bf16 caches and int8 and bf16 prompts alike, while drafted still equals undrafted
-([`harness-together-16384x4-paged/`](evidence/2026-10-25-engine-1.1.5/harness-together-16384x4-paged/) against
-[`harness-together-16384x4-whole/`](evidence/2026-10-25-engine-1.1.5/harness-together-16384x4-whole/), and
-[`harness-streams-65536x8-paged/`](evidence/2026-10-25-engine-1.1.5/harness-streams-65536x8-paged/)). 1.1.7's changelog
-reports this fixed ([#1373](https://github.com/ashhart/TensorFold/pull/1373): paged streams take the whole window's
-attention); it has not been measured here on 1.1.7, so the recipe still leaves it unset.
+`TF_QWEN_KV_PAGES=256` gives the streams beside the first pages of one pool, which fits more streams at long windows
+(at 65,536 x 8: the first stream's own 2.93 GiB window, and 1,095 pages of 256 rows, 8.69 GiB, for the other seven as
+they need them). On 1.1.5 that path did not keep replies exact on this card: the 12 chats four at a time equalled the
+same chats alone in 6 to 8 of 12 cases, against 12 of 12 with whole windows, for fp8 and bf16 caches and int8 and bf16
+prompts alike ([`harness-together-16384x4-paged/`](evidence/2026-10-25-engine-1.1.5/harness-together-16384x4-paged/)
+against [`harness-together-16384x4-whole/`](evidence/2026-10-25-engine-1.1.5/harness-together-16384x4-whole/)).
+1.1.7 fixes it ([#1373](https://github.com/ashhart/TensorFold/pull/1373): a paged stream takes the same attention as a
+whole window). On 1.1.7 with fp8 caches and int8 prompts, `CONTEXT=16384 PARALLEL=4` gives 12/12 with whole windows
+and 12/12 in each of three runs with pages
+([`harness-together-16384x4-whole/`](evidence/2026-10-27-engine-1.1.7/harness-together-16384x4-whole/),
+[`-paged-1/`](evidence/2026-10-27-engine-1.1.7/harness-together-16384x4-paged-1/),
+[`-paged-2/`](evidence/2026-10-27-engine-1.1.7/harness-together-16384x4-paged-2/),
+[`-paged-3/`](evidence/2026-10-27-engine-1.1.7/harness-together-16384x4-paged-3/)), and the streams plan at
+`TF_QWEN_KV_PAGES=256 CONTEXT=65536 PARALLEL=8` gives 12/12 together equal to alone and drafted equal to undrafted
+([`harness-streams-65536x8-paged/`](evidence/2026-10-27-engine-1.1.7/harness-streams-65536x8-paged/)):
+
+| `TF_QWEN_KV_PAGES=256 CONTEXT=65536 PARALLEL=8` (1.1.7) | 1 user | 2 users | 4 users | 8 users |
+|---|---:|---:|---:|---:|
+| prose / code tok/s over all streams | 278.3 / 536.9 | 448.9 / 736.9 | 569.1 / 935.4 | 719.1 / 1172.0 |
+| its first token | 0.06 s | 0.09 s | 0.15 s | 0.26-0.27 s |
+
+`nvidia-smi` shows 30,878 MiB in use after loading and 31,112 MiB under load at that setting. The suite's together
+check runs four streams at a time, so eight at once are covered by the ruler's speeds, not by an exactness check.
 
 ### Decode on a long-running server
 
@@ -373,7 +388,7 @@ To run it as a service:
 | `PROMPT_PRECISION` | `int8` | the prompt matmuls' activations; `bf16` is exact and takes 25-36% longer to read a prompt |
 | `PROMPT_CACHE_GIB` | `8` | host memory for kept prompt states, at most half of `MemAvailable`; `0` turns the cache off |
 | `CONTEXT` | `262144` | the window |
-| `PARALLEL` | `auto` | streams at once: one at 262,144. `PARALLEL=N` with a shorter `CONTEXT` serves N streams in shared rounds, each with a whole window ([Streams](#streams)); `CONTEXT=32768 PARALLEL=4` and `CONTEXT=8192 PARALLEL=8` are measured. Leave `TF_QWEN_KV_PAGES` unset on this engine |
+| `PARALLEL` | `auto` | streams at once: one at 262,144. `PARALLEL=N` with a shorter `CONTEXT` serves N streams in shared rounds, each with a whole window ([Streams](#streams)); `CONTEXT=32768 PARALLEL=4` and `CONTEXT=8192 PARALLEL=8` are measured, and with `TF_QWEN_KV_PAGES=256` (pages from one pool) `CONTEXT=65536 PARALLEL=8` |
 | `MAX_TOKENS` | the engine's | the output cap for a request that sends no `max_tokens` |
 | `THINKING_BUDGET` | the engine's | a cap on a reply's reasoning tokens |
 | `PORT` / `HOST` | `30000` / `0.0.0.0` | |
