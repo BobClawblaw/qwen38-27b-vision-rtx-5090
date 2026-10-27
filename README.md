@@ -13,13 +13,17 @@ Serve [TensorFold/Qwen3.8-27B-MLX-4bit](https://huggingface.co/TensorFold/Qwen3.
 
 ## Engine
 
-The recipe builds TensorFold [1.1.5](https://github.com/ashhart/TensorFold/releases/tag/v1.1.5) (`84e0d560`) from
-upstream. The four PRs the previous version carried on a fork branch, [#1079](https://github.com/ashhart/TensorFold/pull/1079)
+The recipe builds TensorFold [1.1.6](https://github.com/ashhart/TensorFold/releases/tag/v1.1.6) (`eea9dc9c`) from
+upstream. This pin was build- and serving-checked on an RTX PRO 4500 (sm_120, 32 GB), including the full window
+(with a 2 GiB memory reserve), image input, structured output, forced tool calls and prompt-cache reuse. The RTX 5090 measurements below retain
+their original engine versions; they have not been rerun on 1.1.6.
+
+The four PRs an earlier version carried on a fork branch, [#1079](https://github.com/ashhart/TensorFold/pull/1079)
 (the qwen3_5 CUDA engine's decode), [#1080](https://github.com/ashhart/TensorFold/pull/1080) (its prefill),
 [#1168](https://github.com/ashhart/TensorFold/pull/1168) (its decode attention on tensor cores, for fp8 and bf16 caches)
 and [#1176](https://github.com/ashhart/TensorFold/pull/1176) (prompt matmuls on int8 activations), landed in 1.1.4, so
 the engine is upstream's own again. The numbers in [Against the previous versions](#against-the-previous-versions-of-this-recipe)
-and [Streams](#streams) are 1.1.5's, measured on a build of the pinned commit with `setup.sh`'s flags
+and [Streams](#streams) are 1.1.5's, measured on a build of `84e0d560` with `setup.sh`'s flags
 ([`evidence/2026-10-25-engine-1.1.5/`](evidence/2026-10-25-engine-1.1.5/)). The rest of this document was measured on
 the previous engine, `18d93451` ([`evidence/2026-10-22-lone-bands/`](evidence/2026-10-22-lone-bands/)); the harness's
 `quick` plan on 1.1.5 ([`harness-quick/`](evidence/2026-10-25-engine-1.1.5/harness-quick/)) gives the same result on
@@ -58,7 +62,7 @@ prompt rows. The fixed prompts are the first 108,000 and 335,000 characters of a
 two runs; the long prompts are [`tools/longspeed.py`](tools/longspeed.py)'s over the same tree, one run (two at 250k)
 ([`speed/`](evidence/2026-10-25-engine-1.1.5/speed/)):
 
-| | this version (1.1.5) | `18d93451` |
+| | 1.1.5 | `18d93451` |
 |---|---:|---:|
 | Fixed 35,554-token prompt, 512 tokens, whole request | 10.08-10.14 s | **9.94-9.95 s** |
 | Its first token | 8.11-8.17 s | **7.85-7.87 s** |
@@ -171,7 +175,7 @@ penalty move each score by a few answers either way, within run-to-run noise. Te
 `presence_penalty` and `frequency_penalty` (its server reads neither field): a request that sends them gets unpenalized
 draws.
 The penalized run above used a TensorFold build with the penalties added, which is being prepared for upstream; the
-served engine is plain 1.1.5.
+served engine at the time was plain 1.1.5.
 
 ### The checkpoint, against the NVFP4 exports
 
