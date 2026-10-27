@@ -1,0 +1,70 @@
+[
+ {
+  "name": "streaming",
+  "score": 1.0,
+  "cases": 4,
+  "passed": 4,
+  "seconds": 3.154344081878662,
+  "notes": [
+   "identical"
+  ],
+  "details": {}
+ },
+ {
+  "name": "multiturn",
+  "score": 0.875,
+  "cases": 8,
+  "passed": 7,
+  "seconds": 3.182300329208374,
+  "notes": [
+   "recalled 7/8 facts"
+  ],
+  "details": {
+   "reply": "My name is Odile.\nI live in Lyon.\nMy cat is Pistache, age 7.\nI work as a luthier.\nI fly to Montreal on Nov 14."
+  }
+ },
+ {
+  "name": "stop",
+  "score": 1.0,
+  "cases": 3,
+  "passed": 3,
+  "seconds": 0.27280592918395996,
+  "notes": [
+   "3/3 stopped before the string"
+  ],
+  "details": {}
+ },
+ {
+  "name": "thinking",
+  "score": 1.0,
+  "cases": 10,
+  "passed": 10,
+  "seconds": 3.0659878253936768,
+  "notes": [
+   "0 replies without reasoning_content, 0 with think tags in content"
+  ],
+  "details": {}
+ },
+ {
+  "name": "copy",
+  "score": 1.0,
+  "cases": 2,
+  "passed": 2,
+  "seconds": 0.25490331649780273,
+  "notes": [
+   "2/2 byte-identical"
+  ],
+  "details": {}
+ },
+ {
+  "name": "max-tokens",
+  "score": 1.0,
+  "cases": 3,
+  "passed": 3,
+  "seconds": 0.3539917469024658,
+  "notes": [
+   "3/3 exact"
+  ],
+  "details": {}
+ }
+]

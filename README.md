@@ -13,15 +13,38 @@ Serve [TensorFold/Qwen3.8-27B-MLX-4bit](https://huggingface.co/TensorFold/Qwen3.
 
 ## Engine
 
-The recipe builds TensorFold [1.1.5](https://github.com/ashhart/TensorFold/releases/tag/v1.1.5) (`84e0d560`) from
-upstream. The four PRs the previous version carried on a fork branch, [#1079](https://github.com/ashhart/TensorFold/pull/1079)
+The recipe builds TensorFold [1.1.7](https://github.com/ashhart/TensorFold/releases/tag/v1.1.7) (`59044397`) from
+upstream. The four PRs an earlier version carried on a fork branch, [#1079](https://github.com/ashhart/TensorFold/pull/1079)
 (the qwen3_5 CUDA engine's decode), [#1080](https://github.com/ashhart/TensorFold/pull/1080) (its prefill),
 [#1168](https://github.com/ashhart/TensorFold/pull/1168) (its decode attention on tensor cores, for fp8 and bf16 caches)
 and [#1176](https://github.com/ashhart/TensorFold/pull/1176) (prompt matmuls on int8 activations), landed in 1.1.4, so
-the engine is upstream's own again. The numbers in [Against the previous versions](#against-the-previous-versions-of-this-recipe)
-and [Streams](#streams) are 1.1.5's, measured on a build of the pinned commit with `setup.sh`'s flags
-([`evidence/2026-10-25-engine-1.1.5/`](evidence/2026-10-25-engine-1.1.5/)). The rest of this document was measured on
-the previous engine, `18d93451` ([`evidence/2026-10-22-lone-bands/`](evidence/2026-10-22-lone-bands/)); the harness's
+the engine is upstream's own.
+
+On 1.1.7 (2026-10-27, a build of the pinned commit with `setup.sh`'s flags,
+[`evidence/2026-10-27-engine-1.1.7/`](evidence/2026-10-27-engine-1.1.7/)) only the harness's `quick` plan and the
+suite's vision check were run, against 1.1.5's `quick` run ([`harness-quick/`](evidence/2026-10-25-engine-1.1.5/harness-quick/)):
+
+| One stream, fresh server | 1.1.5 | 1.1.7 |
+|---|---:|---:|
+| prose / code / structured / list, tok/s | 278.3 / 538.1 / 352.6 / 337.3 | 274.1 / 537.7 / 352.3 / 337.7 |
+| first token | 0.06 s | 0.06 s |
+
+Every serving check is unchanged: drafted equals undrafted 12/12, 4 streams together equal alone 12/12, soak 60/60,
+structured output 18/18, tools 5/5, 9/9 seeded replies equal on repeat and undrafted, a resumed turn equals a cold one;
+vision 12/12 ([`harness-quick/`](evidence/2026-10-27-engine-1.1.7/harness-quick/),
+[`harness-vision/`](evidence/2026-10-27-engine-1.1.7/harness-vision/)). The quality suite, the long-prompt speeds and
+the streams plan were not run on 1.1.7. What 1.1.7 changes for this recipe, from its changelog:
+- `presence_penalty` and `frequency_penalty` are applied ([#1346](https://github.com/ashhart/TensorFold/pull/1346));
+  1.1.5 ignored them, so requests that send them now get penalized draws (the suite's penalized run is below).
+- Paged streams (`TF_QWEN_KV_PAGES`) take the same attention as whole windows
+  ([#1373](https://github.com/ashhart/TensorFold/pull/1373)); see [Streams](#streams).
+- An int8 prompt chunk that falls back to bf16 is counted and logged once
+  ([#1371](https://github.com/ashhart/TensorFold/pull/1371)).
+
+The numbers in [Against the previous versions](#against-the-previous-versions-of-this-recipe), the quality
+runs marked 1.1.5 and [Streams](#streams) are 1.1.5's (`84e0d560`), measured on a build of that commit with `setup.sh`'s
+flags ([`evidence/2026-10-25-engine-1.1.5/`](evidence/2026-10-25-engine-1.1.5/)). The rest of this document was measured
+on an earlier engine, `18d93451` ([`evidence/2026-10-22-lone-bands/`](evidence/2026-10-22-lone-bands/)); the harness's
 `quick` plan on 1.1.5 ([`harness-quick/`](evidence/2026-10-25-engine-1.1.5/harness-quick/)) gives the same result on
 every serving check: drafted equals undrafted 12/12, 4 streams together equal alone 12/12, soak 60/60 with every turn
 resuming a kept state, structured output 18/18, tools 5/5, 9/9 seeded replies equal on repeat and undrafted.
@@ -58,7 +81,7 @@ prompt rows. The fixed prompts are the first 108,000 and 335,000 characters of a
 two runs; the long prompts are [`tools/longspeed.py`](tools/longspeed.py)'s over the same tree, one run (two at 250k)
 ([`speed/`](evidence/2026-10-25-engine-1.1.5/speed/)):
 
-| | this version (1.1.5) | `18d93451` |
+| | 1.1.5 | `18d93451` |
 |---|---:|---:|
 | Fixed 35,554-token prompt, 512 tokens, whole request | 10.08-10.14 s | **9.94-9.95 s** |
 | Its first token | 8.11-8.17 s | **7.85-7.87 s** |
@@ -170,8 +193,9 @@ Two more runs of the suite on the same build used the Qwen3.8 model card's think
 penalty move each score by a few answers either way, within run-to-run noise. TensorFold 1.1.5 itself ignores
 `presence_penalty` and `frequency_penalty` (its server reads neither field): a request that sends them gets unpenalized
 draws.
-The penalized run above used a TensorFold build with the penalties added, which is being prepared for upstream; the
-served engine is plain 1.1.5.
+The penalized run above used a TensorFold build with the penalties added, which is being prepared for upstream. They
+landed in 1.1.7 ([#1346](https://github.com/ashhart/TensorFold/pull/1346)), which this recipe now serves; the suite has
+not been run on 1.1.7.
 
 ### The checkpoint, against the NVFP4 exports
 
@@ -291,8 +315,9 @@ four at a time equal the same chats alone in 6 to 8 of 12 cases, against 12 of 1
 bf16 caches and int8 and bf16 prompts alike, while drafted still equals undrafted
 ([`harness-together-16384x4-paged/`](evidence/2026-10-25-engine-1.1.5/harness-together-16384x4-paged/) against
 [`harness-together-16384x4-whole/`](evidence/2026-10-25-engine-1.1.5/harness-together-16384x4-whole/), and
-[`harness-streams-65536x8-paged/`](evidence/2026-10-25-engine-1.1.5/harness-streams-65536x8-paged/)). The recipe leaves
-it unset.
+[`harness-streams-65536x8-paged/`](evidence/2026-10-25-engine-1.1.5/harness-streams-65536x8-paged/)). 1.1.7's changelog
+reports this fixed ([#1373](https://github.com/ashhart/TensorFold/pull/1373): paged streams take the whole window's
+attention); it has not been measured here on 1.1.7, so the recipe still leaves it unset.
 
 ### Decode on a long-running server
 
