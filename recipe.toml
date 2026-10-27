@@ -8,9 +8,9 @@ drafter_revision = "50307d4c4cde6860d4eee73e2547cd786fe8e8a4"
 
 [engine]
 repo = "https://github.com/ashhart/TensorFold.git"
-branch = "v1.1.5"                                  # the release tag (setup.sh fetches it by this name); #1079, #1080, #1168 and #1176 landed upstream in 1.1.4
-sha = "84e0d560303d85c50becb730720c04a56e38abe5"
-version = "1.1.5"
+branch = "v1.1.6"                                  # the release tag (setup.sh fetches it by this name); #1079, #1080, #1168 and #1176 landed upstream in 1.1.4
+sha = "eea9dc9c9c8b459c0a03de7f6fe0c6f4835d69ab"
+version = "1.1.6"
 zig = "0.17.0"
 sm = "120"
 
