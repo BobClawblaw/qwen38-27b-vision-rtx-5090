@@ -13,6 +13,8 @@
 #   PROMPT_CACHE_GIB (8: host memory for kept prompt states, at most half of MemAvailable; 0 turns the cache off)
 #   MAX_TOKENS (65536: the output cap when a request sends no max_tokens; it must hold a reply's thinking and its text)
 #   THINKING_BUDGET (49152: a cap on reasoning tokens a reply; 8192 cut GSM8K with thinking to 222/250, this gives 242-246)
+#   INSTRUCT_SAMPLING (unset: requests with thinking off start from the model card's instruct set, temperature 0.7, top_p
+#   0.8, top_k 20, presence_penalty 1.5; name=value pairs change it, `none` serves the thinking set to every request)
 #
 set -Eeuo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -34,4 +36,5 @@ exec "$TF_SRC/zig-out/native/bin/tensorfold-native" serve "$MODELS/$CHECKPOINT" 
   --context "${CONTEXT:-262144}" --parallel "${PARALLEL:-auto}" \
   --kv-cache "${KV_CACHE:-fp8}" ${PROMPT_PRECISION:+--prompt-precision "$PROMPT_PRECISION"} \
   --max-tokens "${MAX_TOKENS:-65536}" --thinking-budget "${THINKING_BUDGET:-49152}" \
+  ${INSTRUCT_SAMPLING:+--instruct-sampling "$INSTRUCT_SAMPLING"} \
   --vision ${PROMPT_CACHE_GIB:+--prompt-cache-gib "$PROMPT_CACHE_GIB"}
