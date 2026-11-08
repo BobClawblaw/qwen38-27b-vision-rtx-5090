@@ -54,6 +54,50 @@ The price: 16 to 22% of the decode speed at one stream (213.9 against 279.1 tok/
 three streams at the full window instead of four, and prompts on the bf16 path (the suite's slowest 225k-token prefill
 read 1,315 tok/s against 1,465 with the MLX 4-bit's int8 prompts).
 
+### Before and after
+
+The recipe as served until 2026-11-08 (the MLX 4-bit with int8 prompts) against the recipe now (the EXL3 4.00 bpw pack),
+both through TensorFold 1.2.4 on this card, so that only the checkpoint changes; the first speed column adds the
+published 1.1.7 build of the old recipe. Quality is the suite thinking off, greedy, except the first row
+([`harness-quality-off-mlx-4bit-int8/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quality-off-mlx-4bit-int8/) and
+[`harness-quant-compare-mlx-4bit-int8/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quant-compare-mlx-4bit-int8/) against
+[`harness-quality-off-exl3-4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quality-off-exl3-4/) and
+[`harness-quant-compare-exl3-4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quant-compare-exl3-4/)):
+
+| Quality | Before: MLX 4-bit, int8 prompts | After: EXL3 4.00 bpw |
+|---|---:|---:|
+| GSM8K with thinking, 49,152-token budget | 242/250 | **244/250** |
+| GSM8K | 241/250 | **245/250** |
+| MMLU (57 subjects x 6) | 270/342 | **281/342** |
+| IFEval, loose / strict | 129 / 121 of 150 | **132 / 129** of 150 |
+| HumanEval pass@1 | 152/164 | **154/164** |
+| MGSM (8 languages) | 215/240 | **217/240** |
+| tools | 58/60 | **59/60** |
+| json | 30/30 | 30/30 |
+| behaviour: streaming, stop, copy, max-tokens, thinking | 4/4, 3/3, 2/2, 3/3, 10/10 | 4/4, 3/3, 2/2, 3/3, 10/10 |
+| behaviour: multiturn recall | 7/8 | 7/8 |
+| drafts (drafted equals undrafted) / concurrent (4 together equal alone) / repetition | 12/12 / 12/12 / 8/8 | 12/12 / 12/12 / 8/8 |
+| long context (needles to 224k, facts to 225k) | 55/55 | 55/55 |
+| vision probes | 12/12 | 12/12 |
+| soak: replies equal, turns resuming a kept state | 60/60, 60/60 | 60/60, 60/60 |
+
+| Speed and memory | Before, 1.1.7 (2026-10-27) | Before, 1.2.4 | After: EXL3 4.00 bpw, 1.2.4 |
+|---|---:|---:|---:|
+| Decode ruler, fresh server, one stream: prose / code / structured / list tok/s | 274.1 / 537.7 / 352.3 / 337.7 | **279.1 / 539.1 / 353.3 / 338.0** | 214.5 / 453.7 / 307.4 / 265.0 |
+| The ruler after the thinking-off quality suite | not run | **277.9 / 537.9 / 352.6 / 337.4** | 216.2 / 450.7 / 305.7 / 262.9 |
+| First token, short chat | 0.06 s | 0.06 s | **0.03-0.06 s** |
+| Slowest long-context prefill in the suite (the 225k-token fact prompts) | not run | **1,465 tok/s** | 1,315 tok/s |
+| Streams at the 262,144-token window (pages beside the first) | 4 | 4 | 3 |
+| Weights loaded, as the engine reports them | 17.67 GiB | 17.67 GiB | 18.16 GiB |
+| `nvidia-smi` after loading | 30,914 MiB | 30,848 MiB | 30,736 MiB |
+| Thinking budget / output cap | 8,192 / 32,768 | 49,152 / 65,536 | 49,152 / 65,536 |
+
+The quality columns are single runs of a deterministic suite: the EXL3 pack's second pass reproduced its column
+exactly, and the MLX 4-bit's 1.2.4 column equals its 1.1.5 scores on every check. The old recipe's speed rows are
+from [`harness-quick-mlx-4bit-1.2.4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quick-mlx-4bit-1.2.4/) and the 1.1.7 `quick` run
+([`evidence/2026-10-27-engine-1.1.7/harness-quick/`](evidence/2026-10-27-engine-1.1.7/harness-quick/)); the new
+recipe's from [`harness-quick-exl3-4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quick-exl3-4/) and [`harness-quality-off-exl3-4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quality-off-exl3-4/).
+
 **The thinking budget.** From 2026-10-13 the launch capped reasoning at 8,192 tokens (`--thinking-budget 8192`, so that
 a reply's thinking and text fit its 32,768-token output cap). GSM8K with thinking scored 222/250 under that cap
 (2026-10-19, engine `29eb2574`, the MLX 4-bit; [`harness-thinking-mlx-4bit-budget8192/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-thinking-mlx-4bit-budget8192/))
