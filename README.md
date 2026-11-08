@@ -107,6 +107,11 @@ sets `--thinking-budget 49152 --max-tokens 65536`, and the thinking rows above r
 defaults are the model card's for thinking (temperature 1.0, top_p 0.95, top_k 20); its thinking-off recommendation
 (0.7, 0.8, `presence_penalty` 1.5) is a request's to send.
 
+**On the TensorFold board:** the pack's community-v1 entry, run on 2026-11-08 from the public checkpoint with the
+board's protocol (256 tokens, 5 repetitions, one stream), is at
+[tensorfold.dev/benchmarks](https://tensorfold.dev/benchmarks?result=e4935ac8-c889-4944-8d33-f04ed2e1f791): code 373 /
+chat 211 tok/s sampled, 363 / 216 greedy, first text 0.017-0.032 s.
+
 **Not rerun on the EXL3 pack:** everything from [Against the previous versions](#against-the-previous-versions-of-this-recipe)
 on (the vLLM comparison, the prompt-cache measurements, the long-prompt tables, the streams plan at shorter windows and
 the KL study) was measured on the MLX 4-bit checkpoint, with int8 prompts unless said otherwise, on the engines named
