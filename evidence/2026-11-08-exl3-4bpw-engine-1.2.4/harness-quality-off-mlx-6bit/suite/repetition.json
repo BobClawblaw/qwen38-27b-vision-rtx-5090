@@ -1,0 +1,62 @@
+{
+ "name": "repetition",
+ "score": 1.0,
+ "cases": 8,
+ "passed": 8,
+ "seconds": 41.927253007888794,
+ "notes": [
+  "repeated 4-grams 0.51% mean, max 1.07%; 0 replies hit max_tokens"
+ ],
+ "details": {
+  "replies": [
+   {
+    "rate": 0.00865265760197775,
+    "words": 809,
+    "finish": "stop",
+    "tokens": 1006
+   },
+   {
+    "rate": 0.0015290519877675841,
+    "words": 646,
+    "finish": "stop",
+    "tokens": 809
+   },
+   {
+    "rate": 0.004451038575667656,
+    "words": 653,
+    "finish": "stop",
+    "tokens": 938
+   },
+   {
+    "rate": 0.010687022900763359,
+    "words": 648,
+    "finish": "stop",
+    "tokens": 923
+   },
+   {
+    "rate": 0.008012820512820512,
+    "words": 622,
+    "finish": "stop",
+    "tokens": 748
+   },
+   {
+    "rate": 0.0016129032258064516,
+    "words": 612,
+    "finish": "stop",
+    "tokens": 823
+   },
+   {
+    "rate": 0.005681818181818182,
+    "words": 707,
+    "finish": "stop",
+    "tokens": 925
+   },
+   {
+    "rate": 0.0,
+    "words": 655,
+    "finish": "stop",
+    "tokens": 817
+   }
+  ]
+ }
+}

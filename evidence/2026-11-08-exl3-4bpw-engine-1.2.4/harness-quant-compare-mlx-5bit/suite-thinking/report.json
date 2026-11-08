@@ -1,0 +1,31 @@
+{
+ "url": "http://127.0.0.1:30000",
+ "model": "qwen38-27b",
+ "results": [
+  {
+   "name": "gsm8k",
+   "score": 0.972,
+   "cases": 250,
+   "passed": 243,
+   "seconds": 485.63179302215576,
+   "notes": [
+    "misses at [12, 14, 16, 45, 85, 93, 119]"
+   ],
+   "details": {
+    "n": 250,
+    "thinking": true,
+    "max_tokens": 50176,
+    "misses": [
+     12,
+     14,
+     16,
+     45,
+     85,
+     93,
+     119
+    ],
+    "truncated": 0
+   }
+  }
+ ]
+}

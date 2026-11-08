@@ -1,19 +1,88 @@
 # Qwen3.8-27B with image input and a 262k window on one RTX 5090
 
-Serve [TensorFold/Qwen3.8-27B-MLX-4bit](https://huggingface.co/TensorFold/Qwen3.8-27B-MLX-4bit) with the
-[z-lab/Qwen3.8-27B-DFlash2](https://huggingface.co/z-lab/Qwen3.8-27B-DFlash2) drafter on a single RTX 5090 (sm_120,
-32 GB), through [TensorFold](https://github.com/ashhart/TensorFold)'s native Zig engine on CUDA:
+Serve [turboderp/Qwen3.8-27B-exl3](https://huggingface.co/turboderp/Qwen3.8-27B-exl3/tree/4.00bpw) at 4.00 bits a
+weight with the [z-lab/Qwen3.8-27B-DFlash2](https://huggingface.co/z-lab/Qwen3.8-27B-DFlash2) drafter on a single
+RTX 5090 (sm_120, 32 GB), through [TensorFold](https://github.com/ashhart/TensorFold) 1.2.4's native Zig engine on CUDA:
 - text and images (PNG, JPEG, WebP) in one OpenAI-compatible API (`image_url` parts);
-- the model's full 262,144-token window, with the vision tower loaded, for one stream, with three more streams beside it
-  on a shared pool of KV pages; or up to 8 streams at shorter windows ([Streams](#streams));
+- the model's full 262,144-token window, with the vision tower loaded, for one stream, with two more streams beside it
+  on a shared pool of KV pages (three more with the MLX 4-bit checkpoint); or up to 8 streams at shorter windows,
+  measured with the MLX 4-bit ([Streams](#streams));
 - DFlash2 drafts on every reply;
 - structured output (`response_format`) and forced tool calls (`tool_choice: "required"` or a named function);
 - a prompt cache that resumes a chat's kept state on the next turn;
 - a systemd unit.
 
+## Checkpoint
+
+Since 2026-11-08 the recipe serves turboderp's EXL3 pack at 4.00 bits a weight (6-bit head, `mul1` codebook, exllamav3
+1.4.2; revision `113cf7ab`, the repository's `4.00bpw` branch) through the engine's EXL3 loader for the dense 27B, which
+landed in TensorFold 1.2.0. Before that it served
+[TensorFold/Qwen3.8-27B-MLX-4bit](https://huggingface.co/TensorFold/Qwen3.8-27B-MLX-4bit) (`22d8d538`), which stays
+pinned in `recipe.toml` as `[model.mlx_4bit]`: `CHECKPOINT=mlx_4bit ./setup.sh` downloads it as well, and
+`CHECKPOINT=Qwen3.8-27B-MLX-4bit PROMPT_PRECISION=int8 ./serve.sh` serves it as before.
+
+**Why.** Six checkpoints of the same model were served through the same launch (TensorFold 1.2.4, fp8 caches, a
+262,144-token window where it fit, pages for the streams beside the first, DFlash2, the vision tower loaded, a 49,152-token
+thinking budget) and measured with the recipe harness on 2026-11-08 ([`evidence/2026-11-08-exl3-4bpw-engine-1.2.4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/)): GSM8K
+with thinking at a 49,152-token reasoning budget, then the suite thinking off, greedy. The MLX 4-bit ran with int8 prompts,
+as the recipe served it, and once more with bf16 prompts; every other checkpoint takes the bf16 prompt path. The decode
+column is the harness ruler on a fresh server, one stream, prose / code / structured / list tok/s.
+
+| Checkpoint (weights loaded) | Streams at 262k | GSM8K, thinking | GSM8K | MMLU | IFEval loose / strict | HumanEval | MGSM | Five sections, of 1,146 | Tools | Decode, tok/s |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| **turboderp EXL3 4.00 bpw** (18.16 GiB), this recipe ([`harness-quant-compare-exl3-4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quant-compare-exl3-4/), [`harness-quality-off-exl3-4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quality-off-exl3-4/)) | 3 | 244/250 | **245**/250 | **281**/342 | **132** / **129** of 150 | **154**/164 | **217**/240 | **1,029** | 59/60 | 213.9 / 452.1 / 306.5 / 264.2 |
+| turboderp EXL3 5.00 bpw (20.99 GiB) ([`-exl3-5/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quant-compare-exl3-5/), [`harness-humaneval-exl3-5/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-humaneval-exl3-5/)) | 1 | **246**/250 | 243/250 | 276/342 | 131 / 123 | 151/164 | 213/240 | 1,014 | 57/60 | 189.3 / 366.5 / 240.5 / 256.7 |
+| lmstudio-community MLX 5-bit (21.18 GiB) ([`-mlx-5bit/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quant-compare-mlx-5bit/)) | 1 | 243/250 | 243/250 | 277/342 | 130 / 123 | 152/164 | 210/240 | 1,012 | 59/60 | 220.0 / 407.4 / 260.6 / 254.1 |
+| lmstudio-community MLX 6-bit (24.17 GiB; a 131,072-token window is the most that fits) ([`-mlx-6bit/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quant-compare-mlx-6bit/)) | 1 | 245/250 | 240/250 | 277/342 | 131 / 122 | **154**/164 | 213/240 | 1,015 | 59/60 | 215.4 / 374.4 / 230.7 / 242.9 |
+| TensorFold MLX 4-bit, int8 prompts (17.67 GiB), the recipe until 2026-11-08 ([`-mlx-4bit-int8/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quant-compare-mlx-4bit-int8/), [`harness-quality-off-mlx-4bit-int8/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quality-off-mlx-4bit-int8/)) | 4 | 242/250 | 241/250 | 270/342 | 129 / 121 | 152/164 | 215/240 | 1,007 | 58/60 | **279.1 / 539.1 / 353.3 / 338.0** |
+| TensorFold MLX 4-bit, bf16 prompts (17.60 GiB) ([`-mlx-4bit-bf16/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quant-compare-mlx-4bit-bf16/)) | 4 | 241/250 | 240/250 | 271/342 | 130 / 122 | 151/164 | 213/240 | 1,005 | not run | 275.7 / 525.3 / 353.9 / 331.7 |
+| nvidia NVFP4, ModelOpt (20.78 GiB; the engine refuses `--vision` with it) ([`-nvfp4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quant-compare-nvfp4/)) | 1 | 244/250 | 242/250 | 270/342 | 126 / 118 | 153/164 | 215/240 | 1,006 | **60**/60 | 224.5 / 434.3 / 289.9 / 264.5 |
+
+The EXL3 4.00 bpw pack leads every thinking-off section, and the five-section sum by about 2% over the MLX 4-bit. A
+second pass of its comparison plan reproduced every score and the same misses
+([`harness-quant-compare-exl3-4-run2/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quant-compare-exl3-4-run2/); greedy decoding is deterministic, so
+a rerun checks the measurement, not the question-sampling noise). The MLX 4-bit's MMLU is the same with int8 and bf16
+prompts (270 against 271), so the gap is in the weights, not in the prompt path. The 5-bit and 6-bit checkpoints score no
+better than the 4.00 bpw pack and hold one stream (the 6-bit not even the full window, so its long-context check could
+not run), and the NVFP4 export loses the vision tower. Each quality-off run also passed drafts 12/12, the 12 chats four
+at a time equal to the same chats alone 12/12, soak 60/60, json 30/30, repetition 8/8, long context 55/55 (needles to
+224k, facts to 225k) and vision 12/12, where the window and the tower allowed. GSM8K thinking off cuts 6 to 9 replies a
+run at the suite's 1,024-token cap on every checkpoint. The EXL3 5.00 bpw's HumanEval is from a separate run: its first
+two could not reach the sandbox.
+
+The price: 16 to 22% of the decode speed at one stream (213.9 against 279.1 tok/s on prose, 452.1 against 539.1 on code),
+three streams at the full window instead of four, and prompts on the bf16 path (the suite's slowest 225k-token prefill
+read 1,315 tok/s against 1,465 with the MLX 4-bit's int8 prompts).
+
+**The thinking budget.** From 2026-10-13 the launch capped reasoning at 8,192 tokens (`--thinking-budget 8192`, so that
+a reply's thinking and text fit its 32,768-token output cap). GSM8K with thinking scored 222/250 under that cap
+(2026-10-19, engine `29eb2574`, the MLX 4-bit; [`harness-thinking-mlx-4bit-budget8192/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-thinking-mlx-4bit-budget8192/))
+and 242/250 at 49,152 on 2026-11-08 (1.1.7, the same weights;
+[`harness-thinking-mlx-4bit-1.1.7-budget49152/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-thinking-mlx-4bit-1.1.7-budget49152/)). The launch now
+sets `--thinking-budget 49152 --max-tokens 65536`, and the thinking rows above ran at that budget. The server's sampling
+defaults are the model card's for thinking (temperature 1.0, top_p 0.95, top_k 20); its thinking-off recommendation
+(0.7, 0.8, `presence_penalty` 1.5) is a request's to send.
+
+**Not rerun on the EXL3 pack:** everything from [Against the previous versions](#against-the-previous-versions-of-this-recipe)
+on (the vLLM comparison, the prompt-cache measurements, the long-prompt tables, the streams plan at shorter windows and
+the KL study) was measured on the MLX 4-bit checkpoint, with int8 prompts unless said otherwise, on the engines named
+there. The EXL3 pack's own serving checks are in [Engine](#engine) and in the harness runs above.
+
 ## Engine
 
-The recipe builds TensorFold [1.1.7](https://github.com/ashhart/TensorFold/releases/tag/v1.1.7) (`59044397`) from
+The recipe builds TensorFold [1.2.4](https://github.com/ashhart/TensorFold/releases/tag/v1.2.4) (`267c5af6`) from
+upstream. EXL3 packs of the dense 27B load on CUDA since 1.2.0; the 1.1.7 build refused them
+(`UnsupportedQwenQuantization`). On 1.2.4 with the EXL3 pack (2026-11-08, the harness's `structured`, `vision` and
+`quick` plans on the served build; [`harness-structured-exl3-4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-structured-exl3-4/),
+[`harness-vision-exl3-4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-vision-exl3-4/), [`harness-quick-exl3-4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quick-exl3-4/)):
+structured output 18/18 and drafted equals plain 12/12, a bad regex refused with a 400, tools 5/5, vision 12/12 and a
+JPEG through the chat API; soak 60/60, drafted equals undrafted 12/12, the 12 chats four at a time equal to the same chats alone 12/12, 9/9 seeded replies equal on repeat and undrafted, a resumed turn equals a cold one (4,096 of 5,613 tokens resumed), multiturn recall 7/8 as on the MLX 4-bit; the decode ruler reads 214.5 / 453.7 / 307.4 / 265.0 tok/s fresh and 217.2 / 452.8 / 307.2 / 263.8 after
+the checks. The MLX 4-bit checkpoint on the same engine passes the same checks
+([`harness-quick-mlx-4bit-1.2.4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quick-mlx-4bit-1.2.4/),
+[`harness-structured-mlx-4bit-1.2.4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-structured-mlx-4bit-1.2.4/)) with its ruler at 278.8 / 538.8 /
+353.3 / 337.6 fresh, against 274.1 / 537.7 / 352.3 / 337.7 on 1.1.7.
+
+Until 2026-11-08 the recipe built TensorFold [1.1.7](https://github.com/ashhart/TensorFold/releases/tag/v1.1.7) (`59044397`) from
 upstream. The four PRs an earlier version carried on a fork branch, [#1079](https://github.com/ashhart/TensorFold/pull/1079)
 (the qwen3_5 CUDA engine's decode), [#1080](https://github.com/ashhart/TensorFold/pull/1080) (its prefill),
 [#1168](https://github.com/ashhart/TensorFold/pull/1168) (its decode attention on tensor cores, for fp8 and bf16 caches)
@@ -49,7 +118,8 @@ on an earlier engine, `18d93451` ([`evidence/2026-10-22-lone-bands/`](evidence/2
 `quick` plan on 1.1.5 ([`harness-quick/`](evidence/2026-10-25-engine-1.1.5/harness-quick/)) gives the same result on
 every serving check: drafted equals undrafted 12/12, 4 streams together equal alone 12/12, soak 60/60 with every turn
 resuming a kept state, structured output 18/18, tools 5/5, 9/9 seeded replies equal on repeat and undrafted.
-- Prompts run with int8 activations by default (`PROMPT_PRECISION=int8`, `--prompt-precision int8`): each 4-bit
+- With the MLX 4-bit checkpoint, prompts run with int8 activations (`PROMPT_PRECISION=int8`, `--prompt-precision int8`;
+  the EXL3 pack takes the bf16 prompt path, see [Checkpoint](#checkpoint)): each 4-bit
   projection's inputs are rounded to int8 with one scale a 64-input group, and the matmul runs on the int8 tensor
   cores. Prefill takes 20-26% less time than with bf16 activations. Replies differ slightly from bf16 prompts' (the
   measured divergence is in [#1176](https://github.com/ashhart/TensorFold/pull/1176)); drafted replies still equal
@@ -216,7 +286,9 @@ On this card that costs the window: nvidia's export loads at 22.79 GiB and refus
 needed, 7.13 GiB left); it serves 131,072 with vision and the drafter at 28.6 GB in use. Served that way through the
 same suite ([`quality-nvfp4/`](evidence/2026-10-25-engine-1.1.5/quality-nvfp4/)) it reads IFEval 126/150, GSM8K 242/250,
 MGSM 215/240, MMLU 270/342, tools 60/60, json 30/30, vision 12/12, soak 60/60, HumanEval 153/164, and fails the
-long-context check past its window: no gain the suite can see, for half the context. The recipe stays on MLX 4-bit.
+long-context check past its window: no gain the suite can see, for half the context. The recipe stayed on MLX 4-bit
+until the comparison of 2026-11-08 ([Checkpoint](#checkpoint)), in which the same NVFP4 export served on 1.2.4 held a
+262,144-token window (20.78 GiB loaded, one stream) and again scored no better than the 4-bit.
 
 The harness's `quick` plan on the same build ([`harness-quick/`](evidence/2026-10-22-lone-bands/harness-quick/)):
 - **drafts** 12/12, **concurrent** 12/12 and **soak** 60/60 (all 60 turns resumed a kept state);
@@ -293,7 +365,12 @@ references, and token exactness against TensorFold 0.6.6. The previous engine's 
 
 ### Streams
 
-**The default (since 1.1.7):** `TF_QWEN_KV_PAGES=256` with `CONTEXT=262144 PARALLEL=auto` serves four streams. The
+This section was measured with the MLX 4-bit checkpoint. With the EXL3 pack (18.16 GiB loaded against 17.67) the
+default launch serves three streams: the first with its own 262,144-token window (9.09 GiB), the other two on a pool
+of 329 pages (84,224 tokens, 2.61 GiB). The suite's concurrency check (12 chats four at a time against the same chats
+alone) and soak pass on it 12/12 and 60/60 ([`harness-quality-off-exl3-4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quality-off-exl3-4/)).
+
+**The default (since 1.1.7), MLX 4-bit:** `TF_QWEN_KV_PAGES=256` with `CONTEXT=262144 PARALLEL=auto` serves four streams. The
 first has its own 262,144-token window (9.02 GiB); the other three take 256-row pages from one pool of 338 (86,528
 tokens, 2.68 GiB) as they need them. When the pool runs out, a request waits for pages instead of failing. On 1.1.7
 ([`evidence/2026-10-27-engine-1.1.7/`](evidence/2026-10-27-engine-1.1.7/)):
@@ -393,8 +470,9 @@ You need:
 
 ```bash
 git clone https://github.com/BobClawblaw/qwen38-27b-vision-rtx-5090.git && cd qwen38-27b-vision-rtx-5090
-NVCC=/usr/local/cuda/bin/nvcc ./setup.sh     # ~19 GB of weights, the engine at the pinned commit, built for sm_120
+NVCC=/usr/local/cuda/bin/nvcc ./setup.sh     # ~20 GB of weights (the pack and the drafter), the engine at the pinned commit, built for sm_120
 ./serve.sh                                   # foreground; :30000, model qwen38-27b (alias qwen38-nvfp4)
+# CHECKPOINT=mlx_4bit ./setup.sh also downloads the MLX 4-bit (15 GB); CHECKPOINT=Qwen3.8-27B-MLX-4bit PROMPT_PRECISION=int8 ./serve.sh serves it
 ```
 
 To run it as a service:
@@ -407,13 +485,14 @@ To run it as a service:
 | Variable | Default | |
 |---|---|---|
 | `KV_CACHE` | `fp8` | `bf16` holds half the window: set `CONTEXT=131072` with it |
-| `PROMPT_PRECISION` | `int8` | the prompt matmuls' activations; `bf16` is exact and takes 25-36% longer to read a prompt |
+| `PROMPT_PRECISION` | unset | the engine's bf16 prompt path. `int8`, with the MLX 4-bit checkpoint only, runs the prompt matmuls on int8 activations: 20-26% shorter prefill, the same suite scores ([Checkpoint](#checkpoint)) |
+| `CHECKPOINT` | `Qwen3.8-27B-exl3-4.00bpw` | the folder under `MODELS` to serve; `Qwen3.8-27B-MLX-4bit` after `CHECKPOINT=mlx_4bit ./setup.sh` |
 | `PROMPT_CACHE_GIB` | `8` | host memory for kept prompt states, at most half of `MemAvailable`; `0` turns the cache off |
 | `CONTEXT` | `262144` | the window |
 | `TF_QWEN_KV_PAGES` | `256` | streams beside the first take pages of this many positions from one pool; `0`: a whole window each ([Streams](#streams)) |
-| `PARALLEL` | `auto` | streams at once: four at 262,144 with pages, one with `TF_QWEN_KV_PAGES=0`. `PARALLEL=N` with a shorter `CONTEXT` serves N streams in shared rounds, each with a whole window ([Streams](#streams)); `CONTEXT=32768 PARALLEL=4` and `CONTEXT=8192 PARALLEL=8` are measured, and with `TF_QWEN_KV_PAGES=256` (pages from one pool) `CONTEXT=65536 PARALLEL=8` |
-| `MAX_TOKENS` | the engine's | the output cap for a request that sends no `max_tokens` |
-| `THINKING_BUDGET` | the engine's | a cap on a reply's reasoning tokens |
+| `PARALLEL` | `auto` | streams at once: three at 262,144 with pages (four with the MLX 4-bit), one with `TF_QWEN_KV_PAGES=0`. `PARALLEL=N` with a shorter `CONTEXT` serves N streams in shared rounds, each with a whole window ([Streams](#streams)); `CONTEXT=32768 PARALLEL=4` and `CONTEXT=8192 PARALLEL=8` are measured, and with `TF_QWEN_KV_PAGES=256` (pages from one pool) `CONTEXT=65536 PARALLEL=8` |
+| `MAX_TOKENS` | `65536` | the output cap for a request that sends no `max_tokens`; it must hold a reply's thinking and its text |
+| `THINKING_BUDGET` | `49152` | a cap on a reply's reasoning tokens; 8,192 cut GSM8K with thinking to 222/250 ([Checkpoint](#checkpoint)) |
 | `PORT` / `HOST` | `30000` / `0.0.0.0` | |
 | `NAME` / `ALIAS` | `qwen38-27b` / `qwen38-nvfp4` | |
 | `MODELS` / `TF_SRC` | `./models` / `./engine` | |

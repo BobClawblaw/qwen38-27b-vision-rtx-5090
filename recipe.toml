@@ -1,16 +1,27 @@
 # What this recipe serves and builds. setup.sh reads it; serve.sh takes the same paths from the environment.
 
 [model]
-repo = "TensorFold/Qwen3.8-27B-MLX-4bit"         # MLX 4-bit, group 64, carries the vision tower
-revision = "22d8d538154e0e5b6f8dcb1fcc74a60a0798104c"
+# EXL3 at 4.00 bits a weight (head 6 bits, mul1 codebook, exllamav3 1.4.2); it carries the vision tower. Chosen on
+# 2026-11-08 over the MLX 4-bit, 5-bit and 6-bit, EXL3 5.00 bpw and NVFP4 checkpoints (README: Checkpoint).
+repo = "turboderp/Qwen3.8-27B-exl3"
+revision = "113cf7ab958054860e43fb7f3063b1af19171095"   # the 4.00bpw branch
+dir = "Qwen3.8-27B-exl3-4.00bpw"
 drafter = "z-lab/Qwen3.8-27B-DFlash2"
 drafter_revision = "50307d4c4cde6860d4eee73e2547cd786fe8e8a4"
 
+[model.mlx_4bit]
+# The checkpoint this recipe served until 2026-11-08: 22-28% faster decode and four streams at 262k, about 2% lower on
+# the quality suite. `CHECKPOINT=mlx_4bit ./setup.sh` downloads it too; `CHECKPOINT=Qwen3.8-27B-MLX-4bit
+# PROMPT_PRECISION=int8 ./serve.sh` serves it.
+repo = "TensorFold/Qwen3.8-27B-MLX-4bit"         # MLX 4-bit, group 64, carries the vision tower
+revision = "22d8d538154e0e5b6f8dcb1fcc74a60a0798104c"
+dir = "Qwen3.8-27B-MLX-4bit"
+
 [engine]
 repo = "https://github.com/ashhart/TensorFold.git"
-branch = "v1.1.7"                                  # the release tag (setup.sh fetches it by this name); #1079, #1080, #1168 and #1176 landed upstream in 1.1.4
-sha = "59044397a0e3870b01062fb67cde898a43b9a911"
-version = "1.1.7"
+branch = "v1.2.4"                                  # the release tag (setup.sh fetches it by this name); EXL3 packs of the dense 27B load on CUDA since 1.2.0
+sha = "267c5af6ad10779c1a3c75823d8e6e64216db376"
+version = "1.2.4"
 zig = "0.17.0"
 sm = "120"
 

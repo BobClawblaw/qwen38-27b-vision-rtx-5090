@@ -5,11 +5,14 @@
 # Idempotent; rerun after changing recipe.toml.
 #
 # Env: MODELS (./models), TF_SRC (./engine), XGRAMMAR (./xgrammar), DECODERS (./decoders: libjpeg-turbo and libwebp
-#   sources), ZIG (zig on PATH, 0.17.0), NVCC (/usr/local/cuda/bin/nvcc). Needs cmake and nasm for the decoders.
+#   sources), ZIG (zig on PATH, 0.17.0), NVCC (/usr/local/cuda/bin/nvcc), CHECKPOINT (model: the EXL3 4.00 bpw pack
+#   recipe.toml's [model] pins; mlx_4bit: the MLX 4-bit of [model.mlx_4bit] as well). Needs cmake and nasm for the decoders.
 #
 set -Eeuo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
-pin() { python3 -c "import tomllib, sys; print(tomllib.load(open('recipe.toml', 'rb'))[sys.argv[1]][sys.argv[2]])" "$@"; }
+pin() { python3 -c "import tomllib, sys; t = tomllib.load(open('recipe.toml', 'rb'))
+for k in sys.argv[1].split('.'): t = t[k]
+print(t[sys.argv[2]])" "$@"; }
 
 MODELS="${MODELS:-$PWD/models}"
 TF_SRC="${TF_SRC:-$PWD/engine}"
@@ -20,7 +23,8 @@ NVCC="${NVCC:-/usr/local/cuda/bin/nvcc}"
 
 "$ZIG" version | grep -qx "$(pin engine zig)" || { echo "need Zig $(pin engine zig) (ZIG=...)" >&2; exit 1; }
 
-hf download "$(pin model repo)" --revision "$(pin model revision)" --local-dir "$MODELS/Qwen3.8-27B-MLX-4bit"
+hf download "$(pin model repo)" --revision "$(pin model revision)" --local-dir "$MODELS/$(pin model dir)"
+[ "${CHECKPOINT:-model}" != mlx_4bit ] || hf download "$(pin model.mlx_4bit repo)" --revision "$(pin model.mlx_4bit revision)" --local-dir "$MODELS/$(pin model.mlx_4bit dir)"
 hf download "$(pin model drafter)" --revision "$(pin model drafter_revision)" --local-dir "$MODELS/Qwen3.8-27B-DFlash2"
 
 [ -d "$TF_SRC/.git" ] || git clone --branch "$(pin engine branch)" "$(pin engine repo)" "$TF_SRC"
@@ -32,12 +36,12 @@ VERSION="$(pin engine version)"
 (cd "$TF_SRC" && "$ZIG" build native -Dnvcc="$NVCC" -Dsm="$SM" -Dversion="$VERSION")
 
 # libtfgrammar: without it the server refuses response_format, the guided_* fields and tool_choice required or a
-# named function. The binary looks in ../lib from zig-out/native/bin; on Linux `zig build grammar` installs into
-# zig-out/lib, so the library is copied across.
+# named function. The binary looks in ../lib from zig-out/native/bin; 1.2.4 installs the library there, and releases
+# before 1.2.4 put it in zig-out/lib on Linux, so it is copied across when it landed there.
 [ -d "$XGRAMMAR/.git" ] || git clone -q --branch "$(pin grammar tag)" --recurse-submodules "$(pin grammar repo)" "$XGRAMMAR"
 (cd "$TF_SRC" && "$ZIG" build grammar -Dxgrammar="$XGRAMMAR" -Dsm="$SM")
 mkdir -p "$TF_SRC/zig-out/native/lib"
-cp "$TF_SRC/zig-out/lib/libtfgrammar.so" "$TF_SRC/zig-out/native/lib/libtfgrammar.so"
+[ -f "$TF_SRC/zig-out/native/lib/libtfgrammar.so" ] || cp "$TF_SRC/zig-out/lib/libtfgrammar.so" "$TF_SRC/zig-out/native/lib/libtfgrammar.so"
 
 # Image decoders: the engine decodes JPEG with libjpeg-turbo's libturbojpeg and WebP with libwebp's libwebpdecoder,
 # at the releases its pixels are pinned to. It checks the version and refuses JPEG or WebP images with any other

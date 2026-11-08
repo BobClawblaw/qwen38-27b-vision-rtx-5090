@@ -1,0 +1,13 @@
+{
+ "name": "tools",
+ "score": 0.95,
+ "cases": 60,
+ "passed": 57,
+ "seconds": 38.965495586395264,
+ "notes": [
+  "\"How do you say 'where is the station' in\": got []",
+  "'Set a timer for 5 minutes.': got [('set_timer', {'seconds': 300, 'label': '5 minute timer'})]",
+  "\"What's 15% of 240?\": got []"
+ ],
+ "details": {}
+}

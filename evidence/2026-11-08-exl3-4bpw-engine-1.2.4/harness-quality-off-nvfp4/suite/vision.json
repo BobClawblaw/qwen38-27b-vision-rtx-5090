@@ -1,0 +1,89 @@
+{
+ "name": "vision",
+ "score": 0.0,
+ "cases": 12,
+ "passed": 0,
+ "seconds": 0.06575846672058105,
+ "notes": [
+  "red-circle-blue-square: 'HTTP Error 400: Bad Request'",
+  "green-triangle: 'HTTP Error 400: Bad Request'",
+  "three-circles: 'HTTP Error 400: Bad Request'",
+  "two-squares: 'HTTP Error 400: Bad Request'"
+ ],
+ "details": {
+  "probes": [
+   {
+    "name": "red-circle-blue-square",
+    "ok": false,
+    "reply": "",
+    "error": "HTTP Error 400: Bad Request"
+   },
+   {
+    "name": "green-triangle",
+    "ok": false,
+    "reply": "",
+    "error": "HTTP Error 400: Bad Request"
+   },
+   {
+    "name": "three-circles",
+    "ok": false,
+    "reply": "",
+    "error": "HTTP Error 400: Bad Request"
+   },
+   {
+    "name": "two-squares",
+    "ok": false,
+    "reply": "",
+    "error": "HTTP Error 400: Bad Request"
+   },
+   {
+    "name": "left-right",
+    "ok": false,
+    "reply": "",
+    "error": "HTTP Error 400: Bad Request"
+   },
+   {
+    "name": "right-left",
+    "ok": false,
+    "reply": "",
+    "error": "HTTP Error 400: Bad Request"
+   },
+   {
+    "name": "yellow-circle",
+    "ok": false,
+    "reply": "",
+    "error": "HTTP Error 400: Bad Request"
+   },
+   {
+    "name": "four-triangles",
+    "ok": false,
+    "reply": "",
+    "error": "HTTP Error 400: Bad Request"
+   },
+   {
+    "name": "blank",
+    "ok": false,
+    "reply": "",
+    "error": "HTTP Error 400: Bad Request"
+   },
+   {
+    "name": "black-square-top",
+    "ok": false,
+    "reply": "",
+    "error": "HTTP Error 400: Bad Request"
+   },
+   {
+    "name": "mixed-count",
+    "ok": false,
+    "reply": "",
+    "error": "HTTP Error 400: Bad Request"
+   },
+   {
+    "name": "colours-list",
+    "ok": false,
+    "reply": "",
+    "error": "HTTP Error 400: Bad Request"
+   }
+  ]
+ }
+}
