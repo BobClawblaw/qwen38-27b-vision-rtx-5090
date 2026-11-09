@@ -1,0 +1,598 @@
+{
+ "auto": {
+  "ok": true,
+  "why": null,
+  "status": 200,
+  "finish": "tool_calls",
+  "tool_calls": [
+   {
+    "id": "call_110e1837a627d8ead6a55b4b",
+    "type": "function",
+    "function": {
+     "name": "book_flight",
+     "arguments": "{\"from\":\"Oslo\",\"to\":\"Rome\",\"cabin\":\"business\",\"passengers\":[{\"name\":\"Ana\",\"age\":31},{\"name\":\"Leo\",\"age\":6}]}"
+    }
+   },
+   {
+    "id": "call_6d2612cd1eb524e334663017",
+    "type": "function",
+    "function": {
+     "name": "get_weather",
+     "arguments": "{\"city\":\"Rome\"}"
+    }
+   }
+  ],
+  "text": "",
+  "usage": {
+   "prompt_tokens": 475,
+   "completion_tokens": 118,
+   "total_tokens": 593,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  },
+  "seconds": 0.539,
+  "request": {
+   "max_tokens": 600,
+   "temperature": 0,
+   "tools": [
+    {
+     "type": "function",
+     "function": {
+      "name": "book_flight",
+      "description": "Book a flight.",
+      "strict": true,
+      "parameters": {
+       "type": "object",
+       "additionalProperties": false,
+       "properties": {
+        "from": {
+         "type": "string"
+        },
+        "to": {
+         "type": "string"
+        },
+        "cabin": {
+         "type": "string",
+         "enum": [
+          "economy",
+          "business",
+          "first"
+         ]
+        },
+        "passengers": {
+         "type": "array",
+         "minItems": 1,
+         "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+           "name": {
+            "type": "string"
+           },
+           "age": {
+            "type": "integer"
+           }
+          },
+          "required": [
+           "name",
+           "age"
+          ]
+         }
+        }
+       },
+       "required": [
+        "from",
+        "to",
+        "cabin",
+        "passengers"
+       ]
+      }
+     }
+    },
+    {
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "description": "The weather in a city.",
+      "parameters": {
+       "type": "object",
+       "properties": {
+        "city": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "city"
+       ]
+      }
+     }
+    }
+   ],
+   "tool_choice": "auto",
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   }
+  }
+ },
+ "required": {
+  "ok": true,
+  "why": null,
+  "status": 200,
+  "finish": "tool_calls",
+  "tool_calls": [
+   {
+    "id": "call_800d189fdf99b6e8f73d48c1",
+    "type": "function",
+    "function": {
+     "name": "book_flight",
+     "arguments": "{\"from\":\"Oslo\",\"to\":\"Rome\",\"cabin\":\"business\",\"passengers\":[{\"name\":\"Ana\",\"age\":31},{\"name\":\"Leo\",\"age\":6}]}"
+    }
+   },
+   {
+    "id": "call_1ca500027d11fcf3cd1c4037",
+    "type": "function",
+    "function": {
+     "name": "get_weather",
+     "arguments": "{\"city\":\"Rome\"}"
+    }
+   }
+  ],
+  "text": "",
+  "usage": {
+   "prompt_tokens": 475,
+   "completion_tokens": 118,
+   "total_tokens": 593,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  },
+  "seconds": 0.466,
+  "request": {
+   "max_tokens": 600,
+   "temperature": 0,
+   "tools": [
+    {
+     "type": "function",
+     "function": {
+      "name": "book_flight",
+      "description": "Book a flight.",
+      "strict": true,
+      "parameters": {
+       "type": "object",
+       "additionalProperties": false,
+       "properties": {
+        "from": {
+         "type": "string"
+        },
+        "to": {
+         "type": "string"
+        },
+        "cabin": {
+         "type": "string",
+         "enum": [
+          "economy",
+          "business",
+          "first"
+         ]
+        },
+        "passengers": {
+         "type": "array",
+         "minItems": 1,
+         "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+           "name": {
+            "type": "string"
+           },
+           "age": {
+            "type": "integer"
+           }
+          },
+          "required": [
+           "name",
+           "age"
+          ]
+         }
+        }
+       },
+       "required": [
+        "from",
+        "to",
+        "cabin",
+        "passengers"
+       ]
+      }
+     }
+    },
+    {
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "description": "The weather in a city.",
+      "parameters": {
+       "type": "object",
+       "properties": {
+        "city": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "city"
+       ]
+      }
+     }
+    }
+   ],
+   "tool_choice": "required",
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   }
+  }
+ },
+ "named": {
+  "ok": true,
+  "why": null,
+  "status": 200,
+  "finish": "tool_calls",
+  "tool_calls": [
+   {
+    "id": "call_02afbd5a74abc72f53468301",
+    "type": "function",
+    "function": {
+     "name": "book_flight",
+     "arguments": "{\"from\":\"Oslo\",\"to\":\"Rome\",\"cabin\":\"business\",\"passengers\":[{\"name\":\"Ana\",\"age\":31},{\"name\":\"Leo\",\"age\":6}]}"
+    }
+   }
+  ],
+  "text": "",
+  "usage": {
+   "prompt_tokens": 419,
+   "completion_tokens": 91,
+   "total_tokens": 510,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  },
+  "seconds": 0.425,
+  "request": {
+   "max_tokens": 600,
+   "temperature": 0,
+   "tools": [
+    {
+     "type": "function",
+     "function": {
+      "name": "book_flight",
+      "description": "Book a flight.",
+      "strict": true,
+      "parameters": {
+       "type": "object",
+       "additionalProperties": false,
+       "properties": {
+        "from": {
+         "type": "string"
+        },
+        "to": {
+         "type": "string"
+        },
+        "cabin": {
+         "type": "string",
+         "enum": [
+          "economy",
+          "business",
+          "first"
+         ]
+        },
+        "passengers": {
+         "type": "array",
+         "minItems": 1,
+         "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+           "name": {
+            "type": "string"
+           },
+           "age": {
+            "type": "integer"
+           }
+          },
+          "required": [
+           "name",
+           "age"
+          ]
+         }
+        }
+       },
+       "required": [
+        "from",
+        "to",
+        "cabin",
+        "passengers"
+       ]
+      }
+     }
+    },
+    {
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "description": "The weather in a city.",
+      "parameters": {
+       "type": "object",
+       "properties": {
+        "city": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "city"
+       ]
+      }
+     }
+    }
+   ],
+   "tool_choice": {
+    "type": "function",
+    "function": {
+     "name": "book_flight"
+    }
+   },
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   }
+  },
+  "plain_tool_calls": [
+   {
+    "id": "call_8fef034d11f7d933e98a2c52",
+    "type": "function",
+    "function": {
+     "name": "book_flight",
+     "arguments": "{\"from\":\"Oslo\",\"to\":\"Rome\",\"cabin\":\"business\",\"passengers\":[{\"name\":\"Ana\",\"age\":31},{\"name\":\"Leo\",\"age\":6}]}"
+    }
+   }
+  ]
+ },
+ "named/thinking": {
+  "ok": true,
+  "why": null,
+  "status": 200,
+  "finish": "tool_calls",
+  "tool_calls": [
+   {
+    "id": "call_15dcdaf65c8c9f16157686cd",
+    "type": "function",
+    "function": {
+     "name": "book_flight",
+     "arguments": "{\"from\":\"Oslo\",\"to\":\"Rome\",\"cabin\":\"business\",\"passengers\":[{\"name\":\"Ana\",\"age\":31},{\"name\":\"Leo\",\"age\":6}]}"
+    }
+   }
+  ],
+  "text": "",
+  "usage": {
+   "prompt_tokens": 455,
+   "completion_tokens": 269,
+   "total_tokens": 724,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 177
+   }
+  },
+  "seconds": 0.928,
+  "request": {
+   "max_tokens": 3000,
+   "temperature": 0,
+   "tools": [
+    {
+     "type": "function",
+     "function": {
+      "name": "book_flight",
+      "description": "Book a flight.",
+      "strict": true,
+      "parameters": {
+       "type": "object",
+       "additionalProperties": false,
+       "properties": {
+        "from": {
+         "type": "string"
+        },
+        "to": {
+         "type": "string"
+        },
+        "cabin": {
+         "type": "string",
+         "enum": [
+          "economy",
+          "business",
+          "first"
+         ]
+        },
+        "passengers": {
+         "type": "array",
+         "minItems": 1,
+         "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+           "name": {
+            "type": "string"
+           },
+           "age": {
+            "type": "integer"
+           }
+          },
+          "required": [
+           "name",
+           "age"
+          ]
+         }
+        }
+       },
+       "required": [
+        "from",
+        "to",
+        "cabin",
+        "passengers"
+       ]
+      }
+     }
+    },
+    {
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "description": "The weather in a city.",
+      "parameters": {
+       "type": "object",
+       "properties": {
+        "city": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "city"
+       ]
+      }
+     }
+    }
+   ],
+   "tool_choice": {
+    "type": "function",
+    "function": {
+     "name": "book_flight"
+    }
+   },
+   "chat_template_kwargs": {
+    "enable_thinking": true
+   }
+  }
+ },
+ "named/stream": {
+  "ok": true,
+  "why": null,
+  "status": 200,
+  "finish": "tool_calls",
+  "tool_calls": [
+   {
+    "type": "function",
+    "function": {
+     "name": "book_flight",
+     "arguments": "{\"from\":\"Oslo\",\"to\":\"Rome\",\"cabin\":\"business\",\"passengers\":[{\"name\":\"Ana\",\"age\":31},{\"name\":\"Leo\",\"age\":6}]}"
+    },
+    "id": "call_49708771e6842433454403d9"
+   }
+  ],
+  "text": "",
+  "usage": {
+   "prompt_tokens": 419,
+   "completion_tokens": 91,
+   "total_tokens": 510,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  },
+  "seconds": 0.428,
+  "request": {
+   "max_tokens": 600,
+   "temperature": 0,
+   "tools": [
+    {
+     "type": "function",
+     "function": {
+      "name": "book_flight",
+      "description": "Book a flight.",
+      "strict": true,
+      "parameters": {
+       "type": "object",
+       "additionalProperties": false,
+       "properties": {
+        "from": {
+         "type": "string"
+        },
+        "to": {
+         "type": "string"
+        },
+        "cabin": {
+         "type": "string",
+         "enum": [
+          "economy",
+          "business",
+          "first"
+         ]
+        },
+        "passengers": {
+         "type": "array",
+         "minItems": 1,
+         "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+           "name": {
+            "type": "string"
+           },
+           "age": {
+            "type": "integer"
+           }
+          },
+          "required": [
+           "name",
+           "age"
+          ]
+         }
+        }
+       },
+       "required": [
+        "from",
+        "to",
+        "cabin",
+        "passengers"
+       ]
+      }
+     }
+    },
+    {
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "description": "The weather in a city.",
+      "parameters": {
+       "type": "object",
+       "properties": {
+        "city": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "city"
+       ]
+      }
+     }
+    }
+   ],
+   "tool_choice": {
+    "type": "function",
+    "function": {
+     "name": "book_flight"
+    }
+   },
+   "chat_template_kwargs": {
+    "enable_thinking": false
+   }
+  }
+ }
+}

@@ -106,30 +106,36 @@ and 242/250 at 49,152 on 2026-11-08 (1.1.7, the same weights;
 sets `--thinking-budget 49152 --max-tokens 65536`, and the thinking rows above ran at that budget.
 
 **Sampling defaults.** The model card gives two sets: thinking replies at temperature 1.0, top_p 0.95, top_k 20 (what
-the pack's `generation_config.json` holds, and what the server served to every request until 2026-11-08), and instruct
-(non-thinking) replies at temperature 0.7, top_p 0.8, top_k 20, `presence_penalty` 1.5. Since 2026-11-08 the engine
-serves each mode its own set: a request with thinking off (`"chat_template_kwargs": {"enable_thinking": false}`, or a
-raw prompt completion) that names no sampling fields gets the instruct set, a thinking request the thinking set, and a
-request's own fields win over both ([Engine](#engine)). `INSTRUCT_SAMPLING` changes the instruct set
-(`INSTRUCT_SAMPLING=presence_penalty=0 ./serve.sh`) or drops it (`none`). The defaults fill the fields a request leaves
-out whatever its temperature, so a greedy thinking-off request (`temperature: 0`, as the quality suite sends) is now
-decoded with the presence penalty unless it sends `presence_penalty: 0`: its text changes, and it decodes about 2%
-slower (400-token replies, one stream: 216-220 tok/s against 223-225). Every quality table above was measured before
-this change, without the penalty; the suite has not been rerun with it. Earlier runs on the MLX 4-bit (1.1.5,
-2026-10-25) sampled the suite with and
-without the card's `presence_penalty` 1.5 ([below](#against-vllm-on-the-same-card)): IFEval 128 / 126, GSM8K 242 / 242,
-MGSM 212 / 210, MMLU 276 / 266, HumanEval 153 / 154, a few answers either way; the card itself says a higher
-`presence_penalty` "may occasionally result in language mixing and a slight decrease in model performance".
+the pack's `generation_config.json` holds, and what the server serves to a request that names no sampling), and
+instruct (non-thinking) replies at temperature 0.7, top_p 0.8, top_k 20, `presence_penalty` 1.5. Since 2026-11-09 the
+launch passes the engine's `--instruct-sampling card` ([Engine](#engine)): a chat request with thinking off
+(`"chat_template_kwargs": {"enable_thinking": false}`) that samples and names no sampling fields starts from the
+instruct set. A thinking request keeps the thinking set, a raw prompt completion keeps it too, a request with
+`temperature: 0` decodes greedily with no penalty, and a request's own fields win over every default.
+`INSTRUCT_SAMPLING` changes the set (`INSTRUCT_SAMPLING=presence_penalty=0 ./serve.sh`) or drops it (`none`). The
+penalty costs drafted decode speed at the instruct temperature: 400-token thinking-off replies, one stream, seeded,
+run at 177 tok/s under the instruct set against 219 with its `presence_penalty` at 0 (the thinking set: 205 with the
+penalty, 207 without; drafts off: 76 either way), so the cost is DFlash2 draft acceptance at temperature 0.7 / top_p
+0.8, not the penalty pass. Greedy replies run as before (222 tok/s), and every quality table above was measured greedy,
+which the set never touches. Earlier runs on the MLX 4-bit (1.1.5, 2026-10-25) sampled the suite with and without the
+card's `presence_penalty` 1.5 ([below](#against-vllm-on-the-same-card)): IFEval 128 / 126, GSM8K 242 / 242, MGSM
+212 / 210, MMLU 276 / 266, HumanEval 153 / 154, a few answers either way; the card itself says a higher
+`presence_penalty` "may occasionally result in language mixing and a slight decrease in model performance". From
+2026-11-08 22:17 to 2026-11-09 03:18 UTC the served build applied the instruct set to every thinking-off request,
+greedy ones included, and its default fell on the quality suite's greedy requests; upstream asked for the opt-in form
+and the recipe followed.
 
-**On the TensorFold board:** the pack's community-v1 entry, run on 2026-11-08 from the public checkpoint with the
+**On the TensorFold board:** the pack's community-v1 entry, run on 2026-11-09 from the public checkpoint with the
 board's protocol (256 tokens, 5 repetitions, one stream), is at
-[tensorfold.dev/benchmarks](https://tensorfold.dev/benchmarks?result=0e333c13-9357-4926-bf05-e7e5849f00e1): code 373 /
-chat 210 tok/s sampled, 363 / 216 greedy, first text 0.017-0.032 s, on the instruct-sampling engine ([Engine](#engine));
-the stock 1.2.4 binary gave the same numbers earlier that day
-([result e4935ac8](https://tensorfold.dev/benchmarks?result=e4935ac8-c889-4944-8d33-f04ed2e1f791): 373 / 211 and 363 / 216).
-A run in between ([result 3ca5412a](https://tensorfold.dev/benchmarks?result=3ca5412a-6bb4-4a9b-9a84-6b838c9d8824): code 329 /
-chat 206 sampled, 339 / 240 greedy) is not a protocol run: the benchmark left `presence_penalty` to the server, whose new
-thinking-off default put 1.5 on every draw; the benchmark now sends 0 (the branch's second commit).
+[tensorfold.dev/benchmarks](https://tensorfold.dev/benchmarks?result=c568750c-f95c-4496-9779-63bc99e68b6b): code 372 /
+chat 210 tok/s sampled, 363 / 216 greedy, on the served engine ([Engine](#engine)). The stock
+1.2.4 binary gave 373 / 211 and 363 / 216 the day before
+([result e4935ac8](https://tensorfold.dev/benchmarks?result=e4935ac8-c889-4944-8d33-f04ed2e1f791)), and the
+default-on build 373 / 210 and 363 / 216 ([result 0e333c13](https://tensorfold.dev/benchmarks?result=0e333c13-9357-4926-bf05-e7e5849f00e1));
+the protocol names every sampling field, so no served default shapes its draws. A run in between
+([result 3ca5412a](https://tensorfold.dev/benchmarks?result=3ca5412a-6bb4-4a9b-9a84-6b838c9d8824): code 329 /
+chat 206 sampled, 339 / 240 greedy) is not a protocol run: that build's `benchmark` left `presence_penalty` to the
+server, whose then default put 1.5 on every draw.
 
 **Not rerun on the EXL3 pack:** everything from [Against the previous versions](#against-the-previous-versions-of-this-recipe)
 on (the vLLM comparison, the prompt-cache measurements, the long-prompt tables, the streams plan at shorter windows and
@@ -138,24 +144,32 @@ there. The EXL3 pack's own serving checks are in [Engine](#engine) and in the ha
 
 ## Engine
 
-The recipe builds TensorFold [1.2.4](https://github.com/ashhart/TensorFold/releases/tag/v1.2.4) (`267c5af6`) plus one
-commit on the fork branch [`v124-instruct`](https://github.com/BobClawblaw/TensorFold/tree/v124-instruct) (`a72aa022`):
-requests with thinking off start from the model card's instruct sampling ([above](#checkpoint)), through a new
-`--instruct-sampling` flag and family defaults for Qwen 3.5 and 3.8; the same change is proposed upstream as
-[#2626](https://github.com/ashhart/TensorFold/pull/2626). The branch's second commit (`1815ba79`) only makes the engine's
-`benchmark` send `presence_penalty` and `frequency_penalty` 0, so a served default cannot shape the board protocol's draws;
-the leaderboard binary carries it, the served binary (`a72aa022`) does not need it. The serving line prints both sets: `sampling: temperature 1.0, top_k 20, top_p 0.95;
-thinking off: temperature 0.7, top_k 20, top_p 0.8, presence_penalty 1.5`. Checked on the served build (2026-11-08):
-seeded replies with thinking off and no sampling fields equal the replies that spell the instruct set out, differ once
-`presence_penalty` is 0 or the thinking set is sent, and thinking replies with no fields equal the thinking set's; a
-request's `temperature: 0` stays greedy. The harness's `structured`, `vision` and `quick` plans on the served build
-([`harness-structured-exl3-4-instruct/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-structured-exl3-4-instruct/),
-[`harness-vision-exl3-4-instruct/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-vision-exl3-4-instruct/),
-[`harness-quick-exl3-4-instruct/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quick-exl3-4-instruct/)): structured output 18/18 and
-drafted equals plain 12/12, tools 5/5, vision 12/12 and a JPEG through the chat API, soak 60/60, drafts 12/12, concurrent 12/12,
-9/9 seeded replies equal on repeat and undrafted, multiturn 8/8, thinking 10/10, with the ruler at 207.5 / 427.2 / 273.7 / 260.8
-tok/s fresh and 218.3 / 436.9 / 273.2 / 259.9 after (214.5 / 453.7 / 307.4 / 265.0 and 217.2 / 452.8 / 307.2 / 263.8 on the
-stock 1.2.4 binary earlier the same day; the sampling defaults are not on the greedy ruler's path).
+The recipe builds TensorFold [1.2.4](https://github.com/ashhart/TensorFold/releases/tag/v1.2.4) (`267c5af6`) plus the
+two commits of upstream pull request [#2626](https://github.com/ashhart/TensorFold/pull/2626), cherry-picked onto the
+fork branch [`v124-card`](https://github.com/BobClawblaw/TensorFold/tree/v124-card) (`944542fe`): the
+`--instruct-sampling` flag (`card` serves the model card's instruct sampling to sampled chat requests with thinking
+off, [above](#checkpoint); `name=value` pairs edit the set; greedy requests, raw completions and the server's own
+compaction never take it), and a `benchmark` that sends `presence_penalty` and `frequency_penalty` 0 so a served
+default cannot shape the board protocol's draws. The serving line prints both sets: `sampling: temperature 1.0,
+top_k 20, top_p 0.95; thinking off: temperature 0.7, top_k 20, top_p 0.8, presence_penalty 1.5`. The earlier fork
+branch [`v124-instruct`](https://github.com/BobClawblaw/TensorFold/tree/v124-instruct) (`a72aa022`, served
+2026-11-08 22:17 to 2026-11-09 03:18 UTC) applied the set by default to every thinking-off request, greedy ones
+included; the maintainer asked for the opt-in form, and the pull request now carries it. Checked on the served build
+(2026-11-09): seeded sampled replies with thinking off and no sampling fields equal the replies that spell the instruct
+set out and differ once `presence_penalty` is 0 or the thinking set is sent, thinking replies with no fields equal the
+thinking set's, a `temperature: 0` request equals one that also sends `presence_penalty: 0`, and a raw completion with
+no fields equals one that sends the thinking set (10/10). Against current upstream main (`4a0e38af`) on this card, the
+branch with the flag off replies byte for byte alike on eight request kinds (greedy and seeded chats with thinking on
+and off, raw completions), and with `card` only the sampled thinking-off chats change, at the same greedy speed
+(221.8 / 221.9 / 221.8 tok/s). The harness's `structured`, `vision` and `quick` plans on the served build
+([`harness-structured-exl3-4-card/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-structured-exl3-4-card/),
+[`harness-vision-exl3-4-card/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-vision-exl3-4-card/),
+[`harness-quick-exl3-4-card/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-quick-exl3-4-card/)): structured output
+18/18 and drafted equals plain 12/12, tools 5/5, vision 12/12 and a JPEG through the chat API, soak 60/60, drafts 12/12,
+concurrent 12/12, 9/9 seeded replies equal on repeat and undrafted, multiturn 7/8 (a fact-recall probe that also read 7/8
+on the stock 1.2.4 run of 2026-11-08 and 8/8 on the next), thinking 10/10, with the ruler at 216.9 / 452.2 / 307.0 / 263.9
+tok/s fresh and 213.8 / 451.6 / 306.5 / 263.5 after (214.5 / 453.7 / 307.4 / 265.0 on the stock 1.2.4 binary; the
+default-on build's 207.5 / 427.2 / 273.7 / 260.8 was its penalty on the greedy ruler, which the opt-in form leaves alone).
 EXL3 packs of the dense 27B load on CUDA since 1.2.0; the 1.1.7 build refused them
 (`UnsupportedQwenQuantization`). On 1.2.4 with the EXL3 pack (2026-11-08, the harness's `structured`, `vision` and
 `quick` plans on the served build; [`harness-structured-exl3-4/`](evidence/2026-11-08-exl3-4bpw-engine-1.2.4/harness-structured-exl3-4/),
@@ -578,7 +592,7 @@ To run it as a service:
 | `PARALLEL` | `auto` | streams at once: three at 262,144 with pages (four with the MLX 4-bit), one with `TF_QWEN_KV_PAGES=0`. `PARALLEL=N` with a shorter `CONTEXT` serves N streams in shared rounds, each with a whole window ([Streams](#streams)); `CONTEXT=32768 PARALLEL=4` and `CONTEXT=8192 PARALLEL=8` are measured, and with `TF_QWEN_KV_PAGES=256` (pages from one pool) `CONTEXT=65536 PARALLEL=8` |
 | `MAX_TOKENS` | `65536` | the output cap for a request that sends no `max_tokens`; it must hold a reply's thinking and its text |
 | `THINKING_BUDGET` | `49152` | a cap on a reply's reasoning tokens; 8,192 cut GSM8K with thinking to 222/250 ([Checkpoint](#checkpoint)) |
-| `INSTRUCT_SAMPLING` | unset | the sampling a request with thinking off starts from: the model card's temperature 0.7, top_p 0.8, top_k 20, `presence_penalty` 1.5. `name=value` pairs change it, `none` serves the thinking set to every request ([Checkpoint](#checkpoint)) |
+| `INSTRUCT_SAMPLING` | `card` | the sampling a sampled chat request with thinking off starts from: the model card's temperature 0.7, top_p 0.8, top_k 20, `presence_penalty` 1.5; greedy requests and raw completions never take it. `name=value` pairs change the set, `none` serves the thinking set to every request ([Checkpoint](#checkpoint)) |
 | `PORT` / `HOST` | `30000` / `0.0.0.0` | |
 | `NAME` / `ALIAS` | `qwen38-27b` / `qwen38-nvfp4` | |
 | `MODELS` / `TF_SRC` | `./models` / `./engine` | |
@@ -586,7 +600,8 @@ To run it as a service:
 **Requests:**
 - There is no API key.
 - Thinking is on by default. Turn it off per request with `"chat_template_kwargs": {"enable_thinking": false}`; a
-  request with thinking off samples at the model card's instruct set unless it sends its own fields ([Checkpoint](#checkpoint)).
+  request with thinking off that samples starts from the model card's instruct set unless it sends its own fields, and
+  one with `temperature: 0` decodes greedily with no penalty ([Checkpoint](#checkpoint)).
 - Images go in `image_url` parts as data URLs (PNG, JPEG, WebP).
 - A request can hold up to 4 images, sharing 4,096 visual tokens. `detail: low` caps one image at 256.
 - Structured output: `response_format` (`json_object`, `json_schema`), and `tool_choice` `"auto"`, `"required"` or a
