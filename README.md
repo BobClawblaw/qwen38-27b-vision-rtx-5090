@@ -113,11 +113,12 @@ launch passes the engine's `--instruct-sampling card` ([Engine](#engine)): a cha
 instruct set. A thinking request keeps the thinking set, a raw prompt completion keeps it too, a request with
 `temperature: 0` decodes greedily with no penalty, and a request's own fields win over every default.
 `INSTRUCT_SAMPLING` changes the set (`INSTRUCT_SAMPLING=presence_penalty=0 ./serve.sh`) or drops it (`none`). The
-penalty costs drafted decode speed at the instruct temperature: 400-token thinking-off replies, one stream, seeded,
-run at 177 tok/s under the instruct set against 219 with its `presence_penalty` at 0 (the thinking set: 205 with the
-penalty, 207 without; drafts off: 76 either way), so the cost is DFlash2 draft acceptance at temperature 0.7 / top_p
-0.8, not the penalty pass. Greedy replies run as before (222 tok/s), and every quality table above was measured greedy,
-which the set never touches. Earlier runs on the MLX 4-bit (1.1.5, 2026-10-25) sampled the suite with and without the
+penalty costs drafted decode speed through DFlash2 draft acceptance ([TensorFold#2645](https://github.com/ashhart/TensorFold/issues/2645)):
+over three prompts and three seeds of 400-token thinking-off replies, one stream, `presence_penalty` 1.5 changed the
+tokens a draft round yields by -19% to +4% against 0 (about -5% on average, the same under the instruct and the
+thinking set), and decode speed moved with it exactly, the time per round staying at about 17.7 ms; with drafts off
+(76 tok/s) the penalty costs nothing. Greedy replies run as before (222 tok/s), and every quality table above was
+measured greedy, which the set never touches. Earlier runs on the MLX 4-bit (1.1.5, 2026-10-25) sampled the suite with and without the
 card's `presence_penalty` 1.5 ([below](#against-vllm-on-the-same-card)): IFEval 128 / 126, GSM8K 242 / 242, MGSM
 212 / 210, MMLU 276 / 266, HumanEval 153 / 154, a few answers either way; the card itself says a higher
 `presence_penalty` "may occasionally result in language mixing and a slight decrease in model performance". From
