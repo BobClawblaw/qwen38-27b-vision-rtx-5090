@@ -142,7 +142,7 @@ The recipe builds TensorFold [1.2.4](https://github.com/ashhart/TensorFold/relea
 commit on the fork branch [`v124-instruct`](https://github.com/BobClawblaw/TensorFold/tree/v124-instruct) (`a72aa022`):
 requests with thinking off start from the model card's instruct sampling ([above](#checkpoint)), through a new
 `--instruct-sampling` flag and family defaults for Qwen 3.5 and 3.8; the same change is proposed upstream as
-[#2626](https://github.com/ashhart/TensorFold/pull/2626). The branch's second commit (`81ab4bdc`) only makes the engine's
+[#2626](https://github.com/ashhart/TensorFold/pull/2626). The branch's second commit (`1815ba79`) only makes the engine's
 `benchmark` send `presence_penalty` and `frequency_penalty` 0, so a served default cannot shape the board protocol's draws;
 the leaderboard binary carries it, the served binary (`a72aa022`) does not need it. The serving line prints both sets: `sampling: temperature 1.0, top_k 20, top_p 0.95;
 thinking off: temperature 0.7, top_k 20, top_p 0.8, presence_penalty 1.5`. Checked on the served build (2026-11-08):
